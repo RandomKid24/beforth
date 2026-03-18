@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { motion } from 'motion/react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
+import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+
+export const ScrollContext = React.createContext<React.RefObject<HTMLDivElement | null> | null>(null);
 
 // --- STRICT 4-COLOR PALETTE ---
 // 1. Cream (Background/Light): #0F172A
@@ -10,9 +12,131 @@ import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search,
 
 import { CustomCursor } from "./components/ui/custom-cursor";
 
-function Hero() {
+function Navbar() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <section className="h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <>
+      <motion.nav 
+        initial={{ y: -100, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className="fixed top-0 left-0 w-full z-50 px-6 md:px-[5%] py-6 flex justify-between items-center mix-blend-difference text-white pointer-events-none"
+      >
+        <motion.div 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer"
+        >
+          BEFORTH
+        </motion.div>
+        <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest uppercase pointer-events-auto">
+          <a href="#work" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Work</a>
+          <a href="#services" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Services</a>
+          <a href="#process" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Process</a>
+          <a href="#cta" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Contact</a>
+        </div>
+        <motion.button 
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 0.95 }}
+          onClick={() => setIsOpen(true)}
+          className="md:hidden font-mono text-xs tracking-widest uppercase hover:opacity-70 transition-opacity pointer-events-auto"
+        >
+          MENU
+        </motion.button>
+      </motion.nav>
+
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ y: "-100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-[60] bg-[#020617] text-[#F8FAFC] flex flex-col items-center justify-center"
+          >
+            <div className="absolute top-0 left-0 w-full px-6 py-6 flex justify-between items-center">
+              <motion.div 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="font-display text-2xl tracking-widest uppercase cursor-pointer"
+              >
+                BEFORTH
+              </motion.div>
+              <motion.button 
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setIsOpen(false)} 
+                className="font-mono text-xs tracking-widest uppercase hover:opacity-70 transition-opacity p-2 -mr-2"
+              >
+                CLOSE
+              </motion.button>
+            </div>
+            <div className="flex flex-col items-center gap-8 font-display text-4xl tracking-widest uppercase">
+              <motion.a 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.05, color: '#2563EB' }}
+                whileTap={{ scale: 0.95 }}
+                href="#work" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
+              >
+                Work
+              </motion.a>
+              <motion.a 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                whileHover={{ scale: 1.05, color: '#2563EB' }}
+                whileTap={{ scale: 0.95 }}
+                href="#services" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
+              >
+                Services
+              </motion.a>
+              <motion.a 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                whileHover={{ scale: 1.05, color: '#2563EB' }}
+                whileTap={{ scale: 0.95 }}
+                href="#process" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
+              >
+                Process
+              </motion.a>
+              <motion.a 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                whileHover={{ scale: 1.05, color: '#2563EB' }}
+                whileTap={{ scale: 0.95 }}
+                href="#cta" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
+              >
+                Contact
+              </motion.a>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
+  );
+}
+
+function Hero() {
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
+  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+
+  return (
+    <section ref={sectionRef} className="h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       <div className="z-10 w-full max-w-7xl mx-auto mt-12 md:mt-0 flex flex-col md:flex-row items-center justify-between h-full py-[10vh]">
         
         {/* 61.8% Width for Main Content */}
@@ -21,19 +145,20 @@ function Hero() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
+            style={{ y: yText, opacity: opacityText }}
             className="mb-[3.82rem]"
           >
             <div className="flex items-center gap-3 mb-[1.618rem]">
               <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-              <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Custom Software Agency</span>
+              <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Digital Product Agency</span>
             </div>
             
             <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] font-display uppercase tracking-normal">
-              <span className="block py-2 md:py-4">WE BUILD</span>
+              <span className="block py-2 md:py-4">WE CRAFT</span>
               <span className="block py-2 md:py-4 text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">
-                CUSTOM
+                DIGITAL
               </span>
-              <span className="block py-2 md:py-4">SOFTWARE.</span>
+              <span className="block py-2 md:py-4">PRODUCTS.</span>
             </h1>
           </motion.div>
 
@@ -45,9 +170,14 @@ function Hero() {
           >
             <div className="flex flex-wrap gap-[1rem] mb-[2.618rem]">
               {['Custom ERPs', 'Mobile Apps', 'Web Platforms', 'HRMS & CRM'].map((tag, i) => (
-                <span key={i} className="px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10">
+                <motion.span 
+                  key={i} 
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10 cursor-default hover:bg-[#2563EB]/20 transition-colors duration-300"
+                >
                   {tag}
-                </span>
+                </motion.span>
               ))}
             </div>
 
@@ -65,7 +195,7 @@ function Hero() {
             transition={{ duration: 1, delay: 0.8 }}
             className="mt-[4.236rem]"
           >
-            <a href="#cta" className="hover-target flex items-center gap-[1rem] font-mono text-[0.85rem] tracking-widest uppercase text-[#0F172A] group">
+            <a href="#cta" className="hover-target inline-flex items-center gap-[1rem] font-mono text-[0.85rem] tracking-widest uppercase text-[#0F172A] group relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[#0F172A]">
               START A PROJECT 
               <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
             </a>
@@ -79,7 +209,7 @@ function Hero() {
             animate={{ opacity: 1, rotateY: -15, rotateX: 5, x: 0 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
             className="relative w-full aspect-square"
-            style={{ transformStyle: 'preserve-3d' }}
+            style={{ transformStyle: 'preserve-3d', y: yImage }}
           >
             {/* 1. ERP Dashboard (100% width, 1.618:1 aspect) */}
             <motion.div 
@@ -180,14 +310,27 @@ function Hero() {
 }
 
 function Contrast() {
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yLeft = useTransform(scrollYProgress, [0, 1], ["-10%", "10%"]);
+  const yRight = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
+
   return (
-    <section className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Golden Ratio Grid: 1fr to 1.618fr */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-[1fr_1.618fr] gap-[4.236rem]">
         <motion.div 
           initial={{opacity:0, x:-50}} 
           whileInView={{opacity:1, x:0}} 
           transition={{duration:0.8}}
+          style={{ y: yLeft }}
           className="flex flex-col justify-center"
         >
           <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
@@ -195,18 +338,18 @@ function Contrast() {
             <span className="text-transparent [-webkit-text-stroke:1px_#FFFFFF]">is broken.</span>
           </h2>
           <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#2563EB]">
-            <li className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30">
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
               Paying monthly for features you never use
-            </li>
-            <li className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30">
+            </motion.li>
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
               Changing your business to fit the software
-            </li>
-            <li className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30">
+            </motion.li>
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
               Scattered data across 5 different apps
-            </li>
+            </motion.li>
           </ul>
         </motion.div>
 
@@ -214,6 +357,7 @@ function Contrast() {
           initial={{opacity:0, x:50}} 
           whileInView={{opacity:1, x:0}} 
           transition={{duration:0.8, delay: 0.2}}
+          style={{ y: yRight }}
           className="bg-[#F8FAFC] text-[#0F172A] p-[4.236rem] flex flex-col justify-center rounded-sm"
         >
           <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
@@ -221,18 +365,18 @@ function Contrast() {
             perfectly.
           </h2>
           <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#64748B]">
-            <li className="flex items-center gap-[1rem]">
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
               <span className="text-[#0F172A]">Built exactly for your unique workflows</span>
-            </li>
-            <li className="flex items-center gap-[1rem]">
+            </motion.li>
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
               <span className="text-[#0F172A]">Own your data, no monthly per-user fees</span>
-            </li>
-            <li className="flex items-center gap-[1rem]">
+            </motion.li>
+            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
               <span className="text-[#0F172A]">One unified dashboard for everything</span>
-            </li>
+            </motion.li>
           </ul>
         </motion.div>
       </div>
@@ -268,12 +412,26 @@ const services = [
 ];
 
 function Services() {
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yMarquee = useTransform(scrollYProgress, [0, 1], ["-50px", "150px"]);
+
   return (
-    <section className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col relative overflow-hidden">
+    <section id="services" ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col relative overflow-hidden">
       {/* Dark filler to extend the Contrast section's background down to the slant */}
       <div className="absolute top-[-10rem] left-0 w-[110%] -translate-x-[5%] h-[15rem] bg-[#020617] -rotate-2 z-10" />
 
-      <div className="absolute top-8 md:top-12 left-0 w-[110%] -translate-x-[5%] -rotate-2 bg-[#020617] py-[1.618rem] z-20 border-y border-[#2563EB] shadow-xl">
+      <motion.div 
+        style={{ y: yMarquee }}
+        className="absolute top-8 md:top-12 left-0 w-[110%] -translate-x-[5%] -rotate-2 bg-[#020617] py-[1.618rem] z-20 border-y border-[#2563EB] shadow-xl"
+      >
         <div className="flex whitespace-nowrap animate-marquee items-center">
           {[...Array(4)].map((_, i) => (
             <span key={i} className="text-[2.618rem] md:text-[4.236rem] leading-[1.05] py-2 md:py-4 font-display uppercase text-transparent [-webkit-text-stroke:1px_#FFFFFF] mx-[1.618rem] tracking-wide">
@@ -281,7 +439,7 @@ function Services() {
             </span>
           ))}
         </div>
-      </div>
+      </motion.div>
 
       <div className="flex-1 flex items-center px-6 md:px-[5%] pt-[14rem] md:pt-[16rem] lg:pt-[18rem] pb-[4.236rem]">
         <div className="w-full grid grid-cols-1 md:grid-cols-3 h-full">
@@ -300,12 +458,17 @@ function Services() {
               </div>
               
               <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, scale: 0.5, y: 20 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{ duration: 0.5, delay: index * 0.2 + 0.3 }}
+                transition={{ 
+                  type: "spring",
+                  bounce: 0.6,
+                  duration: 0.8,
+                  delay: index * 0.2 + 0.3 
+                }}
               >
-                <service.icon className="w-[2.618rem] h-[2.618rem] mb-[1.618rem] text-[#64748B] group-hover:text-[#0F172A] transition-colors duration-300" strokeWidth={1.5} />
+                <service.icon className="w-[2.618rem] h-[2.618rem] mb-[1.618rem] text-[#64748B] group-hover:text-[#2563EB] transition-colors duration-300" strokeWidth={1.5} />
               </motion.div>
               
               <h3 className="text-[2.618rem] font-display uppercase tracking-wide mb-[1.618rem] text-[#0F172A] leading-[1.05] pt-2 pb-2">
@@ -318,13 +481,18 @@ function Services() {
               
               <div className="flex flex-wrap gap-[0.618rem] my-[2.618rem]">
                 {service.tags.map(tag => (
-                  <span key={tag} className="px-[0.618rem] py-[0.382rem] border border-[#2563EB]/50 text-[#64748B] font-mono text-[0.65rem] tracking-widest uppercase group-hover:border-[#0F172A] group-hover:text-[#0F172A] transition-colors duration-300">
+                  <motion.span 
+                    key={tag} 
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="px-[0.618rem] py-[0.382rem] border border-[#2563EB]/50 text-[#64748B] font-mono text-[0.65rem] tracking-widest uppercase group-hover:border-[#0F172A] group-hover:text-[#0F172A] transition-colors duration-300 cursor-default"
+                  >
                     {tag}
-                  </span>
+                  </motion.span>
                 ))}
               </div>
               
-              <div className="flex items-center gap-[1rem] font-mono text-[0.75rem] tracking-widest uppercase text-[#0F172A] group-hover:text-[#2563EB] transition-colors duration-300">
+              <div className="inline-flex items-center gap-[1rem] font-mono text-[0.75rem] tracking-widest uppercase text-[#0F172A] group-hover:text-[#2563EB] transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 group-hover:after:origin-bottom-left group-hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[#2563EB]">
                 EXPLORE <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
               </div>
             </motion.div>
@@ -336,16 +504,28 @@ function Services() {
 }
 
 function Work() {
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yLeft = useTransform(scrollYProgress, [0, 1], ["0%", "-15%"]);
+  const yRight = useTransform(scrollYProgress, [0, 1], ["15%", "0%"]);
+
   return (
-    <section className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section id="work" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         <div className="flex justify-between items-end mb-[4.236rem]">
           <h2 className="text-[4.236rem] md:text-[6.854rem] font-display uppercase leading-[1.05]">
             <span className="block pt-2 pb-2">RECENT</span>
             <span className="block pt-2 pb-2">WORK</span>
           </h2>
-          <a href="#" className="hidden md:flex items-center gap-[1rem] font-mono text-[0.85rem] hover-target group tracking-widest uppercase">
-            VIEW ALL <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform"/>
+          <a href="#" className="hidden md:flex items-center gap-[1rem] font-mono text-[0.85rem] hover-target group tracking-widest uppercase relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">
+            VIEW ALL <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"/>
           </a>
         </div>
         
@@ -355,6 +535,7 @@ function Work() {
             initial={{opacity:0, scale:0.95}} 
             whileInView={{opacity:1, scale:1}} 
             transition={{duration:0.8}} 
+            style={{ y: yLeft }}
             className="group hover-target cursor-pointer flex flex-col justify-end"
           >
             {/* Golden Rectangle Aspect Ratio */}
@@ -477,6 +658,7 @@ function Work() {
             initial={{opacity:0, scale:0.95}} 
             whileInView={{opacity:1, scale:1}} 
             transition={{duration:0.8, delay:0.2}} 
+            style={{ y: yRight }}
             className="group hover-target cursor-pointer flex flex-col justify-end"
           >
             {/* Golden Rectangle Aspect Ratio */}
@@ -623,14 +805,26 @@ const steps = [
 ];
 
 function Process() {
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yTitle = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+
   return (
-    <section className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section id="process" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         {/* 61.8% Width for Title */}
         <motion.h2 
           initial={{opacity:0, y:20}} 
           whileInView={{opacity:1, y:0}} 
           transition={{duration:0.8}}
+          style={{ y: yTitle }}
           className="text-[4.236rem] md:text-[6.854rem] font-display uppercase mb-[4.236rem] text-transparent [-webkit-text-stroke:1px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A] md:w-[61.8%] leading-[1.05] pb-2"
         >
           HOW WE WORK
@@ -643,11 +837,11 @@ function Process() {
               initial={{opacity:0, y:30}} 
               whileInView={{opacity:1, y:0}} 
               transition={{duration:0.6, delay: i*0.1}}
-              className="border-t border-[#2563EB] pt-[1.618rem] hover-target group"
+              className="border-t border-[#2563EB] pt-[1.618rem] hover-target group cursor-pointer"
             >
-              <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] mb-[1.618rem]">{step.num}</div>
-              <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] transition-colors duration-300">{step.title}</h3>
-              <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618]">{step.desc}</p>
+              <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] mb-[1.618rem] group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-300">{step.num}</div>
+              <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] group-hover:translate-x-2 transition-all duration-300">{step.title}</h3>
+              <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618] group-hover:text-[#0F172A] transition-colors duration-300">{step.desc}</p>
             </motion.div>
           ))}
         </div>
@@ -658,12 +852,25 @@ function Process() {
 
 function CTA() {
   const [isHovered, setIsHovered] = useState(false);
+  const containerRef = useContext(ScrollContext);
+  const sectionRef = useRef<HTMLElement>(null);
+  
+  const { scrollYProgress } = useScroll({
+    container: containerRef || undefined,
+    target: sectionRef,
+    offset: ["start end", "end start"]
+  });
+
+  const yBg = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section id="cta" className="h-screen w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col items-center justify-center relative overflow-hidden">
+    <section id="cta" ref={sectionRef} className="h-screen w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col items-center justify-center relative overflow-hidden">
       
       {/* Background Marquee */}
-      <div className="absolute inset-0 flex flex-col justify-center gap-4 md:gap-8 opacity-90">
+      <motion.div 
+        style={{ y: yBg }}
+        className="absolute inset-0 flex flex-col justify-center gap-4 md:gap-8 opacity-90"
+      >
         <div className="animate-marquee flex whitespace-nowrap">
           <h2 className="text-[25vw] md:text-[20vw] leading-[1.05] py-2 md:py-4 font-display uppercase tracking-normal text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.4)] md:[-webkit-text-stroke:4px_rgba(255,255,255,0.4)] pr-8">
             LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — 
@@ -679,7 +886,7 @@ function CTA() {
             LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — 
           </h2>
         </div>
-      </div>
+      </motion.div>
 
       {/* Floating Center Button */}
       <div className="z-10 absolute inset-0 flex items-center justify-center pointer-events-none">
@@ -695,20 +902,20 @@ function CTA() {
           <motion.div 
             className="absolute inset-0 bg-[linear-gradient(45deg,#020617,#0F172A,#1E293B,#020617)] bg-[length:300%_300%]"
             animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 8, repeat: Infinity, ease: "linear" }}
+            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
           />
           
-          {/* Hover Light Gradient */}
+          {/* Hover Colorful Gradient */}
           <motion.div 
-            className="absolute inset-0 bg-[linear-gradient(45deg,#F8FAFC,#E2E8F0,#CBD5E1,#F8FAFC)] bg-[length:300%_300%]"
+            className="absolute inset-0 bg-[linear-gradient(120deg,#2563EB,#4F46E5,#7C3AED,#2563EB)] bg-[length:300%_300%]"
             initial={{ opacity: 0 }}
             animate={{ 
               backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
               opacity: isHovered ? 1 : 0
             }}
             transition={{ 
-              backgroundPosition: { duration: 8, repeat: Infinity, ease: "linear" },
-              opacity: { duration: 0.4 }
+              backgroundPosition: { duration: 12, repeat: Infinity, ease: "linear" },
+              opacity: { duration: 0.4, ease: "easeInOut" }
             }}
           />
 
@@ -717,19 +924,17 @@ function CTA() {
             {/* Text Micro-interaction */}
             <div className="h-6 md:h-8 overflow-hidden relative w-24 flex justify-center mb-2">
               <motion.span 
-                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute"
+                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
                 animate={{ y: isHovered ? -30 : 0, opacity: isHovered ? 0 : 1 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                style={{ color: isHovered ? '#0F172A' : '#F8FAFC' }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 START
               </motion.span>
               <motion.span 
-                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute"
+                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
                 initial={{ y: 30, opacity: 0 }}
                 animate={{ y: isHovered ? 0 : 30, opacity: isHovered ? 1 : 0 }}
-                transition={{ duration: 0.3, ease: "easeInOut" }}
-                style={{ color: isHovered ? '#0F172A' : '#F8FAFC' }}
+                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
               >
                 BUILD
               </motion.span>
@@ -737,7 +942,7 @@ function CTA() {
             
             {/* Arrow */}
             <motion.div
-              animate={{ color: isHovered ? '#0F172A' : '#F8FAFC' }}
+              className="text-[#F8FAFC]"
               transition={{ duration: 0.3 }}
             >
               <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:translate-x-2 transition-transform duration-300" />
@@ -747,26 +952,53 @@ function CTA() {
       </div>
 
       <div className="absolute bottom-[1.618rem] left-0 w-full px-[2.618rem] flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase text-[#F8FAFC]/80 z-20">
-        <span>© {new Date().getFullYear()} BEFORTH</span>
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          © {new Date().getFullYear()} BEFORTH
+        </motion.span>
         <div className="flex items-center gap-6">
-          <a href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2">
+          <motion.a 
+            href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
+            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+          >
             <Linkedin className="w-4 h-4" />
             <span className="hidden md:inline">LinkedIn</span>
-          </a>
-          <a href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2">
+          </motion.a>
+          <motion.a 
+            href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
+            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+          >
             <Twitter className="w-4 h-4" />
             <span className="hidden md:inline">Twitter</span>
-          </a>
+          </motion.a>
         </div>
-        <span className="hidden md:block">CUSTOM SOFTWARE</span>
+        <motion.span 
+          className="hidden md:block"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          BESPOKE SYSTEMS
+        </motion.span>
       </div>
     </section>
   );
 }
 
 export default function App() {
+  const scrollRef = useRef<HTMLDivElement>(null);
+
   return (
-    <>
+    <ScrollContext.Provider value={scrollRef}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap');
         
@@ -805,8 +1037,9 @@ export default function App() {
         }
       `}</style>
       
-      <div className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A]">
+      <div ref={scrollRef} className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A]">
         <CustomCursor cursorType="arrow-pointer" color="#0F172A" size={24} />
+        <Navbar />
         <Hero />
         <Contrast />
         <Services />
@@ -814,6 +1047,6 @@ export default function App() {
         <Process />
         <CTA />
       </div>
-    </>
+    </ScrollContext.Provider>
   );
 }
