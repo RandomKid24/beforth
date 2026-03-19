@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
+import { Routes, Route, Link } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 
@@ -11,9 +12,13 @@ export const ScrollContext = React.createContext<React.RefObject<HTMLDivElement 
 // 4. Pale (Subtle borders/text): #64748B
 
 import { CustomCursor } from "./components/ui/custom-cursor";
+import ServicesPage from './pages/Services';
+import AboutPage from './pages/About';
+import TeamPage from './pages/Team';
+import ContactPage from './pages/Contact';
 
 function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   return (
     <>
@@ -23,97 +28,64 @@ function Navbar() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 w-full z-50 px-6 md:px-[5%] py-6 flex justify-between items-center mix-blend-difference text-white pointer-events-none"
       >
-        <motion.div 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer"
-        >
+        <Link to="/" className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer hover:scale-105 transition-transform">
           BEFORTH
-        </motion.div>
+        </Link>
+        
         <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest uppercase pointer-events-auto">
-          <a href="#work" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Work</a>
-          <a href="#services" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Services</a>
-          <a href="#process" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Process</a>
-          <a href="#cta" className="relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">Contact</a>
+          <Link to="/" className="hover:text-white/70 transition-colors relative group">
+            Home
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+          </Link>
+          <Link to="/services" className="hover:text-white/70 transition-colors relative group">
+            Services
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+          </Link>
+          <Link to="/about" className="hover:text-white/70 transition-colors relative group">
+            About
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+          </Link>
+          <Link to="/team" className="hover:text-white/70 transition-colors relative group">
+            Team
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+          </Link>
+          <Link to="/contact" className="hover:text-white/70 transition-colors relative group">
+            Contact
+            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+          </Link>
         </div>
-        <motion.button 
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-          onClick={() => setIsOpen(true)}
-          className="md:hidden font-mono text-xs tracking-widest uppercase hover:opacity-70 transition-opacity pointer-events-auto"
+
+        <div className="pointer-events-auto hidden md:block">
+          <Link to="/contact" className="px-6 py-3 border border-white rounded-full font-mono text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
+            Let's Talk
+          </Link>
+        </div>
+
+        <button 
+          className="md:hidden pointer-events-auto z-50 w-10 h-10 flex flex-col justify-center items-center gap-1.5"
+          onClick={() => setIsOpen(!isOpen)}
         >
-          MENU
-        </motion.button>
+          <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
+          <span className={`w-6 h-[2px] bg-white transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+          <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
+        </button>
       </motion.nav>
 
+      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ y: "-100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "-100%" }}
-            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-[60] bg-[#020617] text-[#F8FAFC] flex flex-col items-center justify-center"
+            initial={{ opacity: 0, y: "-100%" }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: "-100%" }}
+            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-8"
           >
-            <div className="absolute top-0 left-0 w-full px-6 py-6 flex justify-between items-center">
-              <motion.div 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="font-display text-2xl tracking-widest uppercase cursor-pointer"
-              >
-                BEFORTH
-              </motion.div>
-              <motion.button 
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setIsOpen(false)} 
-                className="font-mono text-xs tracking-widest uppercase hover:opacity-70 transition-opacity p-2 -mr-2"
-              >
-                CLOSE
-              </motion.button>
-            </div>
-            <div className="flex flex-col items-center gap-8 font-display text-4xl tracking-widest uppercase">
-              <motion.a 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
-                whileHover={{ scale: 1.05, color: '#2563EB' }}
-                whileTap={{ scale: 0.95 }}
-                href="#work" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
-              >
-                Work
-              </motion.a>
-              <motion.a 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                whileHover={{ scale: 1.05, color: '#2563EB' }}
-                whileTap={{ scale: 0.95 }}
-                href="#services" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
-              >
-                Services
-              </motion.a>
-              <motion.a 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4 }}
-                whileHover={{ scale: 1.05, color: '#2563EB' }}
-                whileTap={{ scale: 0.95 }}
-                href="#process" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
-              >
-                Process
-              </motion.a>
-              <motion.a 
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5 }}
-                whileHover={{ scale: 1.05, color: '#2563EB' }}
-                whileTap={{ scale: 0.95 }}
-                href="#cta" onClick={() => setIsOpen(false)} className="hover:opacity-70 transition-colors"
-              >
-                Contact
-              </motion.a>
-            </div>
+            <Link to="/" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Home</Link>
+            <Link to="/services" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Services</Link>
+            <Link to="/about" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">About</Link>
+            <Link to="/team" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Team</Link>
+            <Link to="/contact" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Contact</Link>
           </motion.div>
         )}
       </AnimatePresence>
@@ -137,34 +109,83 @@ function Hero() {
 
   return (
     <section ref={sectionRef} className="h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 50, 0],
+            y: [0, 30, 0],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#2563EB]/5 blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.5, 1],
+            x: [0, -40, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#2563EB]/5 blur-[100px]"
+        />
+      </div>
+
       <div className="z-10 w-full max-w-7xl mx-auto mt-12 md:mt-0 flex flex-col md:flex-row items-center justify-between h-full py-[10vh]">
         
         {/* 61.8% Width for Main Content */}
         <div className="w-full md:w-[61.8%] flex flex-col justify-center h-full">
           <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
             style={{ y: yText, opacity: opacityText }}
             className="mb-[3.82rem]"
           >
-            <div className="flex items-center gap-3 mb-[1.618rem]">
-              <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-              <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Digital Product Agency</span>
-            </div>
-            
-            <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] font-display uppercase tracking-normal">
-              <span className="block py-2 md:py-4">WE CRAFT</span>
-              <span className="block py-2 md:py-4 text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">
-                DIGITAL
-              </span>
-              <span className="block py-2 md:py-4">PRODUCTS.</span>
-            </h1>
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+            >
+              <div className="flex items-center gap-3 mb-[1.618rem]">
+                <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
+                <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Digital Studio</span>
+              </div>
+              
+              <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[0.95] font-display uppercase tracking-normal flex flex-col">
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="block"
+                >
+                  WE SHIP
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
+                  className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
+                >
+                  BANGER
+                </motion.span>
+                <motion.span 
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+                  className="block"
+                >
+                  APPS.
+                </motion.span>
+              </h1>
+            </motion.div>
           </motion.div>
 
           <motion.div 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.4 }}
             className="max-w-[42.36rem]"
           >
@@ -182,16 +203,17 @@ function Hero() {
             </div>
 
             <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] mb-[1.618rem]">
-              We replace messy spreadsheets and off-the-shelf compromises with <strong className="text-[#0F172A] font-medium">tailor-made systems that actually fit your business.</strong>
+              We replace boring spreadsheets with custom software that actually slaps. <strong className="text-[#0F172A] font-medium">No cap, just clean code and good vibes.</strong>
             </p>
             <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#0F172A] font-medium">
-              We go to work. You go ahead.
+              You focus on the bag. We'll handle the tech.
             </p>
           </motion.div>
 
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.8 }}
             className="mt-[4.236rem]"
           >
@@ -337,18 +359,45 @@ function Contrast() {
             Off-the-shelf<br/>
             <span className="text-transparent [-webkit-text-stroke:1px_#FFFFFF]">is broken.</span>
           </h2>
-          <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#2563EB]">
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
-              Paying monthly for features you never use
+          <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#94A3B8]">
+            <motion.li 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              whileHover={{ x: 10 }} 
+              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+            >
+              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+              <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                Paying monthly for features you never use
+              </div>
             </motion.li>
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
-              Changing your business to fit the software
+            <motion.li 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.4 }}
+              whileHover={{ x: 10 }} 
+              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+            >
+              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+              <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                Changing your business to fit the software
+              </div>
             </motion.li>
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] line-through decoration-[#FFFFFF]/30 transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0"/> 
-              Scattered data across 5 different apps
+            <motion.li 
+              initial={{ opacity: 0, x: -20 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.6 }}
+              whileHover={{ x: 10 }} 
+              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+            >
+              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+              <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                Scattered data across 5 different apps
+              </div>
             </motion.li>
           </ul>
         </motion.div>
@@ -358,24 +407,38 @@ function Contrast() {
           whileInView={{opacity:1, x:0}} 
           transition={{duration:0.8, delay: 0.2}}
           style={{ y: yRight }}
-          className="bg-[#F8FAFC] text-[#0F172A] p-[4.236rem] flex flex-col justify-center rounded-sm"
+          className="bg-[#F8FAFC] text-[#0F172A] p-[4.236rem] flex flex-col justify-center rounded-sm shadow-2xl"
         >
           <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
-            Custom fits<br/>
-            perfectly.
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.3 }}
+              className="block bg-clip-text text-transparent bg-gradient-to-r from-[#0F172A] to-[#2563EB]"
+            >
+              Custom fits
+            </motion.span>
+            <motion.span 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+              className="block bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] to-[#0F172A]"
+            >
+              perfectly.
+            </motion.span>
           </h2>
           <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#64748B]">
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
-              <span className="text-[#0F172A]">Built exactly for your unique workflows</span>
+            <motion.li whileHover={{ x: 10 }} className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default">
+              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0 mt-2"/> 
+              <span className="text-[#0F172A] flex-1">Built exactly for your unique workflows</span>
             </motion.li>
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
-              <span className="text-[#0F172A]">Own your data, no monthly per-user fees</span>
+            <motion.li whileHover={{ x: 10 }} className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default">
+              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0 mt-2"/> 
+              <span className="text-[#0F172A] flex-1">Own your data, no monthly per-user fees</span>
             </motion.li>
-            <motion.li whileHover={{ x: 10 }} className="flex items-center gap-[1rem] transition-transform duration-300 cursor-default">
-              <div className="w-2 h-2 bg-[#020617] rounded-full shrink-0"/> 
-              <span className="text-[#0F172A]">One unified dashboard for everything</span>
+            <motion.li whileHover={{ x: 10 }} className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default">
+              <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0 mt-2"/> 
+              <span className="text-[#0F172A] flex-1">One unified dashboard for everything</span>
             </motion.li>
           </ul>
         </motion.div>
@@ -411,7 +474,7 @@ const services = [
   }
 ];
 
-function Services() {
+function ServicesSection() {
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
   
@@ -425,6 +488,28 @@ function Services() {
 
   return (
     <section id="services" ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col relative overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            scale: [1, 1.1, 1],
+            x: [0, -30, 0],
+            y: [0, 40, 0],
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-0 right-0 w-1/3 h-1/2 bg-[#2563EB]/5 rounded-full blur-[100px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            x: [0, 30, 0],
+            y: [0, -40, 0],
+          }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[30%] left-0 w-1/4 h-1/3 bg-[#2563EB]/5 rounded-full blur-[120px]"
+        />
+      </div>
+
       {/* Dark filler to extend the Contrast section's background down to the slant */}
       <div className="absolute top-[-10rem] left-0 w-[110%] -translate-x-[5%] h-[15rem] bg-[#020617] -rotate-2 z-10" />
 
@@ -518,7 +603,31 @@ function Work() {
 
   return (
     <section id="work" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
-      <div className="max-w-7xl mx-auto w-full">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.1, 0.2, 0.1],
+            x: [0, 40, 0],
+            y: [0, -30, 0],
+          }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-[20%] left-[10%] w-[40%] h-[40%] bg-[#2563EB]/20 rounded-full blur-[150px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.1, 0.15, 0.1],
+            x: [0, -40, 0],
+            y: [0, 50, 0],
+          }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-[10%] right-[10%] w-[50%] h-[50%] bg-[#2563EB]/10 rounded-full blur-[150px]"
+        />
+      </div>
+
+      <div className="max-w-7xl mx-auto w-full relative z-10">
         <div className="flex justify-between items-end mb-[4.236rem]">
           <h2 className="text-[4.236rem] md:text-[6.854rem] font-display uppercase leading-[1.05]">
             <span className="block pt-2 pb-2">RECENT</span>
@@ -798,15 +907,16 @@ function Work() {
 }
 
 const steps = [
-  { num: "01", title: "DISCOVERY", desc: "We map your exact business workflows and identify bottlenecks before writing code." },
-  { num: "02", title: "ARCHITECTURE", desc: "We design the database, system architecture, and user flows for maximum scalability." },
-  { num: "03", title: "DEVELOPMENT", desc: "We build your system in agile sprints, showing you tangible progress every week." },
-  { num: "04", title: "DEPLOYMENT", desc: "We launch the software, train your team, and provide ongoing maintenance and support." }
+  { num: "01", title: "DISCOVERY", desc: "We map your exact business workflows and identify bottlenecks before writing code.", details: ["Stakeholder Interviews", "Process Mapping", "Technical Feasibility", "Project Roadmap"] },
+  { num: "02", title: "ARCHITECTURE", desc: "We design the database, system architecture, and user flows for maximum scalability.", details: ["Database Schema Design", "API Contract Definition", "UI/UX Wireframing", "Security Planning"] },
+  { num: "03", title: "DEVELOPMENT", desc: "We build your system in agile sprints, showing you tangible progress every week.", details: ["Agile Sprints", "Continuous Integration", "Automated Testing", "Weekly Demos"] },
+  { num: "04", title: "DEPLOYMENT", desc: "We launch the software, train your team, and provide ongoing maintenance and support.", details: ["Cloud Infrastructure Setup", "Data Migration", "User Training", "24/7 Monitoring"] }
 ];
 
 function Process() {
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
+  const [activeStep, setActiveStep] = useState<number | null>(null);
   
   const { scrollYProgress } = useScroll({
     container: containerRef || undefined,
@@ -815,35 +925,94 @@ function Process() {
   });
 
   const yTitle = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  
+  const yStep0 = useTransform(scrollYProgress, [0, 1], ["0px", "40px"]);
+  const yStep1 = useTransform(scrollYProgress, [0, 1], ["0px", "80px"]);
+  const yStep2 = useTransform(scrollYProgress, [0, 1], ["0px", "120px"]);
+  const yStep3 = useTransform(scrollYProgress, [0, 1], ["0px", "160px"]);
+  const stepTransforms = [yStep0, yStep1, yStep2, yStep3];
 
   return (
     <section id="process" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         {/* 61.8% Width for Title */}
-        <motion.h2 
-          initial={{opacity:0, y:20}} 
-          whileInView={{opacity:1, y:0}} 
-          transition={{duration:0.8}}
-          style={{ y: yTitle }}
-          className="text-[4.236rem] md:text-[6.854rem] font-display uppercase mb-[4.236rem] text-transparent [-webkit-text-stroke:1px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A] md:w-[61.8%] leading-[1.05] pb-2"
-        >
-          HOW WE WORK
-        </motion.h2>
+        <motion.div style={{ y: yTitle }} className="mb-[4.236rem] md:w-[61.8%]">
+          <motion.h2 
+            initial={{opacity:0, y:20}} 
+            whileInView={{opacity:1, y:0}} 
+            viewport={{ once: true }}
+            transition={{duration:0.8}}
+            className="text-[4.236rem] md:text-[6.854rem] font-display uppercase text-transparent [-webkit-text-stroke:1px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A] leading-[1.05] pb-2"
+          >
+            HOW WE WORK
+          </motion.h2>
+        </motion.div>
         
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-[2.618rem]">
-          {steps.map((step, i) => (
-            <motion.div 
-              key={i}
-              initial={{opacity:0, y:30}} 
-              whileInView={{opacity:1, y:0}} 
-              transition={{duration:0.6, delay: i*0.1}}
-              className="border-t border-[#2563EB] pt-[1.618rem] hover-target group cursor-pointer"
-            >
-              <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] mb-[1.618rem] group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-300">{step.num}</div>
-              <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] group-hover:translate-x-2 transition-all duration-300">{step.title}</h3>
-              <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618] group-hover:text-[#0F172A] transition-colors duration-300">{step.desc}</p>
+        <div className="relative">
+          {/* Interactive Timeline Line */}
+          <div className="hidden md:block absolute top-[1.618rem] left-0 w-full h-[1px] bg-[#2563EB]/20 z-0" />
+          
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-[2.618rem] relative z-10">
+            {steps.map((step, i) => (
+              <motion.div 
+                key={i}
+                style={{ y: stepTransforms[i] }}
+                className="h-full"
+              >
+                <motion.div
+                  initial={{opacity:0, y:30}} 
+                  whileInView={{opacity:1, y:0}} 
+                  viewport={{ once: true }}
+                  transition={{duration:0.6, delay: i*0.1}}
+                  onClick={() => setActiveStep(activeStep === i ? null : i)}
+                  className={`border-t pt-[1.618rem] hover-target group cursor-pointer h-full flex flex-col transition-colors duration-300 ${activeStep === i ? 'border-[#2563EB]' : 'border-[#2563EB]/40 hover:border-[#2563EB]'}`}
+                >
+                  <div className="flex justify-between items-center mb-[1.618rem] relative">
+                    {/* Timeline Node */}
+                    <motion.div 
+                      className={`absolute -top-[1.618rem] left-0 w-2 h-2 -mt-[5px] rounded-full transition-colors duration-300 ${activeStep === i ? 'bg-[#2563EB] scale-150' : 'bg-[#2563EB]/40 group-hover:bg-[#2563EB]'}`}
+                    />
+                    <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-300">{step.num}</div>
+                  <motion.div 
+                    animate={{ rotate: activeStep === i ? 45 : 0 }}
+                    className="w-6 h-6 rounded-full border border-[#2563EB]/30 flex items-center justify-center text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300"
+                  >
+                    <span className="text-lg leading-none mb-[2px]">+</span>
+                  </motion.div>
+                </div>
+                <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] group-hover:translate-x-2 transition-all duration-300">{step.title}</h3>
+                <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618] group-hover:text-[#0F172A] transition-colors duration-300">{step.desc}</p>
+                
+                <AnimatePresence>
+                  {activeStep === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      className="overflow-hidden"
+                    >
+                      <ul className="mt-6 space-y-3 border-t border-[#2563EB]/20 pt-6">
+                        {step.details.map((detail, idx) => (
+                          <motion.li 
+                            key={idx}
+                            initial={{ opacity: 0, x: -10 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: idx * 0.1 }}
+                            className="flex items-start gap-3 text-[0.85rem] text-[#0F172A]"
+                          >
+                            <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full mt-1.5 shrink-0" />
+                            <span className="leading-relaxed">{detail}</span>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
             </motion.div>
           ))}
+          </div>
         </div>
       </div>
     </section>
@@ -1040,12 +1209,22 @@ export default function App() {
       <div ref={scrollRef} className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A]">
         <CustomCursor cursorType="arrow-pointer" color="#0F172A" size={24} />
         <Navbar />
-        <Hero />
-        <Contrast />
-        <Services />
-        <Work />
-        <Process />
-        <CTA />
+        <Routes>
+          <Route path="/" element={
+            <>
+              <Hero />
+              <Contrast />
+              <ServicesSection />
+              <Work />
+              <Process />
+              <CTA />
+            </>
+          } />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/team" element={<TeamPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+        </Routes>
       </div>
     </ScrollContext.Provider>
   );
