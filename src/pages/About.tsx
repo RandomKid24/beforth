@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Users, Target, Lightbulb, Shield } from 'lucide-react';
+import { Magnetic } from '../components/Magnetic';
 
 export default function AboutPage() {
   return (
@@ -18,7 +19,7 @@ export default function AboutPage() {
             <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Who We Are</span>
           </div>
           
-          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[0.95] font-display uppercase tracking-normal flex flex-col mb-8">
+          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -119,9 +120,12 @@ export default function AboutPage() {
               <p className="font-sans font-light text-[1rem] text-slate-400 leading-[1.618] mb-8">
                 We're always looking for passionate individuals to join our team and help us build the future of digital experiences.
               </p>
-              <a href="/team" className="inline-flex items-center gap-3 px-6 py-3 bg-white text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase rounded-none hover:bg-[#2563EB] hover:text-white transition-colors duration-300">
-                Meet the Team
-              </a>
+              <Magnetic>
+                <a href="/team" className="relative overflow-hidden inline-flex items-center gap-3 px-6 py-3 bg-white border border-white text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase rounded-full group">
+                  <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">Meet the Team</span>
+                  <div className="absolute inset-0 bg-[#2563EB] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                </a>
+              </Magnetic>
             </div>
             <div className="relative h-64 md:h-full min-h-[300px] overflow-hidden border border-white/10">
               <img src="https://picsum.photos/seed/agency/800/600" alt="Office" referrerPolicy="no-referrer" className="w-full h-full object-cover opacity-50 mix-blend-luminosity group-hover:scale-105 transition-transform duration-700" />

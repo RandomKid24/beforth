@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
 import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { Magnetic } from './components/Magnetic';
 
 export const ScrollContext = React.createContext<React.RefObject<HTMLDivElement | null> | null>(null);
 
@@ -19,6 +20,8 @@ import ContactPage from './pages/Contact';
 
 function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
+  const location = useLocation();
+  const pathname = location.pathname;
 
   return (
     <>
@@ -28,47 +31,52 @@ function Navbar() {
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="fixed top-0 left-0 w-full z-50 px-6 md:px-[5%] py-6 flex justify-between items-center mix-blend-difference text-white pointer-events-none"
       >
-        <Link to="/" className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer hover:scale-105 transition-transform">
+        <Link to="/" className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer hover:scale-105 transition-transform p-2 -ml-2">
           BEFORTH
         </Link>
         
-        <div className="hidden md:flex items-center gap-8 font-mono text-xs tracking-widest uppercase pointer-events-auto">
-          <Link to="/" className="hover:text-white/70 transition-colors relative group">
+        <div className="hidden md:flex items-center gap-2 font-mono text-xs tracking-widest uppercase">
+          <Link to="/" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/' ? 'text-white/70' : ''}`}>
             Home
-            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/services" className="hover:text-white/70 transition-colors relative group">
+          <Link to="/services" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/services' ? 'text-white/70' : ''}`}>
             Services
-            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/services' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/about" className="hover:text-white/70 transition-colors relative group">
+          <Link to="/about" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/about' ? 'text-white/70' : ''}`}>
             About
-            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/about' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/team" className="hover:text-white/70 transition-colors relative group">
+          <Link to="/team" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/team' ? 'text-white/70' : ''}`}>
             Team
-            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/team' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/contact" className="hover:text-white/70 transition-colors relative group">
+          <Link to="/contact" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/contact' ? 'text-white/70' : ''}`}>
             Contact
-            <span className="absolute -bottom-2 left-0 w-0 h-[1px] bg-white group-hover:w-full transition-all duration-300" />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/contact' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
         </div>
 
-        <div className="pointer-events-auto hidden md:block">
-          <Link to="/contact" className="px-6 py-3 border border-white rounded-full font-mono text-xs uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
-            Let's Talk
-          </Link>
+        <div className="hidden md:block">
+          <Magnetic>
+            <Link to="/contact" className="pointer-events-auto relative overflow-hidden px-6 py-3 border border-white rounded-full font-mono text-xs uppercase tracking-widest group inline-block">
+              <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-black">Let's Talk</span>
+              <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+            </Link>
+          </Magnetic>
         </div>
 
-        <button 
-          className="md:hidden pointer-events-auto z-50 w-10 h-10 flex flex-col justify-center items-center gap-1.5"
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
-          <span className={`w-6 h-[2px] bg-white transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-          <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
-        </button>
+        <Magnetic>
+          <motion.button 
+            className="md:hidden pointer-events-auto z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 -mr-2"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
+            <span className={`w-6 h-[2px] bg-white transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
+            <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
+          </motion.button>
+        </Magnetic>
       </motion.nav>
 
       {/* Mobile Menu Overlay */}
@@ -79,13 +87,13 @@ function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: "-100%" }}
             transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-8"
+            className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-2"
           >
-            <Link to="/" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Home</Link>
-            <Link to="/services" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Services</Link>
-            <Link to="/about" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">About</Link>
-            <Link to="/team" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Team</Link>
-            <Link to="/contact" onClick={() => setIsOpen(false)} className="font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors">Contact</Link>
+            <Link to="/" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/' ? 'text-[#2563EB]' : ''}`}>Home</Link>
+            <Link to="/services" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/services' ? 'text-[#2563EB]' : ''}`}>Services</Link>
+            <Link to="/about" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/about' ? 'text-[#2563EB]' : ''}`}>About</Link>
+            <Link to="/team" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/team' ? 'text-[#2563EB]' : ''}`}>Team</Link>
+            <Link to="/contact" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/contact' ? 'text-[#2563EB]' : ''}`}>Contact</Link>
           </motion.div>
         )}
       </AnimatePresence>
@@ -103,12 +111,14 @@ function Hero() {
     offset: ["start start", "end start"]
   });
 
-  const yText = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const yText1 = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const yText2 = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
+  const yText3 = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
 
   return (
-    <section ref={sectionRef} className="h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -131,55 +141,46 @@ function Hero() {
         />
       </div>
 
-      <div className="z-10 w-full max-w-7xl mx-auto mt-12 md:mt-0 flex flex-col md:flex-row items-center justify-between h-full py-[10vh]">
+      <div className="z-10 w-full max-w-7xl mx-auto mt-24 md:mt-24 flex flex-col md:flex-row items-center justify-between flex-1 py-[10vh]">
         
         {/* 61.8% Width for Main Content */}
         <div className="w-full md:w-[61.8%] flex flex-col justify-center h-full">
           <motion.div 
-            style={{ y: yText, opacity: opacityText }}
+            style={{ opacity: opacityText }}
             className="mb-[3.82rem]"
           >
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="flex items-center gap-3 mb-[1.618rem]">
-                <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-                <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Digital Studio</span>
-              </div>
-              
-              <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[0.95] font-display uppercase tracking-normal flex flex-col">
+            <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col">
+              <motion.div style={{ y: yText1 }} className="overflow-hidden">
                 <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, ease: "easeOut" }}
-                  className="block"
+                  initial={{ y: "100%", rotate: 5 }}
+                  animate={{ y: 0, rotate: 0 }}
+                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                  className="block origin-top-left"
                 >
                   WE SHIP
                 </motion.span>
+              </motion.div>
+              <motion.div style={{ y: yText2 }} className="overflow-hidden">
                 <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                  className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
+                  initial={{ y: "100%", rotate: 5 }}
+                  animate={{ y: 0, rotate: 0 }}
+                  transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+                  className="block origin-top-left text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
                 >
                   BANGER
                 </motion.span>
+              </motion.div>
+              <motion.div style={{ y: yText3 }} className="overflow-hidden">
                 <motion.span 
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                  className="block"
+                  initial={{ y: "100%", rotate: 5 }}
+                  animate={{ y: 0, rotate: 0 }}
+                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+                  className="block origin-top-left"
                 >
                   APPS.
                 </motion.span>
-              </h1>
-            </motion.div>
+              </motion.div>
+            </h1>
           </motion.div>
 
           <motion.div 
@@ -217,10 +218,13 @@ function Hero() {
             transition={{ duration: 1, delay: 0.8 }}
             className="mt-[4.236rem]"
           >
-            <a href="#cta" className="hover-target inline-flex items-center gap-[1rem] font-mono text-[0.85rem] tracking-widest uppercase text-[#0F172A] group relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[#0F172A]">
-              START A PROJECT 
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-            </a>
+            <Magnetic>
+              <a href="#cta" className="pointer-events-auto relative overflow-hidden px-8 py-4 border border-[#0F172A] rounded-full font-mono text-xs uppercase tracking-widest group inline-flex items-center gap-3 bg-[#0F172A] text-white">
+                <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-[#0F172A]">START A PROJECT</span>
+                <ArrowRight className="w-4 h-4 relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-[#0F172A] group-hover:translate-x-1" />
+                <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+              </a>
+            </Magnetic>
           </motion.div>
         </div>
 
@@ -633,9 +637,11 @@ function Work() {
             <span className="block pt-2 pb-2">RECENT</span>
             <span className="block pt-2 pb-2">WORK</span>
           </h2>
-          <a href="#" className="hidden md:flex items-center gap-[1rem] font-mono text-[0.85rem] hover-target group tracking-widest uppercase relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">
-            VIEW ALL <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"/>
-          </a>
+          <Magnetic>
+            <a href="#" className="hidden md:flex items-center gap-[1rem] font-mono text-[0.85rem] hover-target group tracking-widest uppercase relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 hover:after:origin-bottom-left hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-white transition-opacity hover:opacity-100 opacity-70">
+              VIEW ALL <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300"/>
+            </a>
+          </Magnetic>
         </div>
         
         {/* Golden Ratio Grid: 1.618fr to 1fr */}
@@ -925,12 +931,6 @@ function Process() {
   });
 
   const yTitle = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
-  
-  const yStep0 = useTransform(scrollYProgress, [0, 1], ["0px", "40px"]);
-  const yStep1 = useTransform(scrollYProgress, [0, 1], ["0px", "80px"]);
-  const yStep2 = useTransform(scrollYProgress, [0, 1], ["0px", "120px"]);
-  const yStep3 = useTransform(scrollYProgress, [0, 1], ["0px", "160px"]);
-  const stepTransforms = [yStep0, yStep1, yStep2, yStep3];
 
   return (
     <section id="process" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
@@ -938,10 +938,10 @@ function Process() {
         {/* 61.8% Width for Title */}
         <motion.div style={{ y: yTitle }} className="mb-[4.236rem] md:w-[61.8%]">
           <motion.h2 
-            initial={{opacity:0, y:20}} 
-            whileInView={{opacity:1, y:0}} 
-            viewport={{ once: true }}
-            transition={{duration:0.8}}
+            initial={{opacity:0, y:40, filter: "blur(10px)"}} 
+            whileInView={{opacity:1, y:0, filter: "blur(0px)"}} 
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{duration:1, ease: [0.16, 1, 0.3, 1]}}
             className="text-[4.236rem] md:text-[6.854rem] font-display uppercase text-transparent [-webkit-text-stroke:1px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A] leading-[1.05] pb-2"
           >
             HOW WE WORK
@@ -949,56 +949,49 @@ function Process() {
         </motion.div>
         
         <div className="relative">
-          {/* Interactive Timeline Line */}
-          <div className="hidden md:block absolute top-[1.618rem] left-0 w-full h-[1px] bg-[#2563EB]/20 z-0" />
-          
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-[2.618rem] relative z-10">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-[2.618rem] relative z-10 pb-12 md:pb-24">
             {steps.map((step, i) => (
               <motion.div 
                 key={i}
-                style={{ y: stepTransforms[i] }}
                 className="h-full"
               >
                 <motion.div
-                  initial={{opacity:0, y:30}} 
-                  whileInView={{opacity:1, y:0}} 
-                  viewport={{ once: true }}
-                  transition={{duration:0.6, delay: i*0.1}}
+                  initial={{opacity:0, y:40, filter: "blur(10px)"}} 
+                  whileInView={{opacity:1, y:0, filter: "blur(0px)"}} 
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{duration: 0.8, delay: i * 0.15, ease: [0.16, 1, 0.3, 1]}}
                   onClick={() => setActiveStep(activeStep === i ? null : i)}
-                  className={`border-t pt-[1.618rem] hover-target group cursor-pointer h-full flex flex-col transition-colors duration-300 ${activeStep === i ? 'border-[#2563EB]' : 'border-[#2563EB]/40 hover:border-[#2563EB]'}`}
+                  className={`pt-[1.618rem] hover-target group cursor-pointer h-full flex flex-col transition-colors duration-500`}
                 >
                   <div className="flex justify-between items-center mb-[1.618rem] relative">
-                    {/* Timeline Node */}
-                    <motion.div 
-                      className={`absolute -top-[1.618rem] left-0 w-2 h-2 -mt-[5px] rounded-full transition-colors duration-300 ${activeStep === i ? 'bg-[#2563EB] scale-150' : 'bg-[#2563EB]/40 group-hover:bg-[#2563EB]'}`}
-                    />
-                    <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-300">{step.num}</div>
+                    <div className="font-mono text-[0.75rem] tracking-widest text-[#2563EB] group-hover:scale-110 group-hover:-translate-y-1 origin-left transition-transform duration-500">{step.num}</div>
                   <motion.div 
-                    animate={{ rotate: activeStep === i ? 45 : 0 }}
-                    className="w-6 h-6 rounded-full border border-[#2563EB]/30 flex items-center justify-center text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-300"
+                    animate={{ rotate: activeStep === i ? 45 : 0, backgroundColor: activeStep === i ? '#2563EB' : 'transparent', color: activeStep === i ? '#fff' : '#2563EB' }}
+                    transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                    className="w-6 h-6 rounded-full flex items-center justify-center text-[#2563EB] group-hover:bg-[#2563EB] group-hover:text-white transition-colors duration-500"
                   >
                     <span className="text-lg leading-none mb-[2px]">+</span>
                   </motion.div>
                 </div>
-                <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] group-hover:translate-x-2 transition-all duration-300">{step.title}</h3>
-                <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618] group-hover:text-[#0F172A] transition-colors duration-300">{step.desc}</p>
+                <h3 className="text-[1.618rem] font-display uppercase mb-[1rem] group-hover:text-[#2563EB] group-hover:translate-x-2 transition-all duration-500">{step.title}</h3>
+                <p className="font-sans font-light text-[0.85rem] text-[#64748B] leading-[1.618] group-hover:text-[#0F172A] transition-colors duration-500">{step.desc}</p>
                 
                 <AnimatePresence>
                   {activeStep === i && (
                     <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: "auto", opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3, ease: "easeInOut" }}
+                      initial={{ height: 0, opacity: 0, filter: "blur(4px)" }}
+                      animate={{ height: "auto", opacity: 1, filter: "blur(0px)" }}
+                      exit={{ height: 0, opacity: 0, filter: "blur(4px)" }}
+                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                       className="overflow-hidden"
                     >
-                      <ul className="mt-6 space-y-3 border-t border-[#2563EB]/20 pt-6">
+                      <ul className="mt-6 space-y-3 pt-2">
                         {step.details.map((detail, idx) => (
                           <motion.li 
                             key={idx}
                             initial={{ opacity: 0, x: -10 }}
                             animate={{ opacity: 1, x: 0 }}
-                            transition={{ delay: idx * 0.1 }}
+                            transition={{ delay: idx * 0.1, duration: 0.4, ease: "easeOut" }}
                             className="flex items-start gap-3 text-[0.85rem] text-[#0F172A]"
                           >
                             <div className="w-1.5 h-1.5 bg-[#2563EB] rounded-full mt-1.5 shrink-0" />
@@ -1033,7 +1026,7 @@ function CTA() {
   const yBg = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section id="cta" ref={sectionRef} className="h-screen w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col items-center justify-center relative overflow-hidden">
+    <section id="cta" ref={sectionRef} className="min-h-screen py-24 w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col items-center justify-center relative overflow-hidden">
       
       {/* Background Marquee */}
       <motion.div 
@@ -1059,65 +1052,67 @@ function CTA() {
 
       {/* Floating Center Button */}
       <div className="z-10 absolute inset-0 flex items-center justify-center pointer-events-none">
-        <motion.a
-          href="mailto:hello@beforth.in"
-          onHoverStart={() => setIsHovered(true)}
-          onHoverEnd={() => setIsHovered(false)}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.95 }}
-          className="pointer-events-auto relative w-[160px] h-[160px] md:w-[240px] md:h-[240px] rounded-full flex flex-col items-center justify-center overflow-hidden shadow-2xl group/btn"
-        >
-          {/* Default Dark Gradient */}
-          <motion.div 
-            className="absolute inset-0 bg-[linear-gradient(45deg,#020617,#0F172A,#1E293B,#020617)] bg-[length:300%_300%]"
-            animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
-            transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
-          />
-          
-          {/* Hover Colorful Gradient */}
-          <motion.div 
-            className="absolute inset-0 bg-[linear-gradient(120deg,#2563EB,#4F46E5,#7C3AED,#2563EB)] bg-[length:300%_300%]"
-            initial={{ opacity: 0 }}
-            animate={{ 
-              backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
-              opacity: isHovered ? 1 : 0
-            }}
-            transition={{ 
-              backgroundPosition: { duration: 12, repeat: Infinity, ease: "linear" },
-              opacity: { duration: 0.4, ease: "easeInOut" }
-            }}
-          />
-
-          {/* Content Container */}
-          <div className="relative z-10 flex flex-col items-center justify-center">
-            {/* Text Micro-interaction */}
-            <div className="h-6 md:h-8 overflow-hidden relative w-24 flex justify-center mb-2">
-              <motion.span 
-                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
-                animate={{ y: isHovered ? -30 : 0, opacity: isHovered ? 0 : 1 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                START
-              </motion.span>
-              <motion.span 
-                className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
-                initial={{ y: 30, opacity: 0 }}
-                animate={{ y: isHovered ? 0 : 30, opacity: isHovered ? 1 : 0 }}
-                transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-              >
-                BUILD
-              </motion.span>
-            </div>
+        <Magnetic>
+          <motion.a
+            href="mailto:hello@beforth.in"
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            whileHover={{ scale: 1.1 }}
+            whileTap={{ scale: 0.95 }}
+            className="pointer-events-auto relative w-[160px] h-[160px] md:w-[240px] md:h-[240px] rounded-full flex flex-col items-center justify-center overflow-hidden shadow-2xl group/btn"
+          >
+            {/* Default Dark Gradient */}
+            <motion.div 
+              className="absolute inset-0 bg-[linear-gradient(45deg,#020617,#0F172A,#1E293B,#020617)] bg-[length:300%_300%]"
+              animate={{ backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"] }}
+              transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+            />
             
-            {/* Arrow */}
-            <motion.div
-              className="text-[#F8FAFC]"
-              transition={{ duration: 0.3 }}
-            >
-              <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:translate-x-2 transition-transform duration-300" />
-            </motion.div>
-          </div>
-        </motion.a>
+            {/* Hover Colorful Gradient */}
+            <motion.div 
+              className="absolute inset-0 bg-[linear-gradient(120deg,#2563EB,#4F46E5,#7C3AED,#2563EB)] bg-[length:300%_300%]"
+              initial={{ opacity: 0 }}
+              animate={{ 
+                backgroundPosition: ["0% 50%", "100% 50%", "0% 50%"],
+                opacity: isHovered ? 1 : 0
+              }}
+              transition={{ 
+                backgroundPosition: { duration: 12, repeat: Infinity, ease: "linear" },
+                opacity: { duration: 0.4, ease: "easeInOut" }
+              }}
+            />
+
+            {/* Content Container */}
+            <div className="relative z-10 flex flex-col items-center justify-center">
+              {/* Text Micro-interaction */}
+              <div className="h-6 md:h-8 overflow-hidden relative w-24 flex justify-center mb-2">
+                <motion.span 
+                  className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
+                  animate={{ y: isHovered ? -30 : 0, opacity: isHovered ? 0 : 1 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  START
+                </motion.span>
+                <motion.span 
+                  className="font-mono text-[0.85rem] md:text-[1rem] tracking-widest uppercase absolute text-[#F8FAFC]"
+                  initial={{ y: 30, opacity: 0 }}
+                  animate={{ y: isHovered ? 0 : 30, opacity: isHovered ? 1 : 0 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  BUILD
+                </motion.span>
+              </div>
+              
+              {/* Arrow */}
+              <motion.div
+                className="text-[#F8FAFC]"
+                transition={{ duration: 0.3 }}
+              >
+                <ArrowRight className="w-6 h-6 md:w-8 md:h-8 group-hover/btn:translate-x-2 transition-transform duration-300" />
+              </motion.div>
+            </div>
+          </motion.a>
+        </Magnetic>
       </div>
 
       <div className="absolute bottom-[1.618rem] left-0 w-full px-[2.618rem] flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase text-[#F8FAFC]/80 z-20">
@@ -1165,6 +1160,13 @@ function CTA() {
 
 export default function App() {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const location = useLocation();
+
+  useEffect(() => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   return (
     <ScrollContext.Provider value={scrollRef}>

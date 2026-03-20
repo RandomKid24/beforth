@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Mail, MapPin, Phone } from 'lucide-react';
+import { Magnetic } from '../components/Magnetic';
 
 export default function ContactPage() {
   return (
@@ -18,7 +19,7 @@ export default function ContactPage() {
             <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Get In Touch</span>
           </div>
           
-          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[0.95] font-display uppercase tracking-normal flex flex-col mb-8">
+          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -124,12 +125,16 @@ export default function ContactPage() {
                 />
               </div>
               
-              <button 
-                type="button"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#0F172A] font-mono text-[0.85rem] tracking-widest uppercase rounded-none hover:bg-[#2563EB] hover:text-white transition-colors duration-300 w-full justify-center mt-4"
-              >
-                Send Message <ArrowRight className="w-4 h-4" />
-              </button>
+              <Magnetic>
+                <button 
+                  type="button"
+                  className="relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 bg-white border border-white text-[#0F172A] font-mono text-[0.85rem] tracking-widest uppercase rounded-full group w-full justify-center mt-4"
+                >
+                  <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">Send Message</span>
+                  <ArrowRight className="w-4 h-4 relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white group-hover:translate-x-1" />
+                  <div className="absolute inset-0 bg-[#2563EB] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                </button>
+              </Magnetic>
             </form>
           </motion.div>
         </div>

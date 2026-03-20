@@ -1,6 +1,7 @@
 import React from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight, Github, Linkedin, Twitter } from 'lucide-react';
+import { Magnetic } from '../components/Magnetic';
 
 export default function TeamPage() {
   const team = [
@@ -27,7 +28,7 @@ export default function TeamPage() {
             <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Our People</span>
           </div>
           
-          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[0.95] font-display uppercase tracking-normal flex flex-col mb-8">
+          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -122,9 +123,13 @@ export default function TeamPage() {
                 We're always looking for talented individuals who are passionate about creating exceptional digital experiences. Check out our open positions.
               </p>
             </div>
-            <a href="/contact" className="inline-flex items-center gap-3 px-8 py-4 bg-white text-[#0F172A] font-mono text-[0.85rem] tracking-widest uppercase rounded-none hover:bg-[#2563EB] hover:text-white transition-colors duration-300 shrink-0">
-              View Openings <ArrowRight className="w-4 h-4" />
-            </a>
+            <Magnetic>
+              <a href="/contact" className="relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 bg-white border border-white text-[#0F172A] font-mono text-[0.85rem] tracking-widest uppercase rounded-full group shrink-0">
+                <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">View Openings</span>
+                <ArrowRight className="w-4 h-4 relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white group-hover:translate-x-1" />
+                <div className="absolute inset-0 bg-[#2563EB] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+              </a>
+            </Magnetic>
           </div>
         </motion.div>
       </div>
