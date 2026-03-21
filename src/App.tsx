@@ -83,17 +83,58 @@ function Navbar() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, y: "-100%" }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: "-100%" }}
-            transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+            variants={{
+              closed: {
+                opacity: 0,
+                y: "-100%",
+                transition: {
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  when: "afterChildren",
+                  staggerChildren: 0.05,
+                  staggerDirection: -1
+                }
+              },
+              open: {
+                opacity: 1,
+                y: 0,
+                transition: {
+                  duration: 0.5,
+                  ease: [0.16, 1, 0.3, 1],
+                  when: "beforeChildren",
+                  staggerChildren: 0.1
+                }
+              }
+            }}
+            initial="closed"
+            animate="open"
+            exit="closed"
             className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-2"
           >
-            <Link to="/" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/' ? 'text-[#2563EB]' : ''}`}>Home</Link>
-            <Link to="/services" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/services' ? 'text-[#2563EB]' : ''}`}>Services</Link>
-            <Link to="/about" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/about' ? 'text-[#2563EB]' : ''}`}>About</Link>
-            <Link to="/team" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/team' ? 'text-[#2563EB]' : ''}`}>Team</Link>
-            <Link to="/contact" onClick={() => setIsOpen(false)} className={`font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === '/contact' ? 'text-[#2563EB]' : ''}`}>Contact</Link>
+            {[
+              { path: "/", label: "Home" },
+              { path: "/services", label: "Services" },
+              { path: "/about", label: "About" },
+              { path: "/team", label: "Team" },
+              { path: "/contact", label: "Contact" },
+            ].map((item) => (
+              <motion.div
+                key={item.path}
+                variants={{
+                  closed: { opacity: 0, y: 20 },
+                  open: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
+                }}
+                className="w-full"
+              >
+                <Link 
+                  to={item.path} 
+                  onClick={() => setIsOpen(false)} 
+                  className={`block font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === item.path ? 'text-[#2563EB]' : ''}`}
+                >
+                  {item.label}
+                </Link>
+              </motion.div>
+            ))}
           </motion.div>
         )}
       </AnimatePresence>

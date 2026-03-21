@@ -1,7 +1,57 @@
-import React from 'react';
-import { motion } from 'motion/react';
+import React, { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'motion/react';
 import { ArrowRight, Github, Linkedin, Twitter } from 'lucide-react';
 import { Magnetic } from '../components/Magnetic';
+
+function TeamMemberCard({ member, index }: { member: any, index: number }) {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: cardRef,
+    offset: ["start end", "end start"]
+  });
+  
+  const yImage = useTransform(scrollYProgress, [0, 1], ["-15%", "15%"]);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6, delay: index * 0.1 }}
+      className="bg-white p-6 rounded-none border border-[#0F172A]/10 relative group flex flex-col h-full flex-1"
+    >
+      {/* Animated Borders */}
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-[#0F172A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute top-0 right-0 w-[2px] h-full bg-[#0F172A] transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute bottom-0 right-0 w-full h-[2px] bg-[#0F172A] transform origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute bottom-0 left-0 w-[2px] h-full bg-[#0F172A] transform origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      
+      <div className="w-full aspect-[3/4] mb-6 overflow-hidden relative">
+        <div className="absolute inset-0 bg-[#2563EB]/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <motion.div style={{ y: yImage }} className="absolute inset-[-15%] w-[130%] h-[130%]">
+          <img 
+            src={member.image} 
+            alt={member.name} 
+            referrerPolicy="no-referrer"
+            className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
+          />
+        </motion.div>
+      </div>
+      
+      <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h3>
+      <p className="font-mono text-[0.75rem] text-[#2563EB] tracking-widest uppercase mb-4">
+        {member.role}
+      </p>
+      
+      <div className="flex gap-4 mt-auto pt-4 border-t border-[#0F172A]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Twitter className="w-4 h-4" /></a>
+        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Linkedin className="w-4 h-4" /></a>
+        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Github className="w-4 h-4" /></a>
+      </div>
+    </motion.div>
+  );
+}
 
 export default function TeamPage() {
   const team = [
@@ -67,40 +117,12 @@ export default function TeamPage() {
           </p>
         </motion.div>
 
-        {/* Team Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-[2.618rem] mb-[4.236rem]">
+        {/* Team Grid / Carousel */}
+        <div className="flex sm:grid overflow-x-auto sm:overflow-visible snap-x snap-mandatory sm:snap-none sm:grid-cols-2 lg:grid-cols-3 gap-[1.5rem] sm:gap-[2.618rem] mb-[4.236rem] pb-8 sm:pb-0 -mx-6 px-6 sm:mx-0 sm:px-0 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {team.map((member, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="bg-white p-6 rounded-none border border-[#0F172A]/10 relative group flex flex-col"
-            >
-              <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 z-10" />
-              
-              <div className="w-full aspect-[3/4] mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 bg-[#2563EB]/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <img 
-                  src={member.image} 
-                  alt={member.name} 
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover filter grayscale group-hover:grayscale-0 group-hover:scale-105 transition-all duration-700"
-                />
-              </div>
-              
-              <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h3>
-              <p className="font-mono text-[0.75rem] text-[#2563EB] tracking-widest uppercase mb-4">
-                {member.role}
-              </p>
-              
-              <div className="flex gap-4 mt-auto pt-4 border-t border-[#0F172A]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Twitter className="w-4 h-4" /></a>
-                <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Linkedin className="w-4 h-4" /></a>
-                <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Github className="w-4 h-4" /></a>
-              </div>
-            </motion.div>
+            <div key={i} className="min-w-[85vw] sm:min-w-0 snap-center shrink-0 flex flex-col">
+              <TeamMemberCard member={member} index={i} />
+            </div>
           ))}
         </div>
 
