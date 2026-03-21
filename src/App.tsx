@@ -116,28 +116,35 @@ function Hero() {
   const yText3 = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  
+  // Parallax background elements
+  const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const yBg2 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
+  const yBg3 = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
+  const rotateBg1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
+  const rotateBg2 = useTransform(scrollYProgress, [0, 1], [0, -45]);
 
   return (
     <section ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          animate={{
-            scale: [1, 1.2, 1],
-            x: [0, 50, 0],
-            y: [0, 30, 0],
-          }}
-          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          style={{ y: yBg1, rotate: rotateBg1 }}
           className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#2563EB]/5 blur-[120px]"
         />
         <motion.div
-          animate={{
-            scale: [1, 1.5, 1],
-            x: [0, -40, 0],
-            y: [0, 50, 0],
-          }}
-          transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+          style={{ y: yBg2, rotate: rotateBg2 }}
           className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#2563EB]/5 blur-[100px]"
+        />
+        <motion.div
+          style={{ y: yBg3 }}
+          className="absolute bottom-[-10%] right-[20%] w-[30%] h-[30%] rounded-full bg-[#0F172A]/5 blur-[80px]"
+        />
+        
+        {/* Grid Pattern with Parallax */}
+        <motion.div 
+          style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "15%"]) }}
+          className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
         />
       </div>
 
@@ -1158,15 +1165,23 @@ function CTA() {
   );
 }
 
+const PageTransition = ({ children }: { children: React.ReactNode, key?: React.Key }) => {
+  return (
+    <motion.div
+      className="w-full"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
+      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
 export default function App() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
-
-  useEffect(() => {
-    if (scrollRef.current) {
-      scrollRef.current.scrollTo(0, 0);
-    }
-  }, [location.pathname]);
 
   return (
     <ScrollContext.Provider value={scrollRef}>
@@ -1211,22 +1226,30 @@ export default function App() {
       <div ref={scrollRef} className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A]">
         <CustomCursor cursorType="arrow-pointer" color="#0F172A" size={24} />
         <Navbar />
-        <Routes>
-          <Route path="/" element={
-            <>
-              <Hero />
-              <Contrast />
-              <ServicesSection />
-              <Work />
-              <Process />
-              <CTA />
-            </>
-          } />
-          <Route path="/services" element={<ServicesPage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route path="/team" element={<TeamPage />} />
-          <Route path="/contact" element={<ContactPage />} />
-        </Routes>
+        <AnimatePresence mode="wait" onExitComplete={() => {
+          if (scrollRef.current) {
+            scrollRef.current.scrollTo(0, 0);
+          }
+        }}>
+          <PageTransition key={location.pathname}>
+            <Routes location={location}>
+              <Route path="/" element={
+                <>
+                  <Hero />
+                  <Contrast />
+                  <ServicesSection />
+                  <Work />
+                  <Process />
+                  <CTA />
+                </>
+              } />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+            </Routes>
+          </PageTransition>
+        </AnimatePresence>
       </div>
     </ScrollContext.Provider>
   );
