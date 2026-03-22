@@ -19,16 +19,16 @@ function TeamMemberCard({ member, index }: { member: any, index: number }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ duration: 0.6, delay: index * 0.1 }}
-      className="bg-white p-6 rounded-none border border-[#0F172A]/10 relative group flex flex-col h-full flex-1"
+      className="bg-white p-6 rounded-none border border-slate-900/10 relative group flex flex-col h-full flex-1"
     >
       {/* Animated Borders */}
-      <div className="absolute top-0 left-0 w-full h-[2px] bg-[#0F172A] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
-      <div className="absolute top-0 right-0 w-[2px] h-full bg-[#0F172A] transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
-      <div className="absolute bottom-0 right-0 w-full h-[2px] bg-[#0F172A] transform origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
-      <div className="absolute bottom-0 left-0 w-[2px] h-full bg-[#0F172A] transform origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute top-0 left-0 w-full h-[2px] bg-slate-900 transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute top-0 right-0 w-[2px] h-full bg-slate-900 transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute bottom-0 right-0 w-full h-[2px] bg-slate-900 transform origin-right scale-x-0 group-hover:scale-x-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
+      <div className="absolute bottom-0 left-0 w-[2px] h-full bg-slate-900 transform origin-bottom scale-y-0 group-hover:scale-y-100 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] z-20" />
       
       <div className="w-full aspect-[3/4] mb-6 overflow-hidden relative">
-        <div className="absolute inset-0 bg-[#2563EB]/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+        <div className="absolute inset-0 bg-primary/20 mix-blend-overlay z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
         <motion.div style={{ y: yImage }} className="absolute inset-[-15%] w-[130%] h-[130%]">
           <img 
             src={member.image} 
@@ -39,15 +39,15 @@ function TeamMemberCard({ member, index }: { member: any, index: number }) {
         </motion.div>
       </div>
       
-      <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h3>
-      <p className="font-mono text-[0.75rem] text-[#2563EB] tracking-widest uppercase mb-4">
+      <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h3>
+      <p className="font-mono text-sm text-primary tracking-widest uppercase mb-4">
         {member.role}
       </p>
       
-      <div className="flex gap-4 mt-auto pt-4 border-t border-[#0F172A]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Twitter className="w-4 h-4" /></a>
-        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Linkedin className="w-4 h-4" /></a>
-        <a href="#" className="text-[#64748B] hover:text-[#2563EB] transition-colors"><Github className="w-4 h-4" /></a>
+      <div className="flex gap-4 mt-auto pt-4 border-t border-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Twitter className="w-4 h-4" /></a>
+        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Linkedin className="w-4 h-4" /></a>
+        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Github className="w-4 h-4" /></a>
       </div>
     </motion.div>
   );
@@ -64,7 +64,7 @@ export default function TeamPage() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] pt-[15vh] pb-32 px-6 md:px-[10%]">
+    <div className="page-container">
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <motion.div
@@ -74,11 +74,11 @@ export default function TeamPage() {
           className="mb-[4.236rem]"
         >
           <div className="flex items-center gap-3 mb-[1.618rem]">
-            <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Our People</span>
+            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-slate-500">Our People</span>
           </div>
           
-          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
+          <h1 className="hero-heading mb-8">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -93,7 +93,7 @@ export default function TeamPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
+              className="block text-transparent [-webkit-text-stroke:1.5px_var(--color-slate-900)] md:[-webkit-text-stroke:2px_var(--color-slate-900)]"
             >
               SQUAD.
             </motion.span>
@@ -105,14 +105,14 @@ export default function TeamPage() {
                 key={i} 
                 whileHover={{ scale: 1.05, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                className="px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10 cursor-default hover:bg-[#2563EB]/20 transition-colors duration-300"
+                className="badge"
               >
                 {tag}
               </motion.span>
             ))}
           </div>
           
-          <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-2xl">
+          <p className="text-[1rem] md:text-[1.2rem] font-sans text-slate-500 font-light leading-[1.618] max-w-2xl">
             A collective of passionate makers, thinkers, and doers dedicated to building exceptional digital products.
           </p>
         </motion.div>
@@ -132,12 +132,12 @@ export default function TeamPage() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-[8.5vh] bg-[#020617] text-white p-8 md:p-16 rounded-none relative overflow-hidden group"
+          className="dark-section group"
         >
-          <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+          <div className="card-hover-border" />
           <div className="flex flex-col md:flex-row items-center justify-between gap-8">
             <div className="max-w-xl">
-              <h3 className="text-[clamp(2.5rem,4vw,3rem)] font-display uppercase leading-[1.1] mb-4">
+              <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-display uppercase leading-[1.1] mb-4">
                 Want to join <br />
                 <span className="text-transparent [-webkit-text-stroke:1px_white] md:[-webkit-text-stroke:2px_white]">the team?</span>
               </h3>
@@ -146,10 +146,10 @@ export default function TeamPage() {
               </p>
             </div>
             <Magnetic>
-              <a href="/contact" className="relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 bg-white border border-white text-[#0F172A] font-mono text-[0.85rem] tracking-widest uppercase rounded-full group shrink-0">
+              <a href="/contact" className="relative overflow-hidden inline-flex items-center gap-3 px-8 py-4 bg-white border border-white text-slate-900 font-mono text-[0.85rem] tracking-widest uppercase rounded-full group shrink-0">
                 <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">View Openings</span>
                 <ArrowRight className="w-4 h-4 relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white group-hover:translate-x-1" />
-                <div className="absolute inset-0 bg-[#2563EB] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+                <div className="absolute inset-0 bg-primary translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
               </a>
             </Magnetic>
           </div>

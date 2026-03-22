@@ -29,40 +29,40 @@ function Navbar() {
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="fixed top-0 left-0 w-full z-50 px-6 md:px-[5%] py-6 flex justify-between items-center mix-blend-difference text-white pointer-events-none"
+        className={`fixed top-0 left-0 w-full z-50 px-6 md:px-[5%] py-6 flex justify-between items-center pointer-events-none transition-colors duration-500 ${isOpen ? 'text-white' : 'bg-white/80 backdrop-blur-md text-[#0F172A] border-b border-[#0F172A]/5'}`}
       >
-        <Link to="/" className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer hover:scale-105 transition-transform p-2 -ml-2">
+        <Link to="/" onClick={() => setIsOpen(false)} className="font-display text-2xl tracking-widest uppercase pointer-events-auto cursor-pointer hover:scale-105 transition-transform p-2 -ml-2">
           BEFORTH
         </Link>
         
         <div className="hidden md:flex items-center gap-2 font-mono text-xs tracking-widest uppercase">
-          <Link to="/" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/' ? 'text-white/70' : ''}`}>
+          <Link to="/" className={`pointer-events-auto px-3 py-4 hover:text-[#2563EB] transition-colors relative group ${pathname === '/' ? 'text-[#2563EB]' : ''}`}>
             Home
-            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-[#2563EB] transition-all duration-300 ${pathname === '/' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/services" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/services' ? 'text-white/70' : ''}`}>
+          <Link to="/services" className={`pointer-events-auto px-3 py-4 hover:text-[#2563EB] transition-colors relative group ${pathname === '/services' ? 'text-[#2563EB]' : ''}`}>
             Services
-            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/services' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-[#2563EB] transition-all duration-300 ${pathname === '/services' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/about" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/about' ? 'text-white/70' : ''}`}>
+          <Link to="/about" className={`pointer-events-auto px-3 py-4 hover:text-[#2563EB] transition-colors relative group ${pathname === '/about' ? 'text-[#2563EB]' : ''}`}>
             About
-            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/about' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-[#2563EB] transition-all duration-300 ${pathname === '/about' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/team" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/team' ? 'text-white/70' : ''}`}>
+          <Link to="/team" className={`pointer-events-auto px-3 py-4 hover:text-[#2563EB] transition-colors relative group ${pathname === '/team' ? 'text-[#2563EB]' : ''}`}>
             Team
-            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/team' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-[#2563EB] transition-all duration-300 ${pathname === '/team' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
-          <Link to="/contact" className={`pointer-events-auto px-3 py-4 hover:text-white/70 transition-colors relative group ${pathname === '/contact' ? 'text-white/70' : ''}`}>
+          <Link to="/contact" className={`pointer-events-auto px-3 py-4 hover:text-[#2563EB] transition-colors relative group ${pathname === '/contact' ? 'text-[#2563EB]' : ''}`}>
             Contact
-            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-white transition-all duration-300 ${pathname === '/contact' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
+            <span className={`absolute bottom-2 left-1/2 -translate-x-1/2 h-[1px] bg-[#2563EB] transition-all duration-300 ${pathname === '/contact' ? 'w-[calc(100%-1.5rem)]' : 'w-0 group-hover:w-[calc(100%-1.5rem)]'}`} />
           </Link>
         </div>
 
         <div className="hidden md:block">
           <Magnetic>
-            <Link to="/contact" className="pointer-events-auto relative overflow-hidden px-6 py-3 border border-white rounded-full font-mono text-xs uppercase tracking-widest group inline-block">
-              <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-black">Let's Talk</span>
-              <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+            <Link to="/contact" className="pointer-events-auto relative overflow-hidden px-6 py-3 border border-[#0F172A] rounded-full font-mono text-xs uppercase tracking-widest group inline-block">
+              <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">Let's Talk</span>
+              <div className="absolute inset-0 bg-[#0F172A] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
             </Link>
           </Magnetic>
         </div>
@@ -72,9 +72,9 @@ function Navbar() {
             className="md:hidden pointer-events-auto z-50 w-12 h-12 flex flex-col justify-center items-center gap-1.5 -mr-2"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? 'rotate-45 translate-y-[8px]' : ''}`} />
-            <span className={`w-6 h-[2px] bg-white transition-opacity duration-300 ${isOpen ? 'opacity-0' : ''}`} />
-            <span className={`w-6 h-[2px] bg-white transition-transform duration-300 ${isOpen ? '-rotate-45 -translate-y-[8px]' : ''}`} />
+            <span className={`w-6 h-[2px] transition-all duration-300 ${isOpen ? 'bg-white rotate-45 translate-y-[8px]' : 'bg-[#0F172A]'}`} />
+            <span className={`w-6 h-[2px] transition-all duration-300 ${isOpen ? 'bg-white opacity-0' : 'bg-[#0F172A]'}`} />
+            <span className={`w-6 h-[2px] transition-all duration-300 ${isOpen ? 'bg-white -rotate-45 -translate-y-[8px]' : 'bg-[#0F172A]'}`} />
           </motion.button>
         </Magnetic>
       </motion.nav>
@@ -159,9 +159,9 @@ function Hero() {
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   
   // Parallax background elements
-  const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const yBg2 = useTransform(scrollYProgress, [0, 1], ["0%", "-30%"]);
-  const yBg3 = useTransform(scrollYProgress, [0, 1], ["0%", "80%"]);
+  const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
+  const yBg2 = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
+  const yBg3 = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   const rotateBg1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
   const rotateBg2 = useTransform(scrollYProgress, [0, 1], [0, -45]);
 
@@ -1206,10 +1206,26 @@ function CTA() {
   );
 }
 
-const PageTransition = ({ children }: { children: React.ReactNode, key?: React.Key }) => {
+const PageTransition = ({ children, scrollRef }: { children: React.ReactNode, key?: React.Key, scrollRef?: React.Ref<HTMLDivElement> }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const id = location.hash.replace('#', '');
+      // Use a small timeout to allow page transitions to complete and elements to render
+      setTimeout(() => {
+        const element = document.getElementById(id);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 100);
+    }
+  }, [location.hash]);
+
   return (
     <motion.div
-      className="w-full"
+      ref={scrollRef}
+      className="w-full h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -1264,7 +1280,7 @@ export default function App() {
         }
       `}</style>
       
-      <div ref={scrollRef} className="h-screen w-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A]">
+      <div className="h-screen w-full bg-[#F8FAFC] cursor-none selection:bg-[#2563EB] selection:text-[#0F172A] overflow-hidden">
         <CustomCursor cursorType="arrow-pointer" color="#0F172A" size={24} />
         <Navbar />
         <AnimatePresence mode="wait" onExitComplete={() => {
@@ -1272,7 +1288,7 @@ export default function App() {
             scrollRef.current.scrollTo(0, 0);
           }
         }}>
-          <PageTransition key={location.pathname}>
+          <PageTransition key={location.pathname} scrollRef={scrollRef}>
             <Routes location={location}>
               <Route path="/" element={
                 <>

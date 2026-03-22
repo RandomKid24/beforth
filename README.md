@@ -7,20 +7,38 @@ Welcome to the BEFORTH frontend documentation. This project is built using React
 Our design system is built around the "golden ratio" for spacing and typography, combined with a brutalist yet refined visual language.
 
 ### Color Palette
-- **Primary Accent:** Blue (`#2563EB`) - Used for active states, primary buttons, and subtle highlights.
-- **Background (Light):** Off-White (`#F8FAFC`) - The primary background color for most pages.
-- **Background (Dark):** Slate (`#0F172A`) - Used for contrast sections and the footer.
-- **Text (Dark):** Slate (`#0F172A`) - Primary text color on light backgrounds.
-- **Text (Light):** White (`#FFFFFF`) - Primary text color on dark backgrounds.
-- **Muted Text:** Slate/Gray (`#64748B` or `#0F172A`/60) - Used for secondary information and descriptions.
+Our color palette is now managed via Tailwind CSS variables in `src/index.css` for improved maintainability.
+
+- **Primary Accent:** `var(--color-primary)` (`#2563EB`) - Used for active states, primary buttons, and subtle highlights.
+- **Background (Light):** `var(--color-bg-light)` (`#F8FAFC`) - The primary background color for most pages.
+- **Background (Dark):** `var(--color-bg-dark)` (`#020617`) - Used for contrast sections and the footer.
+- **Text (Dark):** `var(--color-text-dark)` (`#0F172A`) - Primary text color on light backgrounds.
+- **Text (Light):** `var(--color-text-light)` (`#FFFFFF`) - Primary text color on dark backgrounds.
+- **Muted Text:** `var(--color-text-muted)` (`#64748B`) - Used for secondary information and descriptions.
 
 ### Typography
-- **Display Font:** `font-display` (e.g., Space Grotesk or similar) - Used for massive, uppercase headings.
-- **Sans Font:** `font-sans` (e.g., Inter) - Used for body text and general reading.
-- **Mono Font:** `font-mono` (e.g., JetBrains Mono) - Used for metadata, tags, small labels, and navigation links.
+Our typography system uses **3 font families** to maintain consistency and reduce visual clutter.
+
+**Font Families:**
+- **Display Font:** `font-display` (Space Grotesk) - Used for massive, uppercase headings.
+- **Sans Font:** `font-sans` (Inter) - Used for body text and general reading.
+- **Mono Font:** `font-mono` (JetBrains Mono) - Used for metadata, tags, small labels, and navigation links.
+
+**Font Sizes:**
+We use a fluid typographic scale, leveraging Tailwind's default sizes (`text-sm`, `text-base`, `text-2xl`, `text-6xl`, etc.) alongside arbitrary values like `text-[clamp(...)]` for perfectly responsive headings.
+
+### Reusable Components (CSS)
+We have extracted common UI patterns into `@layer components` in `src/index.css`:
+- `.badge`: A pill-shaped label for tags and metadata.
+- `.card`: A standard container with padding, background, and subtle borders.
+- `.card-hover-border`: An animated top border that expands on hover.
+- `.icon-box`: A square container for icons with a subtle background.
+- `.page-container`: The standard layout wrapper for pages.
+- `.dark-section`: A dark contrast section used at the end of pages.
+- `.hero-heading`: The massive, fluid heading used at the top of pages.
 
 ### Key Visual Effects
-- **Stroke Text:** `[-webkit-text-stroke:1.5px_#0F172A]` - Used on large display headings to create a hollow, outlined text effect.
+- **Stroke Text:** `[-webkit-text-stroke:1.5px_var(--color-slate-900)]` - Used on large display headings to create a hollow, outlined text effect.
 - **Mix-Blend-Difference:** Used on the Navbar to ensure text is visible regardless of the background color it scrolls over.
 - **Golden Ratio Spacing:** Values like `0.618rem`, `1.618rem`, `2.618rem`, and `4.236rem` are used for margins and padding to create natural rhythm.
 - **Subtle Borders:** `border-[#0F172A]/5` or `border-[#0F172A]/10` are used to define cards and sections without heavy shadows.

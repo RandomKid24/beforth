@@ -32,7 +32,7 @@ export default function DemoOne() {
               key={cursor.type}
               onClick={() => setCurrentCursor(cursor.type)}
               className="cursor-hover text-start w-full max-w-80 border p-6 rounded-xl" >
-              <h3 className="font-bold text-xl">
+              <h3 className="font-bold text-2xl">
                 {cursor.name}
               </h3>
               <p className="text-sm text-primary/60">

@@ -1,160 +1,241 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { ArrowRight, Monitor, Shield, Zap, Smartphone, Database } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { motion, AnimatePresence } from 'motion/react';
+import { ArrowRight } from 'lucide-react';
 import { Magnetic } from '../components/Magnetic';
 
+const services = [
+  {
+    id: '01',
+    slug: 'custom-systems',
+    title: 'Custom Systems',
+    description: 'We replace boring spreadsheets with custom software that actually slaps. Purpose-built web applications and internal tools that scale with your operations. No cap, just clean code.',
+    tags: ['WEB APPS', 'INTERNAL TOOLS', 'AUTOMATION'],
+  },
+  {
+    id: '02',
+    slug: 'mobile-apps',
+    title: 'Mobile Apps',
+    description: 'Native and cross-platform mobile applications with fluid UX and performance-first architecture. We build apps that people actually want to keep on their home screen.',
+    tags: ['IOS', 'ANDROID', 'REACT NATIVE'],
+  },
+  {
+    id: '03',
+    slug: 'integrations',
+    title: 'Integrations',
+    description: 'Connecting fragmented systems into a unified ecosystem. Robust middleware and API integrations to sync your tools in real-time so you can focus on the bag.',
+    tags: ['APIS', 'MIDDLEWARE', 'WEBHOOKS'],
+  }
+];
+
+const ServiceRow = ({ service, isOpen, onClick }: { service: any, isOpen: boolean, onClick: () => void }) => {
+  return (
+    <div className="border-b border-white/10 overflow-hidden">
+      <button
+        onClick={onClick}
+        className="w-full py-8 md:py-12 flex items-center justify-between text-left group"
+      >
+        <div className="flex items-center gap-6 md:gap-16">
+          <span className="font-mono text-sm md:text-base text-[#2563EB] group-hover:text-white transition-colors duration-500">{service.id}</span>
+          <h2 className="text-[2rem] sm:text-[3rem] md:text-[5rem] font-display uppercase tracking-tight text-white group-hover:text-[#2563EB] transition-colors duration-500 leading-none">
+            {service.title}
+          </h2>
+        </div>
+        <div className="relative w-6 h-6 md:w-8 md:h-8 flex items-center justify-center shrink-0 ml-4">
+           <span className={`absolute w-full h-[2px] bg-white transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180' : ''}`} />
+           <span className={`absolute w-full h-[2px] bg-white transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] ${isOpen ? 'rotate-180 opacity-0' : 'rotate-90'}`} />
+        </div>
+      </button>
+      <AnimatePresence>
+        {isOpen && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: 'auto', opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <div className="pb-12 md:pl-[6.5rem] max-w-3xl">
+              <p className="text-lg md:text-2xl font-sans font-light text-slate-400 leading-[1.618] mb-8">
+                {service.description}
+              </p>
+              <div className="flex flex-wrap gap-3">
+                {service.tags.map((tag: string) => (
+                  <span key={tag} className="px-4 py-2 rounded-full border border-white/20 text-white font-mono text-xs tracking-widest uppercase">
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
+
 export default function ServicesPage() {
-  const services = [
-    {
-      title: "Digital Transformation",
-      desc: "We help traditional businesses evolve into digital-first organizations, optimizing workflows and creating new revenue streams.",
-      icon: <Zap className="w-6 h-6" />
-    },
-    {
-      title: "Custom Software",
-      desc: "Tailored applications built from the ground up to solve your unique business challenges with scalable architecture.",
-      icon: <Monitor className="w-6 h-6" />
-    },
-    {
-      title: "Cloud Infrastructure",
-      desc: "Secure, highly available, and cost-effective cloud solutions designed for modern enterprise needs.",
-      icon: <Database className="w-6 h-6" />
-    },
-    {
-      title: "UI/UX Design",
-      desc: "Award-winning interfaces that captivate users and drive conversions through intuitive, accessible design.",
-      icon: <Smartphone className="w-6 h-6" />
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [openIndex, setOpenIndex] = useState<number>(0);
+
+  useEffect(() => {
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+      const index = services.findIndex(s => s.slug === hash);
+      if (index !== -1) {
+        setOpenIndex(index);
+      }
     }
-  ];
+  }, [location.hash]);
+
+  const handleToggle = (index: number) => {
+    if (openIndex === index) {
+      setOpenIndex(-1);
+      navigate(location.pathname, { replace: true });
+    } else {
+      setOpenIndex(index);
+      navigate(`${location.pathname}#${services[index].slug}`, { replace: true });
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] pt-[15vh] pb-32 px-6 md:px-[10%]">
-      <div className="max-w-7xl mx-auto">
-        {/* Hero Section */}
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#2563EB] selection:text-white">
+      
+      {/* Hero Section */}
+      <section className="pt-32 md:pt-48 pb-20 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          className="mb-[4.236rem]"
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-5xl"
         >
-          <div className="flex items-center gap-3 mb-[1.618rem]">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-8">
             <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">What We Do</span>
+            <span className="font-mono text-[0.75rem] tracking-widest uppercase text-[#2563EB]">Capabilities</span>
           </div>
           
-          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
-            <motion.span 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="block"
-            >
-              OUR
-            </motion.span>
-            <motion.span 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
-            >
-              SERVICES.
-            </motion.span>
+          <h1 className="text-[clamp(3.5rem,10vw,7rem)] font-display uppercase tracking-normal text-[#0F172A] mb-8 leading-[0.9]">
+            WE BUILD <br/>
+            <span className="text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">DIGITAL</span> ECOSYSTEMS.
           </h1>
           
-          <div className="flex flex-wrap gap-[1rem] mb-[2.618rem]">
-            {['Digital Transformation', 'Custom Software', 'Cloud Infrastructure', 'UI/UX Design'].map((tag, i) => (
-              <motion.span 
-                key={i} 
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.95 }}
-                className="px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10 cursor-default hover:bg-[#2563EB]/20 transition-colors duration-300"
-              >
-                {tag}
-              </motion.span>
-            ))}
-          </div>
-          
-          <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-2xl">
-            We compose digital ecosystems. Mobile apps, dashboards, and integrations—all connected.
+          <p className="text-[1.2rem] md:text-[1.5rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-2xl">
+            Ditch the generic SaaS. We engineer bespoke platforms that fit your exact workflows and scale infinitely.
           </p>
         </motion.div>
+      </section>
 
-        {/* Services Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-[2.618rem] mb-[4.236rem]">
-          {services.map((service, i) => (
-            <motion.div
-              key={i}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: i * 0.1 }}
-              className="bg-white p-8 md:p-12 rounded-none border border-[#0F172A]/10 relative group flex flex-col"
-            >
-              <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-              <div className="w-12 h-12 bg-[#2563EB]/10 text-[#2563EB] rounded-none flex items-center justify-center mb-6 border border-[#2563EB]/20">
-                {service.icon}
-              </div>
-              <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-[1.618rem]">{service.title}</h3>
-              <p className="font-sans font-light text-[1rem] text-[#64748B] leading-[1.618] flex-grow">
-                {service.desc}
-              </p>
-            </motion.div>
-          ))}
+      {/* Interactive Accordion Section (Dark Mode for contrast) */}
+      <section className="bg-[#020617] text-white py-24 md:py-32 px-6 md:px-[10%]">
+        <div className="max-w-screen-2xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="mb-16"
+          >
+            <h2 className="font-mono text-sm tracking-widest uppercase text-[#2563EB] mb-4">// CORE STACK</h2>
+          </motion.div>
+
+          <div className="border-t border-white/10">
+            {services.map((service, index) => (
+              <ServiceRow 
+                key={service.id}
+                service={service}
+                isOpen={openIndex === index}
+                onClick={() => handleToggle(index)}
+              />
+            ))}
+          </div>
         </div>
+      </section>
 
-        {/* Dark Contrast Section */}
+      {/* Bento Grid Methodology */}
+      <section className="py-24 md:py-32 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mt-[8.5vh] bg-[#020617] text-white p-8 md:p-16 rounded-none relative overflow-hidden group"
+          className="mb-16"
         >
-          <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <div>
-              <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-display uppercase leading-[1.1] mb-6">
-                Enterprise-Grade <br />
-                <span className="text-transparent [-webkit-text-stroke:1px_white] md:[-webkit-text-stroke:2px_white]">Security.</span>
-              </h3>
-              <p className="font-sans font-light text-[1rem] text-slate-400 leading-[1.618] mb-8">
-                We build systems that protect your data and your users. Our architecture is designed to withstand modern threats while maintaining high performance.
-              </p>
-              <Magnetic>
-                <a href="/contact" className="relative overflow-hidden inline-flex items-center gap-3 px-6 py-3 bg-white border border-white text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase rounded-full group">
-                  <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-white">Let's Talk</span>
-                  <div className="absolute inset-0 bg-[#2563EB] translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                </a>
-              </Magnetic>
-            </div>
-            <div className="bg-white/5 border border-white/10 rounded-none p-8 backdrop-blur-sm">
-              <div className="flex items-center justify-between mb-8 pb-8 border-b border-white/10">
-                <div>
-                  <div className="text-4xl font-display mb-2">99.99%</div>
-                  <div className="text-xs font-mono text-white/50 uppercase tracking-widest">Uptime SLA</div>
-                </div>
-                <Shield className="w-12 h-12 text-[#2563EB]" />
-              </div>
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-white/70">Data Centers</span>
-                  <span className="font-mono text-sm">Global</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-white/70">DDoS Protection</span>
-                  <span className="font-mono text-sm">Included</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-sm text-white/70">Daily Backups</span>
-                  <span className="font-mono text-sm">Automated</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase leading-[1.05] text-[#0F172A]">
+            How we operate.
+          </h2>
         </motion.div>
-      </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <motion.div 
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm md:col-span-2 flex flex-col md:flex-row gap-8 md:gap-16 items-start md:items-center"
+          >
+            <div className="font-display text-[6rem] md:text-[8rem] leading-none text-slate-100 shrink-0">01</div>
+            <div>
+              <h3 className="text-[2rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Discovery & Blueprint</h3>
+              <p className="text-[1.1rem] font-sans text-[#64748B] font-light leading-[1.618]">
+                We don't just write code; we map your entire operational workflow. We identify bottlenecks, architect the database schema, and design a system that actually solves your problems.
+              </p>
+            </div>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm flex flex-col"
+          >
+            <div className="font-display text-[4rem] leading-none text-slate-100 mb-8">02</div>
+            <h3 className="text-[1.5rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Agile Engineering</h3>
+            <p className="text-[1rem] font-sans text-[#64748B] font-light leading-[1.618]">
+              Rapid, iterative development cycles. We build core modules, custom APIs, and integrate webhooks with zero bloat.
+            </p>
+          </motion.div>
+
+          <motion.div 
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+            className="bg-[#2563EB] text-white p-10 md:p-16 rounded-[2rem] shadow-xl flex flex-col"
+          >
+            <div className="font-display text-[4rem] leading-none text-blue-400/30 mb-8">03</div>
+            <h3 className="text-[1.5rem] font-display uppercase tracking-wide mb-4">Deploy & Scale</h3>
+            <p className="text-[1rem] font-sans text-blue-100 font-light leading-[1.618]">
+              Rigorous security audits, seamless legacy data migration, and a flawless launch. Built to scale infinitely.
+            </p>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="bg-white py-32 px-6 text-center border-t border-slate-200">
+        <motion.div
+          initial={{ opacity: 0, y: 40, scale: 0.95 }}
+          whileInView={{ opacity: 1, y: 0, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="max-w-3xl mx-auto"
+        >
+          <h2 className="text-[3rem] md:text-[5rem] font-display uppercase leading-[0.9] text-[#0F172A] mb-8">
+            Ready to build <br /> <span className="text-transparent [-webkit-text-stroke:1.5px_#0F172A]">something real?</span>
+          </h2>
+          <p className="text-[1.1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] mb-12">
+            Let's discuss your requirements and architect a solution that scales.
+          </p>
+          <Magnetic>
+            <a href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-[#0F172A] text-white font-mono text-xs uppercase tracking-widest rounded-full hover:bg-[#2563EB] transition-colors duration-500 group shadow-lg">
+              <span>Start the Conversation</span>
+              <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+            </a>
+          </Magnetic>
+        </motion.div>
+      </section>
+
     </div>
   );
 }
