@@ -109,7 +109,7 @@ export default function AboutPage() {
             We transform traditional business operations into structured, efficient digital systems. <strong className="text-[#0F172A] font-medium">Paper ledgers become dashboards. Manual entries become records.</strong>
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-3 mb-16">
             {tags.map((tag, index) => (
               <motion.span 
                 key={tag}
@@ -122,6 +122,20 @@ export default function AboutPage() {
               </motion.span>
             ))}
           </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+          >
+            <img 
+              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
+              alt="Team collaborating" 
+              loading="lazy" 
+              decoding="async"
+              className="w-full h-[300px] md:h-[500px] object-cover rounded-[2rem] shadow-lg"
+            />
+          </motion.div>
         </motion.div>
       </section>
 

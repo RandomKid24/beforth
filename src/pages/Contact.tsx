@@ -1,51 +1,197 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight, Mail, MapPin, Phone, Loader2, CheckCircle, XCircle } from 'lucide-react';
-import { Magnetic } from '../components/Magnetic';
+import { Mail, MapPin, Phone, Sun, Moon, Sunrise, Sunset } from 'lucide-react';
 
-export default function ContactPage() {
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [errors, setErrors] = useState<{name?: string, email?: string, message?: string}>({});
+const AvailabilityVisualizer = () => {
+  const [time, setTime] = useState(new Date());
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    
-    const formData = new FormData(e.currentTarget);
-    const name = formData.get('name') as string;
-    const email = formData.get('email') as string;
-    const message = formData.get('message') as string;
+  useEffect(() => {
+    const timer = setInterval(() => setTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
 
-    const newErrors: {name?: string, email?: string, message?: string} = {};
-    if (!name?.trim()) newErrors.name = "Name is required";
-    if (!email?.trim()) {
-      newErrors.email = "Email is required";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = "Please enter a valid email address";
+  const hour = time.getHours();
+  let status = "";
+  let Icon = Sun;
+  let color = "text-yellow-500";
+
+  if (hour >= 0 && hour < 6) {
+    status = "It's the middle of the night here, but drop a message and I'll see it with my morning coffee.";
+    Icon = Moon;
+    color = "text-indigo-400";
+  } else if (hour >= 6 && hour < 9) {
+    status = "Starting the day! Catching up on emails and ready for new projects.";
+    Icon = Sunrise;
+    color = "text-orange-400";
+  } else if (hour >= 9 && hour < 17) {
+    status = "I'm currently at my desk and accepting new projects.";
+    Icon = Sun;
+    color = "text-yellow-500";
+  } else {
+    status = "Winding down for the day, but I'll get back to you soon.";
+    Icon = Sunset;
+    color = "text-orange-500";
+  }
+
+  return (
+    <div className="bg-[#0F172A] text-white p-6 md:p-8 rounded-none border-2 border-[#0F172A] shadow-[8px_8px_0px_0px_#2563EB] relative overflow-hidden group">
+      <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full blur-3xl -mr-10 -mt-10 transition-transform duration-1000 group-hover:scale-150" />
+      <div className="flex items-start gap-4 relative z-10">
+        <div className={`p-3 rounded-full bg-white/10 ${color}`}>
+          <Icon className="w-6 h-6" />
+        </div>
+        <div>
+          <div className="font-mono text-xs text-slate-400 mb-1 uppercase tracking-widest">Local Time & Status</div>
+          <div className="font-display text-2xl mb-2">
+            {time.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+          </div>
+          <p className="font-sans text-sm text-slate-300 leading-relaxed">
+            {status}
+          </p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+type HistoryLine = 
+  | { type: 'system', text: string }
+  | { type: 'interaction', prompt: string, input: string };
+
+const TerminalForm = () => {
+  const [step, setStep] = useState(0);
+  const [input, setInput] = useState('');
+  const [history, setHistory] = useState<HistoryLine[]>([
+    { type: 'system', text: 'Initializing secure connection...' },
+    { type: 'system', text: 'Connection established.' }
+  ]);
+  const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const inputRef = useRef<HTMLInputElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const prompts = [
+    'enter_name:',
+    'enter_email:',
+    'type_message:'
+  ];
+
+  // Auto-scroll to bottom when history changes
+  useEffect(() => {
+    if (containerRef.current) {
+      containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-    if (!message?.trim()) newErrors.message = "Message is required";
+  }, [history, step]);
 
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-
-    setErrors({});
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-    
-    // Simulate network request
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitStatus('success');
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && input.trim()) {
+      const currentInput = input.trim();
+      setInput('');
       
-      // Reset status after a few seconds
-      setTimeout(() => setSubmitStatus('idle'), 5000);
-    }, 1500);
+      const newHistory = [...history];
+      
+      if (step === 0) {
+        setFormData({ ...formData, name: currentInput });
+        newHistory.push({ type: 'interaction', prompt: prompts[0], input: currentInput });
+        setStep(1);
+      } else if (step === 1) {
+        newHistory.push({ type: 'interaction', prompt: prompts[1], input: currentInput });
+        // Basic email validation
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentInput)) {
+          newHistory.push({ type: 'system', text: 'Error: Invalid email format. Please try again.' });
+        } else {
+          setFormData({ ...formData, email: currentInput });
+          setStep(2);
+        }
+      } else if (step === 2) {
+        setFormData({ ...formData, message: currentInput });
+        newHistory.push({ type: 'interaction', prompt: prompts[2], input: currentInput });
+        setStep(3);
+        newHistory.push({ type: 'system', text: 'Transmitting data...' });
+        
+        // Simulate sending
+        setTimeout(() => {
+          setHistory(h => [...h, { type: 'system', text: 'Message sent successfully! We will be in touch.' }]);
+          setStep(4);
+        }, 1500);
+      }
+      
+      setHistory(newHistory);
+    }
   };
 
   return (
-    <div className="page-container">
+    <div 
+      className="bg-[#0F172A] text-[#10B981] p-6 md:p-8 rounded-none border-2 border-[#0F172A] shadow-[8px_8px_0px_0px_#2563EB] font-mono text-sm md:text-base h-[500px] overflow-y-auto cursor-text flex flex-col relative"
+      onClick={() => inputRef.current?.focus()}
+      ref={containerRef}
+    >
+      <div className="flex gap-2 mb-6 sticky top-0 bg-[#0F172A] pb-4 z-10">
+        <div className="w-3 h-3 rounded-full bg-red-500" />
+        <div className="w-3 h-3 rounded-full bg-yellow-500" />
+        <div className="w-3 h-3 rounded-full bg-green-500" />
+        <div className="ml-4 text-xs text-slate-500 uppercase tracking-widest flex items-center">guest@beforth: ~/contact</div>
+      </div>
+      
+      <div className="flex-1 space-y-3">
+        {history.map((line, i) => (
+          <div key={i} className={line.type === 'system' ? 'text-slate-400' : 'text-white'}>
+            {line.type === 'interaction' ? (
+              <span className="flex gap-2">
+                <span className="text-pink-500">❯</span> 
+                <span className="text-[#3B82F6]">{line.prompt}</span>
+                <span className="text-white">{line.input}</span>
+              </span>
+            ) : (
+              line.text
+            )}
+          </div>
+        ))}
+        
+        {step < 3 && (
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-pink-500">❯</span>
+            <span className="text-[#3B82F6]">{prompts[step]}</span>
+            <input
+              ref={inputRef}
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={handleKeyDown}
+              className="bg-transparent outline-none flex-1 text-white caret-[#10B981]"
+              autoFocus
+              spellCheck={false}
+              autoComplete="off"
+            />
+          </div>
+        )}
+        {step === 4 && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mt-6 pt-4 border-t border-slate-800"
+          >
+            <button 
+              onClick={() => {
+                setStep(0);
+                setHistory([
+                  { type: 'system', text: 'Connection re-established.' }
+                ]);
+                setFormData({ name: '', email: '', message: '' });
+              }}
+              className="text-[#3B82F6] hover:text-white transition-colors flex items-center gap-2"
+            >
+              <span className="text-pink-500">❯</span> [ Send another message ]
+            </button>
+          </motion.div>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default function ContactPage() {
+  return (
+    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] pt-[15vh] pb-32 px-6 md:px-[10%]">
       <div className="max-w-7xl mx-auto">
         {/* Hero Section */}
         <motion.div
@@ -55,11 +201,11 @@ export default function ContactPage() {
           className="mb-[4.236rem]"
         >
           <div className="flex items-center gap-3 mb-[1.618rem]">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-slate-500">Get In Touch</span>
+            <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
+            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-[#64748B]">Get In Touch</span>
           </div>
           
-          <h1 className="hero-heading mb-8">
+          <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col mb-8">
             <motion.span 
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -74,20 +220,20 @@ export default function ContactPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-              className="block text-transparent [-webkit-text-stroke:1.5px_var(--color-slate-900)] md:[-webkit-text-stroke:2px_var(--color-slate-900)]"
+              className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
             >
               TALK.
             </motion.span>
           </h1>
           
-          <p className="text-[1rem] md:text-[1.2rem] font-sans text-slate-500 font-light leading-[1.618] max-w-2xl">
+          <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-2xl">
             Ready to start your next project? Drop us a line and let's build something extraordinary together.
           </p>
         </motion.div>
 
         {/* Contact Grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-[4.236rem] mb-[4.236rem]">
-          {/* Contact Info */}
+          {/* Left Column: Info & Availability */}
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -95,148 +241,49 @@ export default function ContactPage() {
             transition={{ duration: 0.6 }}
             className="space-y-[2.618rem]"
           >
-            <div className="card group">
-              <div className="card-hover-border" />
-              <div className="icon-box">
+            <AvailabilityVisualizer />
+
+            <div className="bg-white p-8 md:p-12 rounded-none border border-[#0F172A]/10 relative group flex flex-col">
+              <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <div className="w-12 h-12 bg-[#2563EB]/10 text-[#2563EB] rounded-none flex items-center justify-center mb-6 border border-[#2563EB]/20">
                 <Mail className="w-6 h-6" />
               </div>
-              <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">Email Us</h3>
-              <a href="mailto:hello@beforth.com" className="font-mono text-base text-slate-500 hover:text-primary transition-colors">hello@beforth.com</a>
+              <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">Email Us</h3>
+              <a href="mailto:hello@beforth.com" className="font-mono text-[1rem] text-[#64748B] hover:text-[#2563EB] transition-colors">hello@beforth.com</a>
             </div>
 
-            <div className="card group">
-              <div className="card-hover-border" />
-              <div className="icon-box">
+            <div className="bg-white p-8 md:p-12 rounded-none border border-[#0F172A]/10 relative group flex flex-col">
+              <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <div className="w-12 h-12 bg-[#2563EB]/10 text-[#2563EB] rounded-none flex items-center justify-center mb-6 border border-[#2563EB]/20">
                 <MapPin className="w-6 h-6" />
               </div>
-              <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">Visit Us</h3>
-              <p className="font-mono text-base text-slate-500">123 Innovation Dr.<br/>Tech City, NY 10001</p>
+              <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">Visit Us</h3>
+              <p className="font-mono text-[1rem] text-[#64748B]">123 Innovation Dr.<br/>Tech City, NY 10001</p>
             </div>
             
-            <div className="card group">
-              <div className="card-hover-border" />
-              <div className="icon-box">
+            <div className="bg-white p-8 md:p-12 rounded-none border border-[#0F172A]/10 relative group flex flex-col">
+              <div className="absolute top-0 left-0 w-full h-1 bg-[#2563EB] transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+              <div className="w-12 h-12 bg-[#2563EB]/10 text-[#2563EB] rounded-none flex items-center justify-center mb-6 border border-[#2563EB]/20">
                 <Phone className="w-6 h-6" />
               </div>
-              <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">Call Us</h3>
-              <a href="tel:+15551234567" className="font-mono text-base text-slate-500 hover:text-primary transition-colors">+1 (555) 123-4567</a>
+              <h3 className="text-[1.5rem] font-display uppercase leading-[1.1] mb-2">Call Us</h3>
+              <a href="tel:+15551234567" className="font-mono text-[1rem] text-[#64748B] hover:text-[#2563EB] transition-colors">+1 (555) 123-4567</a>
             </div>
           </motion.div>
 
-          {/* Contact Form */}
+          {/* Right Column: Terminal Form */}
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, delay: 0.2 }}
-            className="bg-white text-slate-900 p-8 md:p-12 rounded-none border-2 border-slate-900 shadow-[8px_8px_0px_0px_var(--color-primary)] relative"
+            className="relative"
           >
-            <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-8 tracking-tight">Send a Message</h3>
-            
-            <form className="space-y-6" onSubmit={handleSubmit} noValidate>
-              <div>
-                <label htmlFor="name" className="block font-mono text-[0.85rem] tracking-widest uppercase text-slate-900 mb-2 font-bold">Name</label>
-                <input 
-                  type="text" 
-                  id="name"
-                  name="name"
-                  required
-                  className={`w-full bg-slate-50 border-2 ${errors.name ? 'border-red-500 focus:shadow-[4px_4px_0px_0px_var(--color-red-500)]' : 'border-slate-900 focus:shadow-[4px_4px_0px_0px_var(--color-primary)]'} rounded-none px-4 py-3 font-sans text-base text-slate-900 placeholder:text-slate-500 focus:outline-none focus:-translate-y-1 transition-all`}
-                  placeholder="John Doe"
-                />
-                {errors.name && <span className="text-red-600 text-sm mt-2 block font-mono font-bold">{errors.name}</span>}
-              </div>
-              
-              <div>
-                <label htmlFor="email" className="block font-mono text-[0.85rem] tracking-widest uppercase text-slate-900 mb-2 font-bold">Email</label>
-                <input 
-                  type="email" 
-                  id="email"
-                  name="email"
-                  required
-                  className={`w-full bg-slate-50 border-2 ${errors.email ? 'border-red-500 focus:shadow-[4px_4px_0px_0px_var(--color-red-500)]' : 'border-slate-900 focus:shadow-[4px_4px_0px_0px_var(--color-primary)]'} rounded-none px-4 py-3 font-sans text-base text-slate-900 placeholder:text-slate-500 focus:outline-none focus:-translate-y-1 transition-all`}
-                  placeholder="john@example.com"
-                />
-                {errors.email && <span className="text-red-600 text-sm mt-2 block font-mono font-bold">{errors.email}</span>}
-              </div>
-              
-              <div>
-                <label htmlFor="message" className="block font-mono text-[0.85rem] tracking-widest uppercase text-slate-900 mb-2 font-bold">Message</label>
-                <textarea 
-                  id="message"
-                  name="message"
-                  rows={4}
-                  required
-                  className={`w-full bg-slate-50 border-2 ${errors.message ? 'border-red-500 focus:shadow-[4px_4px_0px_0px_var(--color-red-500)]' : 'border-slate-900 focus:shadow-[4px_4px_0px_0px_var(--color-primary)]'} rounded-none px-4 py-3 font-sans text-base text-slate-900 placeholder:text-slate-500 focus:outline-none focus:-translate-y-1 transition-all resize-none`}
-                  placeholder="Tell us about your project..."
-                />
-                {errors.message && <span className="text-red-600 text-sm mt-2 block font-mono font-bold">{errors.message}</span>}
-              </div>
-              
-              <button 
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full bg-primary text-white border-2 border-slate-900 shadow-[4px_4px_0px_0px_var(--color-slate-900)] hover:shadow-[6px_6px_0px_0px_var(--color-slate-900)] hover:-translate-y-1 active:shadow-[0px_0px_0px_0px_var(--color-slate-900)] active:translate-y-1 transition-all rounded-none py-4 font-mono uppercase tracking-widest text-sm flex items-center justify-center gap-3 mt-4 disabled:opacity-70 disabled:cursor-not-allowed disabled:hover:shadow-[4px_4px_0px_0px_var(--color-slate-900)] disabled:hover:translate-y-0"
-              >
-                <span>
-                  {isSubmitting ? 'Sending...' : 'Send Message'}
-                </span>
-                {isSubmitting ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <ArrowRight className="w-4 h-4" />
-                )}
-              </button>
-
-              {/* Status Messages */}
-              {submitStatus === 'success' && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }} 
-                  animate={{ opacity: 1, height: 'auto' }} 
-                  className="flex items-center gap-2 text-emerald-600 font-mono text-sm mt-4 justify-center overflow-hidden font-bold"
-                >
-                  <motion.div
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-                  >
-                    <CheckCircle className="w-5 h-5" />
-                  </motion.div>
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.3 }}
-                  >
-                    Message sent successfully!
-                  </motion.span>
-                </motion.div>
-              )}
-              {submitStatus === 'error' && (
-                <motion.div 
-                  initial={{ opacity: 0, height: 0 }} 
-                  animate={{ opacity: 1, height: 'auto' }} 
-                  className="flex items-center gap-2 text-red-600 font-mono text-sm mt-4 justify-center overflow-hidden font-bold"
-                >
-                  <motion.div
-                    initial={{ scale: 0, rotate: 180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ type: "spring", stiffness: 200, damping: 15, delay: 0.1 }}
-                  >
-                    <XCircle className="w-5 h-5" />
-                  </motion.div>
-                  <motion.span
-                    initial={{ opacity: 0, x: -10 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.3, delay: 0.3 }}
-                  >
-                    Failed to send message. Please try again.
-                  </motion.span>
-                </motion.div>
-              )}
-            </form>
+            <TerminalForm />
           </motion.div>
         </div>
       </div>
     </div>
   );
 }
+

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { Magnetic } from '../components/Magnetic';
+
+// Lazy load the Magnetic component as it's a non-critical interactive asset
+const Magnetic = React.lazy(() => import('../components/Magnetic').then(module => ({ default: module.Magnetic })));
 
 const services = [
   {
@@ -171,14 +173,23 @@ export default function ServicesPage() {
             whileInView={{ opacity: 1, y: 0, scale: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm md:col-span-2 flex flex-col md:flex-row gap-8 md:gap-16 items-start md:items-center"
+            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm md:col-span-2 flex flex-col md:flex-row gap-8 md:gap-16 items-start md:items-center overflow-hidden"
           >
-            <div className="font-display text-[6rem] md:text-[8rem] leading-none text-slate-100 shrink-0">01</div>
-            <div>
+            <div className="flex-1">
+              <div className="font-display text-[6rem] md:text-[8rem] leading-none text-slate-100 shrink-0 mb-4">01</div>
               <h3 className="text-[2rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Discovery & Blueprint</h3>
               <p className="text-[1.1rem] font-sans text-[#64748B] font-light leading-[1.618]">
                 We don't just write code; we map your entire operational workflow. We identify bottlenecks, architect the database schema, and design a system that actually solves your problems.
               </p>
+            </div>
+            <div className="flex-1 w-full">
+              <img 
+                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
+                alt="System Architecture" 
+                loading="lazy"
+                decoding="async"
+                className="w-full h-64 md:h-full object-cover rounded-2xl shadow-sm"
+              />
             </div>
           </motion.div>
 
@@ -227,12 +238,19 @@ export default function ServicesPage() {
           <p className="text-[1.1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] mb-12">
             Let's discuss your requirements and architect a solution that scales.
           </p>
-          <Magnetic>
+          <Suspense fallback={
             <a href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-[#0F172A] text-white font-mono text-xs uppercase tracking-widest rounded-full hover:bg-[#2563EB] transition-colors duration-500 group shadow-lg">
               <span>Start the Conversation</span>
               <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
             </a>
-          </Magnetic>
+          }>
+            <Magnetic>
+              <a href="/contact" className="inline-flex items-center justify-center px-8 py-4 bg-[#0F172A] text-white font-mono text-xs uppercase tracking-widest rounded-full hover:bg-[#2563EB] transition-colors duration-500 group shadow-lg">
+                <span>Start the Conversation</span>
+                <ArrowRight className="w-5 h-5 ml-3 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </Magnetic>
+          </Suspense>
         </motion.div>
       </section>
 
