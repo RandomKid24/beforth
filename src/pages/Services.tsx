@@ -2,6 +2,7 @@ import React, { useState, useEffect, Suspense } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
+import { LazyImage } from '../components/LazyImage';
 
 // Lazy load the Magnetic component as it's a non-critical interactive asset
 const Magnetic = React.lazy(() => import('../components/Magnetic').then(module => ({ default: module.Magnetic })));
@@ -183,12 +184,10 @@ export default function ServicesPage() {
               </p>
             </div>
             <div className="flex-1 w-full">
-              <img 
+              <LazyImage 
                 src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
                 alt="System Architecture" 
-                loading="lazy"
-                decoding="async"
-                className="w-full h-64 md:h-full object-cover rounded-2xl shadow-sm"
+                containerClassName="w-full h-64 md:h-full rounded-2xl shadow-sm"
               />
             </div>
           </motion.div>

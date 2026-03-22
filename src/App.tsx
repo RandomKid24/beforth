@@ -51,7 +51,7 @@ function Navbar() {
                 <Link 
                   key={link.path} 
                   to={link.path} 
-                  className={`relative px-4 py-2.5 rounded-full transition-colors ${isActive ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}
+                  className={`relative px-4 py-2.5 rounded-full transition-colors group ${isActive ? 'text-white' : 'text-slate-600 hover:text-slate-900'}`}
                 >
                   {isActive && (
                     <motion.div
@@ -60,7 +60,12 @@ function Navbar() {
                       transition={{ type: "spring", stiffness: 300, damping: 30 }}
                     />
                   )}
-                  <span className="relative z-10">{link.label}</span>
+                  <span className="relative z-10">
+                    {link.label}
+                    {!isActive && (
+                      <span className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#2563EB] origin-right scale-x-0 transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100" />
+                    )}
+                  </span>
                 </Link>
               );
             })}
@@ -77,7 +82,7 @@ function Navbar() {
 
           <Magnetic>
             <motion.button 
-              className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 rounded-full bg-transparent"
+              className="md:hidden w-10 h-10 flex flex-col justify-center items-center gap-1.5 rounded-full bg-transparent relative z-50"
               onClick={() => setIsOpen(!isOpen)}
             >
               <span className={`w-5 h-[2px] transition-all duration-300 ${isOpen ? 'bg-white rotate-45 translate-y-[8px]' : 'bg-[#0F172A]'}`} />
@@ -95,35 +100,56 @@ function Navbar() {
             variants={{
               closed: {
                 opacity: 0,
-                clipPath: "circle(0% at 50% 52px)",
+                clipPath: "circle(0% at calc(100% - 40px) 40px)",
                 transition: { duration: 0.5, ease: [0.16, 1, 0.3, 1], when: "afterChildren" }
               },
               open: {
                 opacity: 1,
-                clipPath: "circle(150% at 50% 52px)",
+                clipPath: "circle(150% at calc(100% - 40px) 40px)",
                 transition: { duration: 0.7, ease: [0.16, 1, 0.3, 1], when: "beforeChildren", staggerChildren: 0.1 }
               }
             }}
             initial="closed"
             animate="open"
             exit="closed"
-            className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-2"
+            className="fixed inset-0 z-40 bg-[#0F172A] text-white flex flex-col items-center justify-center gap-2 overflow-hidden"
           >
-            {[...navLinks, { path: '/contact', label: 'Contact' }].map((item) => (
+            {/* Background decorative elements */}
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.2 }}
+              className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#2563EB]/20 rounded-full blur-[100px] pointer-events-none"
+            />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1, delay: 0.4 }}
+              className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#2563EB]/10 rounded-full blur-[100px] pointer-events-none"
+            />
+
+            {[...navLinks, { path: '/contact', label: 'Contact' }].map((item, i) => (
               <motion.div
                 key={item.path}
                 variants={{
-                  closed: { opacity: 0, y: 20 },
-                  open: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }
+                  closed: { opacity: 0, y: 40, rotateX: 45, filter: "blur(10px)" },
+                  open: { opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)", transition: { duration: 0.6, ease: [0.16, 1, 0.3, 1] } }
                 }}
+                style={{ perspective: 1000 }}
                 className="w-full"
               >
                 <Link 
                   to={item.path} 
                   onClick={() => setIsOpen(false)} 
-                  className={`block font-display text-4xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-6 ${pathname === item.path ? 'text-[#2563EB]' : ''}`}
+                  className={`block font-display text-5xl uppercase tracking-widest hover:text-[#2563EB] transition-colors w-full text-center py-4 relative group ${pathname === item.path ? 'text-[#2563EB]' : ''}`}
                 >
-                  {item.label}
+                  <span className="relative z-10 inline-block">
+                    {item.label}
+                    <span className={`absolute -bottom-2 left-0 w-full h-[3px] bg-[#2563EB] origin-right scale-x-0 transition-transform duration-300 ease-out group-hover:origin-left group-hover:scale-x-100 ${pathname === item.path ? 'scale-x-100 origin-left' : ''}`} />
+                  </span>
+                  <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[6rem] font-display text-white/[0.02] whitespace-nowrap pointer-events-none group-hover:text-white/[0.05] transition-colors duration-500">
+                    {item.label}
+                  </span>
                 </Link>
               </motion.div>
             ))}

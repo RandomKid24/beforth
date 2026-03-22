@@ -54,65 +54,209 @@ const AvailabilityVisualizer = () => {
   );
 };
 
+const TypewriterLine = ({ text, typing, speed = 20, onComplete }: { text: string, typing?: boolean, speed?: number, onComplete?: () => void }) => {
+  const [displayed, setDisplayed] = useState(typing ? '' : text);
+  const [isDone, setIsDone] = useState(!typing);
+  
+  useEffect(() => {
+    if (!typing) {
+      setDisplayed(text);
+      setIsDone(true);
+      return;
+    }
+    
+    let i = 0;
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) {
+        clearInterval(interval);
+        setIsDone(true);
+        onComplete?.();
+      }
+    }, speed);
+    
+    return () => clearInterval(interval);
+  }, [text, typing, speed, onComplete]);
+
+  return <span>{displayed}{typing && !isDone && <span className="inline-block w-2 h-4 bg-slate-400 animate-pulse ml-1 align-middle" />}</span>;
+};
+
 type HistoryLine = 
-  | { type: 'system', text: string }
-  | { type: 'interaction', prompt: string, input: string };
+  | { id: string, type: 'system', text: string, typing?: boolean }
+  | { id: string, type: 'interaction', prompt: string, input: string }
+  | { id: string, type: 'error', text: string, typing?: boolean };
 
 const TerminalForm = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(-1);
   const [input, setInput] = useState('');
-  const [history, setHistory] = useState<HistoryLine[]>([
-    { type: 'system', text: 'Initializing secure connection...' },
-    { type: 'system', text: 'Connection established.' }
-  ]);
+  const [history, setHistory] = useState<HistoryLine[]>([]);
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
+  const [isFocused, setIsFocused] = useState(false);
+  const [isTyping, setIsTyping] = useState(true);
   const inputRef = useRef<HTMLInputElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const hasBooted = useRef(false);
 
-  const prompts = [
-    'enter_name:',
-    'enter_email:',
-    'type_message:'
-  ];
+  const prompts: Record<number, string> = {
+    0: 'enter_name:',
+    1: 'enter_email:',
+    2: 'type_message:',
+    3: 'confirm (y/n):',
+    5: 'session_ended:'
+  };
+
+  // Boot sequence
+  useEffect(() => {
+    if (step !== -1 || hasBooted.current) return;
+    hasBooted.current = true;
+    
+    const bootMessages = [
+      "Initializing secure connection... [OK]",
+      "Loading modules & bypassing mainframe... [OK]",
+      "Connection established."
+    ];
+    
+    let delay = 0;
+    bootMessages.forEach((msg, index) => {
+      setTimeout(() => {
+        setHistory(h => [...h, { id: `boot-${index}`, type: 'system', text: msg, typing: true }]);
+        if (index === bootMessages.length - 1) {
+          setTimeout(() => {
+            setStep(0);
+            setIsTyping(false);
+          }, 400);
+        }
+      }, delay);
+      delay += 500;
+    });
+  }, [step]);
 
   // Auto-scroll to bottom when history changes
   useEffect(() => {
     if (containerRef.current) {
       containerRef.current.scrollTop = containerRef.current.scrollHeight;
     }
-  }, [history, step]);
+  }, [history, step, input]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && input.trim()) {
+    if (e.ctrlKey && e.key === 'l') {
+      e.preventDefault();
+      setHistory([]);
+      return;
+    }
+
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (commandHistory.length > 0 && historyIndex < commandHistory.length - 1) {
+        const newIndex = historyIndex + 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      }
+      return;
+    }
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (historyIndex > 0) {
+        const newIndex = historyIndex - 1;
+        setHistoryIndex(newIndex);
+        setInput(commandHistory[commandHistory.length - 1 - newIndex]);
+      } else if (historyIndex === 0) {
+        setHistoryIndex(-1);
+        setInput('');
+      }
+      return;
+    }
+
+    if (e.key === 'Enter') {
+      if (isTyping) return;
+      
       const currentInput = input.trim();
       setInput('');
+      setHistoryIndex(-1);
       
+      if (currentInput) {
+        setCommandHistory(prev => [...prev, currentInput]);
+      }
+
       const newHistory = [...history];
+      const addInteraction = () => newHistory.push({ id: Date.now().toString() + '-int', type: 'interaction', prompt: prompts[step] || '>', input: currentInput });
+      const addSystem = (text: string, isError = false) => newHistory.push({ id: Date.now().toString() + '-sys', type: isError ? 'error' : 'system', text, typing: true });
+
+      const lowerInput = currentInput.toLowerCase();
       
+      // Easter Eggs
+      if (['help', 'clear', 'whoami', 'sudo', 'date'].includes(lowerInput)) {
+        addInteraction();
+        if (lowerInput === 'clear') {
+          setHistory([]);
+          return;
+        }
+        if (lowerInput === 'help') {
+          addSystem("Available commands: help, clear, whoami, sudo, date. Or just answer the prompt.");
+        } else if (lowerInput === 'whoami') {
+          addSystem("guest@beforth. You are a highly valued potential client.");
+        } else if (lowerInput === 'sudo') {
+          addSystem("bash: sudo: permission denied. This incident will be reported.", true);
+        } else if (lowerInput === 'date') {
+          addSystem(new Date().toString());
+        }
+        setHistory(newHistory);
+        return;
+      }
+
+      if (!currentInput) {
+         addInteraction();
+         addSystem("[ERR_EMPTY_INPUT]: Value cannot be null. Please retry.", true);
+         setHistory(newHistory);
+         return;
+      }
+
       if (step === 0) {
         setFormData({ ...formData, name: currentInput });
-        newHistory.push({ type: 'interaction', prompt: prompts[0], input: currentInput });
+        addInteraction();
         setStep(1);
       } else if (step === 1) {
-        newHistory.push({ type: 'interaction', prompt: prompts[1], input: currentInput });
-        // Basic email validation
+        addInteraction();
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(currentInput)) {
-          newHistory.push({ type: 'system', text: 'Error: Invalid email format. Please try again.' });
+          addSystem('[ERR_INVALID_EMAIL]: Format not recognized. Please try again.', true);
         } else {
           setFormData({ ...formData, email: currentInput });
           setStep(2);
         }
       } else if (step === 2) {
         setFormData({ ...formData, message: currentInput });
-        newHistory.push({ type: 'interaction', prompt: prompts[2], input: currentInput });
+        addInteraction();
+        addSystem('Are you sure you want to send this message? (y/n)');
         setStep(3);
-        newHistory.push({ type: 'system', text: 'Transmitting data...' });
-        
-        // Simulate sending
-        setTimeout(() => {
-          setHistory(h => [...h, { type: 'system', text: 'Message sent successfully! We will be in touch.' }]);
+      } else if (step === 3) {
+        addInteraction();
+        if (lowerInput === 'y' || lowerInput === 'yes') {
           setStep(4);
-        }, 1500);
+          setIsTyping(true);
+          addSystem('Transmitting data...');
+          
+          setTimeout(() => {
+            setHistory(h => [...h, { id: Date.now().toString(), type: 'system', text: 'Message sent successfully! We will be in touch.', typing: true }]);
+            setStep(5);
+            setIsTyping(false);
+          }, 2000);
+        } else {
+          addSystem('Message sending cancelled. Type "reset" to start over.');
+          setStep(5);
+        }
+      } else if (step === 5) {
+          addInteraction();
+          if (lowerInput === 'reset') {
+              setStep(0);
+              setHistory([{ id: Date.now().toString(), type: 'system', text: 'Connection re-established.', typing: true }]);
+              setFormData({ name: '', email: '', message: '' });
+          } else {
+              addSystem('Session ended. Type "reset" to start over.');
+          }
       }
       
       setHistory(newHistory);
@@ -120,21 +264,29 @@ const TerminalForm = () => {
   };
 
   return (
-    <div 
-      className="bg-[#0F172A] text-[#10B981] p-6 md:p-8 rounded-none border-2 border-[#0F172A] shadow-[8px_8px_0px_0px_#2563EB] font-mono text-sm md:text-base h-[500px] overflow-y-auto cursor-text flex flex-col relative"
+    <motion.div 
+      className="bg-[#0F172A] text-[#10B981] p-6 md:p-8 rounded-none font-mono text-base md:text-lg h-[600px] md:h-[700px] overflow-y-auto cursor-text flex flex-col relative"
       onClick={() => inputRef.current?.focus()}
       ref={containerRef}
+      animate={{
+        borderColor: isFocused ? '#3B82F6' : '#0F172A',
+        boxShadow: isFocused 
+          ? '0 0 20px rgba(59, 130, 246, 0.4), 8px 8px 0px 0px #2563EB' 
+          : '0 0 0px rgba(59, 130, 246, 0), 8px 8px 0px 0px #2563EB'
+      }}
+      style={{ borderWidth: '2px', borderStyle: 'solid', fontFamily: "'Courier New', Courier, monospace" }}
+      transition={{ duration: 0.3 }}
     >
-      <div className="flex gap-2 mb-6 sticky top-0 bg-[#0F172A] pb-4 z-10">
+      <div className="flex gap-2 mb-4 sticky top-0 bg-[#0F172A] pb-2 z-10">
         <div className="w-3 h-3 rounded-full bg-red-500" />
         <div className="w-3 h-3 rounded-full bg-yellow-500" />
         <div className="w-3 h-3 rounded-full bg-green-500" />
-        <div className="ml-4 text-xs text-slate-500 uppercase tracking-widest flex items-center">guest@beforth: ~/contact</div>
+        <div className="ml-4 text-xs md:text-sm text-slate-500 uppercase tracking-widest flex items-center" style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace" }}>guest@beforth: ~/contact</div>
       </div>
       
-      <div className="flex-1 space-y-3">
-        {history.map((line, i) => (
-          <div key={i} className={line.type === 'system' ? 'text-slate-400' : 'text-white'}>
+      <div className="flex-1 space-y-1.5 leading-tight">
+        {history.map((line) => (
+          <div key={line.id} className={line.type === 'system' ? 'text-slate-400' : line.type === 'error' ? 'text-red-400' : 'text-white'}>
             {line.type === 'interaction' ? (
               <span className="flex gap-2">
                 <span className="text-pink-500">❯</span> 
@@ -142,29 +294,44 @@ const TerminalForm = () => {
                 <span className="text-white">{line.input}</span>
               </span>
             ) : (
-              line.text
+              <TypewriterLine text={line.text} typing={line.typing} speed={5} />
             )}
           </div>
         ))}
         
-        {step < 3 && (
-          <div className="flex items-center gap-2 mt-2">
+        {step >= 0 && step !== 4 && (
+          <motion.div 
+            className="flex items-center gap-2 mt-2 p-1 -ml-1 rounded"
+            animate={{
+              backgroundColor: isFocused ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
+              boxShadow: isFocused ? 'inset 2px 0 0 0 #3B82F6' : 'inset 0 0 0 0 transparent',
+              textShadow: isFocused ? '0 0 8px rgba(16, 185, 129, 0.4)' : 'none'
+            }}
+            transition={{ duration: 0.2 }}
+          >
             <span className="text-pink-500">❯</span>
             <span className="text-[#3B82F6]">{prompts[step]}</span>
-            <input
-              ref={inputRef}
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="bg-transparent outline-none flex-1 text-white caret-[#10B981]"
-              autoFocus
-              spellCheck={false}
-              autoComplete="off"
-            />
-          </div>
+            <div className="relative flex-1 flex items-center">
+              <span className="text-white whitespace-pre-wrap break-all">{input}</span>
+              <span className={`w-2.5 h-5 bg-[#10B981] ml-0.5 inline-block shrink-0 ${isFocused ? 'animate-pulse' : 'opacity-50'}`} />
+              <input
+                ref={inputRef}
+                type="text"
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
+                onKeyDown={handleKeyDown}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+                className="absolute inset-0 opacity-0 cursor-text w-full"
+                autoFocus
+                spellCheck={false}
+                autoComplete="off"
+                disabled={isTyping}
+              />
+            </div>
+          </motion.div>
         )}
-        {step === 4 && (
+        {step === 5 && (
           <motion.div 
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -174,7 +341,7 @@ const TerminalForm = () => {
               onClick={() => {
                 setStep(0);
                 setHistory([
-                  { type: 'system', text: 'Connection re-established.' }
+                  { id: Date.now().toString(), type: 'system', text: 'Connection re-established.', typing: true }
                 ]);
                 setFormData({ name: '', email: '', message: '' });
               }}
@@ -185,7 +352,7 @@ const TerminalForm = () => {
           </motion.div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

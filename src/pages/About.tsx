@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { LazyImage } from '../components/LazyImage';
 
 const tags = [
   "The Bridge Traditional ↔ Digital",
@@ -128,12 +129,10 @@ export default function AboutPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
           >
-            <img 
+            <LazyImage 
               src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
               alt="Team collaborating" 
-              loading="lazy" 
-              decoding="async"
-              className="w-full h-[300px] md:h-[500px] object-cover rounded-[2rem] shadow-lg"
+              containerClassName="w-full h-[300px] md:h-[500px] rounded-[2rem] shadow-lg"
             />
           </motion.div>
         </motion.div>
