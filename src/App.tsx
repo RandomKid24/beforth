@@ -159,9 +159,9 @@ function Hero() {
   const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
   
   // Parallax background elements
-  const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "15%"]);
-  const yBg2 = useTransform(scrollYProgress, [0, 1], ["0%", "-10%"]);
-  const yBg3 = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const yBg2 = useTransform(scrollYProgress, [0, 1], ["0%", "-5%"]);
+  const yBg3 = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const rotateBg1 = useTransform(scrollYProgress, [0, 1], [0, 45]);
   const rotateBg2 = useTransform(scrollYProgress, [0, 1], [0, -45]);
 
@@ -171,22 +171,58 @@ function Hero() {
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
           style={{ y: yBg1, rotate: rotateBg1 }}
+          animate={{ scale: [1, 1.1, 1], x: [0, -30, 0], opacity: [0.8, 1, 0.8] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
           className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#2563EB]/5 blur-[120px]"
         />
         <motion.div
           style={{ y: yBg2, rotate: rotateBg2 }}
+          animate={{ scale: [1, 1.2, 1], x: [0, 40, 0], opacity: [0.6, 1, 0.6] }}
+          transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
           className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#2563EB]/5 blur-[100px]"
         />
         <motion.div
           style={{ y: yBg3 }}
+          animate={{ scale: [1, 1.15, 1], x: [0, -20, 0], opacity: [0.7, 1, 0.7] }}
+          transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
           className="absolute bottom-[-10%] right-[20%] w-[30%] h-[30%] rounded-full bg-[#0F172A]/5 blur-[80px]"
         />
         
-        {/* Grid Pattern with Parallax */}
+        {/* Grid Pattern Container with Parallax & Radial Fade */}
         <motion.div 
           style={{ y: useTransform(scrollYProgress, [0, 1], ["0%", "15%"]) }}
-          className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
-        />
+          className="absolute inset-0 [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"
+        >
+          {/* Base Subtle Gray Grid */}
+          <motion.div 
+            animate={{ opacity: [0.4, 0.7, 0.4] }}
+            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
+            className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px]" 
+          />
+          
+          {/* Animated Color Wash (Blue Sweep) Grid */}
+          <motion.div 
+            animate={{ 
+              maskPosition: ["-50vw 0", "150vw 0"],
+              WebkitMaskPosition: ["-50vw 0", "150vw 0"]
+            }}
+            transition={{ 
+              duration: 4, 
+              repeat: Infinity, 
+              ease: "linear",
+              repeatDelay: 3
+            }}
+            className="absolute inset-0 bg-[linear-gradient(to_right,#2563EB60_1px,transparent_1px),linear-gradient(to_bottom,#2563EB60_1px,transparent_1px)] bg-[size:24px_24px]"
+            style={{
+              maskImage: "linear-gradient(to right, transparent, black 40%, black 60%, transparent)",
+              WebkitMaskImage: "linear-gradient(to right, transparent, black 40%, black 60%, transparent)",
+              maskSize: "50vw 100%",
+              WebkitMaskSize: "50vw 100%",
+              maskRepeat: "no-repeat",
+              WebkitMaskRepeat: "no-repeat",
+            }}
+          />
+        </motion.div>
       </div>
 
       <div className="z-10 w-full max-w-7xl mx-auto mt-24 md:mt-24 flex flex-col md:flex-row items-center justify-between flex-1 py-[10vh]">
