@@ -1132,60 +1132,264 @@ function Process() {
   );
 }
 
-function Footer() {
+const BangerParticle = React.memo(({ i, isGodMode, onPop }: { i: number, isGodMode: boolean, onPop: () => void }) => {
+  const [popped, setPopped] = useState(false);
+  
+  const particleData = React.useMemo(() => {
+    const isText = Math.random() > (isGodMode ? 0.5 : 0.75);
+    const textOptions = ["everest1508", "randomkid24", "BANGER", "SHIP IT"];
+    if (isGodMode) textOptions.push("GOD MODE", "🔥", "🚀", "💀");
+    
+    const textContent = textOptions[Math.floor(Math.random() * textOptions.length)];
+    const shapeType = i % 5;
+    const size = Math.random() * 30 + 15;
+    
+    let clipPath = 'none';
+    let borderRadius = '0';
+    if (!isText) {
+      if (shapeType === 0) borderRadius = '50%';
+      else if (shapeType === 2) clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+      else if (shapeType === 3) clipPath = 'polygon(25% 0%, 75% 0%, 100% 50%, 75% 100%, 25% 100%, 0% 50%)';
+      else if (shapeType === 4) clipPath = 'polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)';
+    }
+
+    const startX = Math.random() * 100;
+    const duration = Math.random() * 4 + (isGodMode ? 2 : 3);
+    const delay = Math.random() * 3;
+    const xAnimate = isText ? [0, (Math.random() - 0.5) * 100] : [(Math.random() - 0.5) * 400];
+    const yAnimate = [0, -Math.random() * 800 - 400];
+    const rotateAnimate = isText ? [(Math.random() - 0.5) * 20, (Math.random() - 0.5) * 20] : [0, Math.random() * 360 + 180];
+    const scaleAnimate = isText ? [0.8, 1.2, 0.8] : [0.5, 1, 0.5];
+
+    return { isText, textContent, size, clipPath, borderRadius, startX, duration, delay, xAnimate, yAnimate, rotateAnimate, scaleAnimate };
+  }, [i, isGodMode]);
+
+  if (popped) return null;
+
   return (
-    <footer className="w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 bg-[#0F172A] text-[#F8FAFC] snap-end shrink-0">
+    <motion.div
+      onClick={(e) => {
+        e.stopPropagation();
+        setPopped(true);
+        onPop();
+      }}
+      className={`absolute flex items-center justify-center cursor-crosshair ${particleData.isText ? (isGodMode ? 'text-red-500' : 'text-[#2563EB]') + ' font-mono text-lg md:text-xl font-bold z-20' : (isGodMode ? 'bg-red-500/20 border-red-500/50' : 'bg-[#2563EB]/20 border-[#2563EB]/50') + ' border z-10'}`}
+      style={{
+        width: particleData.isText ? 'auto' : particleData.size,
+        height: particleData.isText ? 'auto' : particleData.size,
+        borderRadius: particleData.isText ? '0' : particleData.borderRadius,
+        clipPath: particleData.isText ? 'none' : particleData.clipPath,
+        left: `${particleData.startX}%`,
+        bottom: '-10%',
+        whiteSpace: 'nowrap',
+        willChange: 'transform, opacity'
+      }}
+      animate={{
+        x: particleData.xAnimate,
+        y: particleData.yAnimate,
+        rotate: particleData.rotateAnimate,
+        opacity: [0, 1, 0.8, 0],
+        scale: particleData.scaleAnimate
+      }}
+      transition={{
+        duration: particleData.duration,
+        repeat: Infinity,
+        ease: "easeOut",
+        delay: particleData.delay
+      }}
+    >
+      {particleData.isText ? particleData.textContent : null}
+    </motion.div>
+  );
+});
+
+function Footer() {
+  const [clicks, setClicks] = useState(0);
+  const [easterEgg, setEasterEgg] = useState(false);
+  const [godMode, setGodMode] = useState(false);
+  const [score, setScore] = useState(0);
+  const [showRocket, setShowRocket] = useState(false);
+
+  const handlePop = React.useCallback(() => {
+    setScore(s => s + 1);
+  }, []);
+
+  useEffect(() => {
+    const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+    let konamiIndex = 0;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+          setGodMode(true);
+          setEasterEgg(true);
+          setShowRocket(true);
+          console.log("%c🔥 GOD MODE ACTIVATED!", "color: #EF4444; font-size: 24px; font-weight: bold;");
+          konamiIndex = 0;
+        }
+      } else {
+        konamiIndex = 0;
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+
+  useEffect(() => {
+    if (clicks >= 5 && !easterEgg && !godMode) {
+      setEasterEgg(true);
+      setShowRocket(true);
+      console.log("%c🚀 BANGER MODE ACTIVATED!", "color: #2563EB; font-size: 20px; font-weight: bold;");
+    }
+  }, [clicks, easterEgg, godMode]);
+
+  useEffect(() => {
+    if (showRocket) {
+      const timer = setTimeout(() => setShowRocket(false), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showRocket]);
+
+  const footerLinks = [
+    { path: '/', label: 'Home' },
+    { path: '/services', label: 'Services' },
+    { path: '/about', label: 'About' },
+    { path: '/team', label: 'Team' },
+    { path: '/contact', label: 'Contact' },
+  ];
+
+  return (
+    <footer className={`w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 ${godMode ? 'bg-[#450a0a]' : 'bg-[#0F172A]'} text-[#F8FAFC] snap-end shrink-0 overflow-hidden relative transition-colors duration-1000`}>
+      
+      {/* Rocket Animation */}
+      <AnimatePresence>
+        {showRocket && (
+          <motion.div
+            initial={{ x: '-20vw', y: '100vh', scale: 2, rotate: 0 }}
+            animate={{ x: '120vw', y: '-20vh', scale: 5, rotate: 0 }}
+            transition={{ duration: 1.5, ease: "easeInOut" }}
+            className="fixed z-[9999] pointer-events-none"
+            style={{ left: 0, bottom: 0 }}
+          >
+            🚀
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Score Display */}
+      <AnimatePresence>
+        {(easterEgg || godMode) && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`absolute top-8 right-8 font-display text-4xl md:text-6xl z-50 ${godMode ? 'text-red-500' : 'text-[#2563EB]'} pointer-events-none`}
+          >
+            SCORE: {score}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Easter egg background element */}
+      <AnimatePresence>
+        {(easterEgg || godMode) && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="absolute inset-0 overflow-hidden z-0"
+          >
+            {/* Geometric & Text Banger Fountain */}
+            {[...Array(godMode ? 60 : 30)].map((_, i) => (
+              <BangerParticle key={i} i={i} isGodMode={godMode} onPop={handlePop} />
+            ))}
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Sitemap */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-[#F8FAFC]/20 pt-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-white/20 pt-8 relative z-10">
          <div className="flex flex-col gap-2">
-            <span className="font-display text-3xl tracking-widest uppercase text-white">BEFORTH</span>
-            <span className="font-mono text-xs tracking-widest uppercase text-[#F8FAFC]/80">Bespoke Software. Built Different.</span>
+            <motion.span 
+              className="font-display text-3xl tracking-widest uppercase cursor-pointer select-none inline-block origin-left"
+              whileHover={{ color: godMode ? "#EF4444" : "#2563EB" }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setClicks(c => c + 1)}
+              animate={(easterEgg || godMode) ? { 
+                color: ["#F8FAFC", godMode ? "#EF4444" : "#2563EB", "#F8FAFC"],
+              } : {}}
+              transition={(easterEgg || godMode) ? { duration: 2, repeat: Infinity } : { duration: 0.2 }}
+            >
+              {godMode ? "GOD MODE 🔥" : easterEgg ? "BANGER MODE 🚀" : "BEFORTH"}
+            </motion.span>
+            <motion.span 
+              key={godMode ? 'god' : easterEgg ? 'egg' : 'normal'}
+              initial={{ opacity: 0, y: 5 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="font-mono text-xs tracking-widest uppercase opacity-80"
+            >
+              {godMode ? "Konami Code Accepted. Rip and tear." : easterEgg ? "We told you we ship bangers." : "Bespoke software. Zero BS."}
+            </motion.span>
          </div>
-         <div className="flex flex-wrap gap-6 md:gap-10 font-mono text-xs md:text-sm tracking-widest uppercase text-[#F8FAFC]/90">
-            <Link to="/" className="hover:text-white hover:underline underline-offset-4 transition-all">Home</Link>
-            <Link to="/services" className="hover:text-white hover:underline underline-offset-4 transition-all">Services</Link>
-            <Link to="/about" className="hover:text-white hover:underline underline-offset-4 transition-all">About</Link>
-            <Link to="/team" className="hover:text-white hover:underline underline-offset-4 transition-all">Team</Link>
-            <Link to="/contact" className="hover:text-white hover:underline underline-offset-4 transition-all">Contact</Link>
+         <div className="flex flex-wrap gap-6 md:gap-10 font-mono text-xs md:text-sm tracking-widest uppercase opacity-90">
+            {footerLinks.map(link => (
+              <Link key={link.path} to={link.path} className="relative overflow-hidden group h-5 md:h-6 flex items-center">
+                <motion.span className="block group-hover:-translate-y-[150%] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)]">{link.label}</motion.span>
+                <motion.span className={`absolute top-0 left-0 block translate-y-[150%] group-hover:translate-y-0 transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] ${(easterEgg || godMode) ? 'text-white font-bold' : 'text-[#2563EB]'}`}>{link.label}</motion.span>
+              </Link>
+            ))}
          </div>
       </div>
 
       {/* Bottom Bar */}
-      <div className="flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase text-[#F8FAFC]/80">
-        <motion.span
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase opacity-80 relative z-10">
+        <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
+          className="flex items-center gap-2"
         >
-          © {new Date().getFullYear()} BEFORTH
-        </motion.span>
+          <motion.span 
+            whileHover={{ rotate: 360, scale: 1.5 }} 
+            transition={{ duration: 0.5 }}
+            className="inline-block origin-center cursor-default"
+          >
+            ©
+          </motion.span> 
+          {new Date().getFullYear()} BEFORTH
+        </motion.div>
         <div className="flex items-center gap-6">
-          <motion.a 
-            href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
-            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-          >
-            <Linkedin className="w-4 h-4" />
-            <span className="hidden md:inline">LinkedIn</span>
-          </motion.a>
-          <motion.a 
-            href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
-            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-          >
-            <Twitter className="w-4 h-4" />
-            <span className="hidden md:inline">Twitter</span>
-          </motion.a>
+          <Magnetic>
+            <motion.a 
+              href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
+              whileHover={{ scale: 1.2, rotate: -5, color: (easterEgg || godMode) ? '#fff' : '#2563EB' }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Linkedin className="w-4 h-4" />
+              <span className="hidden md:inline">LinkedIn</span>
+            </motion.a>
+          </Magnetic>
+          <Magnetic>
+            <motion.a 
+              href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
+              whileHover={{ scale: 1.2, rotate: 5, color: (easterEgg || godMode) ? '#fff' : '#2563EB' }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <Twitter className="w-4 h-4" />
+              <span className="hidden md:inline">Twitter</span>
+            </motion.a>
+          </Magnetic>
         </div>
         <motion.span 
-          className="hidden md:block"
+          className="hidden md:block cursor-default"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.5 }}
+          whileHover={{ scale: 1.05, letterSpacing: "0.2em" }}
         >
           BESPOKE SYSTEMS
         </motion.span>

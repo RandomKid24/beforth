@@ -19,22 +19,24 @@ export function CustomCursor({
   glitchColorB = "#00feff",
   glitchColorR = "#ff4f71",
 }: CustomCursorProps) {
-  const cursorRef = useRef<HTMLDivElement>(null)
+  const cursorRef = useRef<HTMLDivElement & SVGSVGElement>(null)
   const circleRef = useRef<HTMLDivElement>(null)
   const dotRef = useRef<HTMLDivElement>(null)
   const filterRef = useRef<SVGFEGaussianBlurElement>(null)
 
-  const [position, setPosition] = useState({ x: 0, y: 0 })
   const [isVisible, setIsVisible] = useState(false)
   const [isHovering, setIsHovering] = useState(false)
   const [fading, setFading] = useState(false)
+
+  const isHoveringRef = useRef(false)
+  const fadingRef = useRef(false)
 
   const positionState = useRef({
     distanceX: 0,
     distanceY: 0,
     distance: 0,
-    pointerX: 0,
-    pointerY: 0,
+    pointerX: -100,
+    pointerY: -100,
     previousPointerX: 0,
     previousPointerY: 0,
     angle: 0,
@@ -44,58 +46,8 @@ export function CustomCursor({
     moving: false,
   })
 
-  useEffect(() => {
-    document.body.style.cursor = "none"
-
-    const handleMouseMove = (event: MouseEvent) => {
-      const state = positionState.current
-      state.previousPointerX = state.pointerX
-      state.previousPointerY = state.pointerY
-      state.pointerX = event.pageX
-      state.pointerY = event.pageY
-      state.distanceX = state.previousPointerX - state.pointerX
-      state.distanceY = state.previousPointerY - state.pointerY
-      state.distance = Math.sqrt(state.distanceY ** 2 + state.distanceX ** 2)
-
-      setPosition({ x: event.pageX, y: event.pageY })
-
-      const target = event.target as HTMLElement
-      const isInteractive =
-        target.tagName === "A" ||
-        target.tagName === "BUTTON" ||
-        target.onclick !== null ||
-        target.classList.contains("cursor-hover")
-      setIsHovering(isInteractive)
-
-      if (!isVisible) setIsVisible(true)
-    }
-
-    const handleMouseLeave = () => {
-      setIsVisible(false)
-    }
-
-    const handleClick = () => {
-      if (cursorRef.current) {
-        cursorRef.current.style.transform += " scale(0.75)"
-        setTimeout(() => {
-          if (cursorRef.current) {
-            cursorRef.current.style.transform = cursorRef.current.style.transform.replace(" scale(0.75)", "")
-          }
-        }, 35)
-      }
-    }
-
-    document.addEventListener("mousemove", handleMouseMove)
-    document.addEventListener("mouseleave", handleMouseLeave)
-    document.addEventListener("click", handleClick)
-
-    return () => {
-      document.body.style.cursor = "auto"
-      document.removeEventListener("mousemove", handleMouseMove)
-      document.removeEventListener("mouseleave", handleMouseLeave)
-      document.removeEventListener("click", handleClick)
-    }
-  }, [isVisible])
+  useEffect(() => { isHoveringRef.current = isHovering }, [isHovering])
+  useEffect(() => { fadingRef.current = fading }, [fading])
 
   const calculateRotation = () => {
     const state = positionState.current
@@ -129,6 +81,132 @@ export function CustomCursor({
   }
 
   useEffect(() => {
+    document.body.style.cursor = "none"
+
+    let animationFrameId: number;
+
+    const updateDOM = () => {
+      const state = positionState.current
+      const x = state.pointerX
+      const y = state.pointerY
+      const hovering = isHoveringRef.current
+      const isFading = fadingRef.current
+
+      if (cursorType === "arrow-pointer" && cursorRef.current) {
+        const rotation = calculateRotation()
+        cursorRef.current.style.transform = `translate3d(${x - size / 2}px, ${y}px, 0) rotate(${rotation}deg)`
+      } 
+      else if (cursorType === "big-circle") {
+        if (circleRef.current) {
+          circleRef.current.style.transform = `translate3d(${x - (size * 2.5) / 2}px, ${y - (size * 2.5) / 2}px, 0) ${hovering ? "scale(2.5)" : "scale(1)"}`
+        }
+        if (dotRef.current) {
+          dotRef.current.style.transform = `translate3d(${x - 3}px, ${y - 3}px, 0)`
+        }
+      }
+      else if (cursorType === "ring-dot" && cursorRef.current) {
+        const hoverSize = hovering ? 40 : size
+        cursorRef.current.style.transform = `translate3d(${x - hoverSize / 2}px, ${y - hoverSize / 2}px, 0)`
+        cursorRef.current.style.width = `${hoverSize}px`
+        cursorRef.current.style.height = `${hoverSize}px`
+      }
+      else if (cursorType === "circle-and-dot" && cursorRef.current) {
+        const rotation = calculateRotation()
+        cursorRef.current.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0) rotate(${rotation}deg)`
+        cursorRef.current.style.border = hovering ? `10px solid ${color}` : `1.25px solid ${color}`
+        cursorRef.current.style.boxShadow = `0 ${-15 - state.distance}px 0 -8px ${color}${isFading ? "00" : ""}`
+      }
+      else if (cursorType === "glitch-effect" && cursorRef.current) {
+        const distanceX = Math.min(Math.max(state.distanceX, -10), 10)
+        const distanceY = Math.min(Math.max(state.distanceY, -10), 10)
+        const currentSize = hovering ? 30 : 15
+        cursorRef.current.style.transform = `translate3d(${x - currentSize / 2}px, ${y - currentSize / 2}px, 0)`
+        cursorRef.current.style.width = `${currentSize}px`
+        cursorRef.current.style.height = `${currentSize}px`
+        cursorRef.current.style.boxShadow = `${distanceX}px ${distanceY}px 0 ${glitchColorB}, ${-distanceX}px ${-distanceY}px 0 ${glitchColorR}`
+      }
+      else if (cursorType === "motion-blur" && cursorRef.current) {
+        const distanceX = Math.min(Math.max(state.distanceX, -20), 20)
+        const distanceY = Math.min(Math.max(state.distanceY, -20), 20)
+        const unsortedAngle = Math.atan(Math.abs(distanceY) / Math.abs(distanceX)) * state.degrees
+        let angle = 0
+        let stdDeviation = "0, 0"
+
+        if (!isNaN(unsortedAngle)) {
+          if (unsortedAngle <= 45) {
+            angle = distanceX * distanceY >= 0 ? unsortedAngle : -unsortedAngle
+            stdDeviation = `${Math.abs(distanceX / 2)}, 0`
+          } else {
+            angle = distanceX * distanceY <= 0 ? 180 - unsortedAngle : unsortedAngle
+            stdDeviation = `${Math.abs(distanceY / 2)}, 0`
+          }
+        }
+        cursorRef.current.style.transform = `translate3d(${x - size / 2}px, ${y - size / 2}px, 0) rotate(${angle}deg)`
+        if (filterRef.current) {
+          filterRef.current.setAttribute("stdDeviation", stdDeviation)
+        }
+      }
+
+      animationFrameId = requestAnimationFrame(updateDOM)
+    }
+
+    updateDOM()
+
+    const handleMouseMove = (event: MouseEvent) => {
+      const state = positionState.current
+      state.previousPointerX = state.pointerX
+      state.previousPointerY = state.pointerY
+      state.pointerX = event.clientX
+      state.pointerY = event.clientY
+      state.distanceX = state.previousPointerX - state.pointerX
+      state.distanceY = state.previousPointerY - state.pointerY
+      state.distance = Math.sqrt(state.distanceY ** 2 + state.distanceX ** 2)
+
+      const target = event.target as HTMLElement
+      const isInteractive =
+        target.tagName === "A" ||
+        target.tagName === "BUTTON" ||
+        target.onclick !== null ||
+        target.classList.contains("cursor-hover") ||
+        target.closest("a") !== null ||
+        target.closest("button") !== null
+      
+      if (isHoveringRef.current !== isInteractive) {
+        setIsHovering(isInteractive)
+      }
+
+      if (!isVisible) setIsVisible(true)
+    }
+
+    const handleMouseLeave = () => {
+      setIsVisible(false)
+    }
+
+    const handleClick = () => {
+      if (cursorRef.current) {
+        cursorRef.current.style.transform += " scale(0.75)"
+        setTimeout(() => {
+          if (cursorRef.current) {
+            cursorRef.current.style.transform = cursorRef.current.style.transform.replace(" scale(0.75)", "")
+          }
+        }, 35)
+      }
+    }
+
+    document.addEventListener("mousemove", handleMouseMove)
+    document.addEventListener("mouseleave", handleMouseLeave)
+    document.addEventListener("click", handleClick)
+
+    return () => {
+      document.body.style.cursor = "auto"
+      document.removeEventListener("mousemove", handleMouseMove)
+      document.removeEventListener("mouseleave", handleMouseLeave)
+      document.removeEventListener("click", handleClick)
+      cancelAnimationFrame(animationFrameId)
+    }
+  }, [isVisible, cursorType, size, color, glitchColorB, glitchColorR])
+
+  useEffect(() => {
     const state = positionState.current
     if (state.distance > 1 && !fading) {
       setFading(true)
@@ -146,20 +224,17 @@ export function CustomCursor({
     pointerEvents: "none" as const,
     userSelect: "none" as const,
     opacity: isVisible ? 1 : 0,
-    transition: "250ms, transform 100ms",
-    transform: `translate3d(${position.x}px, ${position.y}px, 0)`,
+    transition: "opacity 250ms",
   })
 
   const renderArrowPointer = () => {
-    const rotation = calculateRotation()
     return (
       <div
-        ref={cursorRef}
+        ref={cursorRef as any}
         style={{
           ...getBaseStyle(),
           width: `${size}px`,
           height: `${size}px`,
-          transform: `translate3d(${position.x - size / 2}px, ${position.y}px, 0) rotate(${rotation}deg)`,
         }}
       >
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" style={{ width: "100%", height: "100%" }}>
@@ -187,7 +262,6 @@ export function CustomCursor({
           backgroundColor: "transparent",
           borderRadius: "50%",
           backdropFilter: "invert(0.85) grayscale(1)",
-          transform: `translate3d(${position.x - (size * 2.5) / 2}px, ${position.y - (size * 2.5) / 2}px, 0) ${isHovering ? "scale(2.5)" : "scale(1)"}`,
         }}
       />
       <div
@@ -199,28 +273,25 @@ export function CustomCursor({
           backgroundColor: "transparent",
           borderRadius: "50%",
           backdropFilter: "invert(1)",
-          transform: `translate3d(${position.x - 3}px, ${position.y - 3}px, 0)`,
         }}
       />
     </>
   )
 
   const renderRingDot = () => {
-    const hoverSize = isHovering ? 40 : size
     return (
       <div
-        ref={cursorRef}
+        ref={cursorRef as any}
         style={{
           ...getBaseStyle(),
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          width: `${hoverSize}px`,
-          height: `${hoverSize}px`,
+          width: `${size}px`,
+          height: `${size}px`,
           backgroundColor: "transparent",
           boxShadow: `0 0 0 1.25px ${color}, 0 0 0 2.25px #edf370`,
           borderRadius: "50%",
-          transform: `translate3d(${position.x - hoverSize / 2}px, ${position.y - hoverSize / 2}px, 0)`,
         }}
       >
         <div
@@ -237,82 +308,52 @@ export function CustomCursor({
   }
 
   const renderCircleAndDot = () => {
-    const rotation = calculateRotation()
-
     return (
       <div
-        ref={cursorRef}
+        ref={cursorRef as any}
         style={{
           ...getBaseStyle(),
           width: `${size}px`,
           height: `${size}px`,
           backgroundColor: "transparent",
-          border: isHovering ? `10px solid ${color}` : `1.25px solid ${color}`,
+          border: `1.25px solid ${color}`,
           borderRadius: "50%",
-          boxShadow: `0 ${-15 - positionState.current.distance}px 0 -8px ${color}${fading ? "00" : ""}`,
-          transform: `translate3d(${position.x - size / 2}px, ${position.y - size / 2}px, 0) rotate(${rotation}deg)`,
         }}
       />
     )
   }
 
   const renderGlitchEffect = () => {
-    const state = positionState.current
-    const distanceX = Math.min(Math.max(state.distanceX, -10), 10)
-    const distanceY = Math.min(Math.max(state.distanceY, -10), 10)
-    const currentSize = isHovering ? 30 : 15
-
     return (
       <div
-        ref={cursorRef}
+        ref={cursorRef as any}
         style={{
           ...getBaseStyle(),
-          width: `${currentSize}px`,
-          height: `${currentSize}px`,
+          width: `15px`,
+          height: `15px`,
           backgroundColor: "#222",
           borderRadius: "50%",
           backdropFilter: "invert(1)",
-          boxShadow: `${distanceX}px ${distanceY}px 0 ${glitchColorB}, ${-distanceX}px ${-distanceY}px 0 ${glitchColorR}`,
-          transform: `translate3d(${position.x - currentSize / 2}px, ${position.y - currentSize / 2}px, 0)`,
         }}
       />
     )
   }
 
   const renderMotionBlur = () => {
-    const state = positionState.current
-    const distanceX = Math.min(Math.max(state.distanceX, -20), 20)
-    const distanceY = Math.min(Math.max(state.distanceY, -20), 20)
-
-    const unsortedAngle = Math.atan(Math.abs(distanceY) / Math.abs(distanceX)) * state.degrees
-    let angle = 0
-    let stdDeviation = "0, 0"
-
-    if (!isNaN(unsortedAngle)) {
-      if (unsortedAngle <= 45) {
-        angle = distanceX * distanceY >= 0 ? unsortedAngle : -unsortedAngle
-        stdDeviation = `${Math.abs(distanceX / 2)}, 0`
-      } else {
-        angle = distanceX * distanceY <= 0 ? 180 - unsortedAngle : unsortedAngle
-        stdDeviation = `${Math.abs(distanceY / 2)}, 0`
-      }
-    }
-
     return (
       <svg
-        ref={cursorRef}
+        ref={cursorRef as any}
         style={{
           ...getBaseStyle(),
           width: `${size}px`,
           height: `${size}px`,
           borderRadius: "50%",
           overflow: "visible",
-          transform: `translate3d(${position.x - size / 2}px, ${position.y - size / 2}px, 0) rotate(${angle}deg)`,
         }}
       >
         <defs>
           <filter id="motionblur" x="-100%" y="-100%" width="400%" height="400%">
-            <feGaussianBlur ref={filterRef} stdDeviation={stdDeviation} />
+            <feGaussianBlur ref={filterRef} stdDeviation="0, 0" />
           </filter>
         </defs>
         <circle cx="50%" cy="50%" r="5" fill={color} filter="url(#motionblur)" />
