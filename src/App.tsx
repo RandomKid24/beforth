@@ -71,11 +71,17 @@ function Navbar() {
             })}
           </div>
 
-          <div className="hidden md:block ml-2 shrink-0">
+          <div className="hidden md:flex items-center ml-2 shrink-0">
             <Magnetic>
-              <Link to="/contact" className="relative overflow-hidden px-6 py-2.5 bg-[#0F172A] text-white rounded-full font-mono text-xs uppercase tracking-widest group inline-block">
-                <span className="relative z-10 transition-colors duration-500 group-hover:text-[#0F172A]">Let's Talk</span>
-                <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
+              <Link to="/contact" className="relative overflow-hidden px-6 py-2.5 bg-[#0F172A] text-white rounded-full font-mono text-xs uppercase tracking-widest group flex items-center justify-center border border-[#0F172A] transition-all duration-500">
+                <div className="absolute inset-0 bg-[#2563EB] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full" />
+                <span className="relative z-10 flex items-center gap-2">
+                  <span>Let's Talk</span>
+                  <div className="relative w-3 h-3 overflow-hidden flex items-center justify-center">
+                    <ArrowUpRight className="w-3 h-3 absolute transition-transform duration-500 group-hover:translate-x-4 group-hover:-translate-y-4" />
+                    <ArrowUpRight className="w-3 h-3 absolute -translate-x-4 translate-y-4 transition-transform duration-500 group-hover:translate-x-0 group-hover:translate-y-0" />
+                  </div>
+                </span>
               </Link>
             </Magnetic>
           </div>
@@ -251,33 +257,45 @@ function Hero() {
             style={{ opacity: opacityText }}
             className="mb-[3.82rem]"
           >
-            <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col">
-              <motion.div style={{ y: yText1 }} className="overflow-hidden">
+            <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col relative">
+              <motion.div style={{ y: yText1 }} className="z-30">
                 <motion.span 
-                  initial={{ y: "100%", rotate: 5 }}
-                  animate={{ y: 0, rotate: 0 }}
-                  transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block origin-top-left"
+                  animate={{ 
+                    y: [-400, -400, 0, -15, 0, 0],
+                    scaleY: [1, 1, 0.6, 1, 1, 1],
+                    rotate: [0, 0, -4, 0, 0, 0],
+                    opacity: [0, 0, 1, 1, 1, 1]
+                  }}
+                  transition={{ duration: 2.5, times: [0, 0.45, 0.6, 0.65, 0.7, 1], ease: "easeInOut" }}
+                  className="block origin-bottom"
                 >
                   WE SHIP
                 </motion.span>
               </motion.div>
-              <motion.div style={{ y: yText2 }} className="overflow-hidden">
+              <motion.div style={{ y: yText2 }} className="z-20">
                 <motion.span 
-                  initial={{ y: "100%", rotate: 5 }}
-                  animate={{ y: 0, rotate: 0 }}
-                  transition={{ duration: 1, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="block origin-top-left text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
+                  animate={{ 
+                    y: [-400, -400, 0, -20, 0, 0, 20, 0, 0],
+                    scaleY: [1, 1, 0.5, 1, 1, 1, 0.7, 1, 1],
+                    rotate: [0, 0, 3, 0, 0, 0, -2, 0, 0],
+                    opacity: [0, 0, 1, 1, 1, 1, 1, 1, 1]
+                  }}
+                  transition={{ duration: 2.5, times: [0, 0.25, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 1], ease: "easeInOut" }}
+                  className="block origin-bottom text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
                 >
                   BANGER
                 </motion.span>
               </motion.div>
-              <motion.div style={{ y: yText3 }} className="overflow-hidden">
+              <motion.div style={{ y: yText3 }} className="z-10">
                 <motion.span 
-                  initial={{ y: "100%", rotate: 5 }}
-                  animate={{ y: 0, rotate: 0 }}
-                  transition={{ duration: 1, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-                  className="block origin-top-left"
+                  animate={{ 
+                    y: [-400, 0, -30, 0, 0, 20, 0, 0, 30, 0, 0],
+                    scaleY: [1, 0.5, 1, 1, 1, 0.7, 1, 1, 0.6, 1, 1],
+                    rotate: [0, 0, -2, 0, 0, 2, 0, 0, -3, 0, 0],
+                    opacity: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
+                  }}
+                  transition={{ duration: 2.5, times: [0, 0.15, 0.2, 0.25, 0.35, 0.4, 0.45, 0.55, 0.6, 0.65, 1], ease: "easeInOut" }}
+                  className="block origin-bottom"
                 >
                   APPS.
                 </motion.span>
@@ -286,10 +304,10 @@ function Hero() {
           </motion.div>
 
           <motion.div 
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.4 }}
+            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
             className="max-w-[42.36rem]"
           >
             <div className="flex flex-wrap gap-[1rem] mb-[2.618rem]">
@@ -314,10 +332,10 @@ function Hero() {
           </motion.div>
 
           <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.8 }}
+            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mt-[4.236rem]"
           >
             <Magnetic>
@@ -1114,6 +1132,68 @@ function Process() {
   );
 }
 
+function Footer() {
+  return (
+    <footer className="w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 bg-[#0F172A] text-[#F8FAFC] snap-end shrink-0">
+      {/* Sitemap */}
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-[#F8FAFC]/20 pt-8">
+         <div className="flex flex-col gap-2">
+            <span className="font-display text-3xl tracking-widest uppercase text-white">BEFORTH</span>
+            <span className="font-mono text-xs tracking-widest uppercase text-[#F8FAFC]/80">Bespoke Software. Built Different.</span>
+         </div>
+         <div className="flex flex-wrap gap-6 md:gap-10 font-mono text-xs md:text-sm tracking-widest uppercase text-[#F8FAFC]/90">
+            <Link to="/" className="hover:text-white hover:underline underline-offset-4 transition-all">Home</Link>
+            <Link to="/services" className="hover:text-white hover:underline underline-offset-4 transition-all">Services</Link>
+            <Link to="/about" className="hover:text-white hover:underline underline-offset-4 transition-all">About</Link>
+            <Link to="/team" className="hover:text-white hover:underline underline-offset-4 transition-all">Team</Link>
+            <Link to="/contact" className="hover:text-white hover:underline underline-offset-4 transition-all">Contact</Link>
+         </div>
+      </div>
+
+      {/* Bottom Bar */}
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase text-[#F8FAFC]/80">
+        <motion.span
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.2 }}
+        >
+          © {new Date().getFullYear()} BEFORTH
+        </motion.span>
+        <div className="flex items-center gap-6">
+          <motion.a 
+            href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
+            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+          >
+            <Linkedin className="w-4 h-4" />
+            <span className="hidden md:inline">LinkedIn</span>
+          </motion.a>
+          <motion.a 
+            href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
+            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
+            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
+          >
+            <Twitter className="w-4 h-4" />
+            <span className="hidden md:inline">Twitter</span>
+          </motion.a>
+        </div>
+        <motion.span 
+          className="hidden md:block"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+        >
+          BESPOKE SYSTEMS
+        </motion.span>
+      </div>
+    </footer>
+  );
+}
+
 function CTA() {
   const [isHovered, setIsHovered] = useState(false);
   const containerRef = useContext(ScrollContext);
@@ -1128,12 +1208,12 @@ function CTA() {
   const yBg = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section id="cta" ref={sectionRef} className="min-h-screen py-24 w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col items-center justify-center relative overflow-hidden">
+    <section id="cta" ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col relative overflow-hidden">
       
       {/* Background Marquee */}
       <motion.div 
         style={{ y: yBg }}
-        className="absolute inset-0 flex flex-col justify-center gap-4 md:gap-8 opacity-90"
+        className="absolute inset-0 flex flex-col justify-center gap-4 md:gap-8 opacity-90 pointer-events-none"
       >
         <div className="animate-marquee flex whitespace-nowrap">
           <h2 className="text-[25vw] md:text-[20vw] leading-[1.05] py-2 md:py-4 font-display uppercase tracking-normal text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.4)] md:[-webkit-text-stroke:4px_rgba(255,255,255,0.4)] pr-8">
@@ -1153,7 +1233,7 @@ function CTA() {
       </motion.div>
 
       {/* Floating Center Button */}
-      <div className="z-10 absolute inset-0 flex items-center justify-center pointer-events-none">
+      <div className="z-10 flex-1 flex items-center justify-center pointer-events-none w-full relative mt-12 md:mt-0">
         <Magnetic>
           <motion.a
             href="mailto:hello@beforth.in"
@@ -1215,46 +1295,6 @@ function CTA() {
             </div>
           </motion.a>
         </Magnetic>
-      </div>
-
-      <div className="absolute bottom-[1.618rem] left-0 w-full px-[2.618rem] flex flex-col md:flex-row justify-between items-center gap-4 font-mono text-[10px] md:text-[0.75rem] tracking-widest uppercase text-[#F8FAFC]/80 z-20">
-        <motion.span
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.2 }}
-        >
-          © {new Date().getFullYear()} BEFORTH
-        </motion.span>
-        <div className="flex items-center gap-6">
-          <motion.a 
-            href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
-            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-          >
-            <Linkedin className="w-4 h-4" />
-            <span className="hidden md:inline">LinkedIn</span>
-          </motion.a>
-          <motion.a 
-            href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
-            whileHover={{ scale: 1.1, y: -2, transition: { duration: 0.2 } }}
-            whileTap={{ scale: 0.95, transition: { duration: 0.1 } }}
-          >
-            <Twitter className="w-4 h-4" />
-            <span className="hidden md:inline">Twitter</span>
-          </motion.a>
-        </div>
-        <motion.span 
-          className="hidden md:block"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-        >
-          BESPOKE SYSTEMS
-        </motion.span>
       </div>
     </section>
   );
@@ -1359,6 +1399,7 @@ export default function App() {
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
             </Routes>
+            <Footer />
           </PageTransition>
         </AnimatePresence>
       </div>

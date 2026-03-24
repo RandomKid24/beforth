@@ -91,70 +91,71 @@ const principles = [
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#2563EB] selection:text-white pb-24 md:pb-0">
+    <>
       
-      {/* Hero Section */}
-      <section className="pt-32 md:pt-48 pb-20 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-5xl"
-        >
-          <h1 className="text-[clamp(3.5rem,10vw,8rem)] font-display uppercase tracking-normal text-[#0F172A] mb-8 leading-[0.9]">
-            ABOUT <br/>
-            <span className="text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">BEFORTH.</span>
-          </h1>
-          
-          <p className="text-[1.2rem] md:text-[1.5rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-3xl mb-12">
-            We transform traditional business operations into structured, efficient digital systems. <strong className="text-[#0F172A] font-medium">Paper ledgers become dashboards. Manual entries become records.</strong>
-          </p>
+      {/* Hero & Marquee Section */}
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-between pt-32 md:pt-48 relative">
+        <div className="px-6 md:px-[10%] max-w-screen-2xl mx-auto w-full flex-1 flex flex-col justify-center pb-20">
+          <motion.div
+            initial={{ opacity: 0, y: 40, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+            className="max-w-5xl"
+          >
+            <h1 className="text-[clamp(3.5rem,10vw,8rem)] font-display uppercase tracking-normal text-[#0F172A] mb-8 leading-[0.9]">
+              ABOUT <br/>
+              <span className="text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">BEFORTH.</span>
+            </h1>
+            
+            <p className="text-[1.2rem] md:text-[1.5rem] font-sans text-[#64748B] font-light leading-[1.618] max-w-3xl mb-12">
+              We transform traditional business operations into structured, efficient digital systems. <strong className="text-[#0F172A] font-medium">Paper ledgers become dashboards. Manual entries become records.</strong>
+            </p>
 
-          <div className="flex flex-wrap gap-3 mb-16">
-            {tags.map((tag, index) => (
-              <motion.span 
-                key={tag}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.2 + (index * 0.05), ease: [0.16, 1, 0.3, 1] }}
-                className="px-4 py-2 rounded-full border border-[#2563EB]/20 text-[#0F172A] font-mono text-xs tracking-widest uppercase bg-[#2563EB]/5"
-              >
-                {tag}
-              </motion.span>
+            <div className="flex flex-wrap gap-3 mb-16">
+              {tags.map((tag, index) => (
+                <motion.span 
+                  key={tag}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 + (index * 0.05), ease: [0.16, 1, 0.3, 1] }}
+                  className="px-4 py-2 rounded-full border border-[#2563EB]/20 text-[#0F172A] font-mono text-xs tracking-widest uppercase bg-[#2563EB]/5"
+                >
+                  {tag}
+                </motion.span>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 40 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
+            >
+              <LazyImage 
+                src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
+                alt="Team collaborating" 
+                containerClassName="w-full h-[300px] md:h-[500px] rounded-[2rem] shadow-lg"
+              />
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Marquee Section */}
+        <div className="bg-[#2563EB] py-6 overflow-hidden flex whitespace-nowrap border-y border-[#0F172A]/10 w-full mt-auto">
+          <div className="animate-marquee flex items-center">
+            {[...Array(6)].map((_, i) => (
+              <span key={i} className="text-2xl md:text-4xl font-display uppercase text-white mx-8 tracking-wide">
+                Process-focused <span className="mx-8 opacity-50">•</span> Multi-industry <span className="mx-8 opacity-50">•</span> Long-term <span className="mx-8 opacity-50">•</span>
+              </span>
             ))}
           </div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-          >
-            <LazyImage 
-              src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=2000&q=80" 
-              alt="Team collaborating" 
-              containerClassName="w-full h-[300px] md:h-[500px] rounded-[2rem] shadow-lg"
-            />
-          </motion.div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Marquee Section */}
-      <div className="bg-[#2563EB] py-6 overflow-hidden flex whitespace-nowrap border-y border-[#0F172A]/10">
-        <div className="animate-marquee flex items-center">
-          {[...Array(6)].map((_, i) => (
-            <span key={i} className="text-2xl md:text-4xl font-display uppercase text-white mx-8 tracking-wide">
-              Process-focused <span className="mx-8 opacity-50">•</span> Multi-industry <span className="mx-8 opacity-50">•</span> Long-term <span className="mx-8 opacity-50">•</span>
-            </span>
-          ))}
-        </div>
-      </div>
-
       {/* Editorial Content Sections */}
-      <section className="py-24 md:py-32 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
-        <div className="flex flex-col gap-24 md:gap-32">
-          {contentBlocks.map((block, i) => (
+      {contentBlocks.map((block, i) => (
+        <section key={i} className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center py-24 md:py-32 px-6 md:px-[10%] relative">
+          <div className="max-w-screen-2xl mx-auto w-full">
             <motion.div 
-              key={i}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
@@ -183,13 +184,13 @@ export default function AboutPage() {
                 </div>
               </div>
             </motion.div>
-          ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      ))}
 
       {/* Principles Section */}
-      <section className="bg-[#020617] text-white py-24 md:py-32 px-6 md:px-[10%]">
-        <div className="max-w-screen-2xl mx-auto">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center bg-[#020617] text-white py-24 md:py-32 px-6 md:px-[10%] relative">
+        <div className="max-w-screen-2xl mx-auto w-full">
           <motion.div 
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -228,6 +229,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-    </div>
+    </>
   );
 }

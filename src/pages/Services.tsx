@@ -31,7 +31,7 @@ const services = [
   }
 ];
 
-const ServiceRow = ({ service, isOpen, onClick }: { service: any, isOpen: boolean, onClick: () => void }) => {
+const ServiceRow: React.FC<{ service: any, isOpen: boolean, onClick: () => void }> = ({ service, isOpen, onClick }) => {
   return (
     <div className="border-b border-white/10 overflow-hidden">
       <button
@@ -102,15 +102,15 @@ export default function ServicesPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] font-sans selection:bg-[#2563EB] selection:text-white">
+    <>
       
       {/* Hero Section */}
-      <section className="pt-32 md:pt-48 pb-20 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center pt-32 md:pt-48 pb-20 px-6 md:px-[10%] relative">
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-5xl"
+          className="max-w-5xl mx-auto w-full"
         >
           <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-100 mb-8">
             <div className="w-2 h-2 rounded-full bg-[#2563EB] animate-pulse" />
@@ -129,8 +129,8 @@ export default function ServicesPage() {
       </section>
 
       {/* Interactive Accordion Section (Dark Mode for contrast) */}
-      <section className="bg-[#020617] text-white py-24 md:py-32 px-6 md:px-[10%]">
-        <div className="max-w-screen-2xl mx-auto">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center bg-[#020617] text-white py-24 md:py-32 px-6 md:px-[10%] relative">
+        <div className="max-w-screen-2xl mx-auto w-full">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -155,81 +155,83 @@ export default function ServicesPage() {
       </section>
 
       {/* Bento Grid Methodology */}
-      <section className="py-24 md:py-32 px-6 md:px-[10%] max-w-screen-2xl mx-auto">
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="mb-16"
-        >
-          <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase leading-[1.05] text-[#0F172A]">
-            How we operate.
-          </h2>
-        </motion.div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <motion.div 
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center py-24 md:py-32 px-6 md:px-[10%] relative">
+        <div className="max-w-screen-2xl mx-auto w-full">
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm md:col-span-2 flex flex-col md:flex-row gap-8 md:gap-16 items-start md:items-center overflow-hidden"
+            className="mb-16"
           >
-            <div className="flex-1">
-              <div className="font-display text-[6rem] md:text-[8rem] leading-none text-slate-100 shrink-0 mb-4">01</div>
-              <h3 className="text-[2rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Discovery & Blueprint</h3>
-              <p className="text-[1.1rem] font-sans text-[#64748B] font-light leading-[1.618]">
-                We don't just write code; we map your entire operational workflow. We identify bottlenecks, architect the database schema, and design a system that actually solves your problems.
+            <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase leading-[1.05] text-[#0F172A]">
+              How we operate.
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+              className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm md:col-span-2 flex flex-col md:flex-row gap-8 md:gap-16 items-start md:items-center overflow-hidden"
+            >
+              <div className="flex-1">
+                <div className="font-display text-[6rem] md:text-[8rem] leading-none text-slate-100 shrink-0 mb-4">01</div>
+                <h3 className="text-[2rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Discovery & Blueprint</h3>
+                <p className="text-[1.1rem] font-sans text-[#64748B] font-light leading-[1.618]">
+                  We don't just write code; we map your entire operational workflow. We identify bottlenecks, architect the database schema, and design a system that actually solves your problems.
+                </p>
+              </div>
+              <div className="flex-1 w-full">
+                <LazyImage 
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
+                  alt="System Architecture" 
+                  containerClassName="w-full h-64 md:h-full rounded-2xl shadow-sm"
+                />
+              </div>
+            </motion.div>
+
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
+              className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm flex flex-col"
+            >
+              <div className="font-display text-[4rem] leading-none text-slate-100 mb-8">02</div>
+              <h3 className="text-[1.5rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Agile Engineering</h3>
+              <p className="text-[1rem] font-sans text-[#64748B] font-light leading-[1.618]">
+                Rapid, iterative development cycles. We build core modules, custom APIs, and integrate webhooks with zero bloat.
               </p>
-            </div>
-            <div className="flex-1 w-full">
-              <LazyImage 
-                src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" 
-                alt="System Architecture" 
-                containerClassName="w-full h-64 md:h-full rounded-2xl shadow-sm"
-              />
-            </div>
-          </motion.div>
+            </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.1 }}
-            className="bg-white p-10 md:p-16 rounded-[2rem] border border-slate-200 shadow-sm flex flex-col"
-          >
-            <div className="font-display text-[4rem] leading-none text-slate-100 mb-8">02</div>
-            <h3 className="text-[1.5rem] font-display uppercase tracking-wide text-[#0F172A] mb-4">Agile Engineering</h3>
-            <p className="text-[1rem] font-sans text-[#64748B] font-light leading-[1.618]">
-              Rapid, iterative development cycles. We build core modules, custom APIs, and integrate webhooks with zero bloat.
-            </p>
-          </motion.div>
-
-          <motion.div 
-            initial={{ opacity: 0, y: 40, scale: 0.95 }}
-            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
-            className="bg-[#2563EB] text-white p-10 md:p-16 rounded-[2rem] shadow-xl flex flex-col"
-          >
-            <div className="font-display text-[4rem] leading-none text-blue-400/30 mb-8">03</div>
-            <h3 className="text-[1.5rem] font-display uppercase tracking-wide mb-4">Deploy & Scale</h3>
-            <p className="text-[1rem] font-sans text-blue-100 font-light leading-[1.618]">
-              Rigorous security audits, seamless legacy data migration, and a flawless launch. Built to scale infinitely.
-            </p>
-          </motion.div>
+            <motion.div 
+              initial={{ opacity: 0, y: 40, scale: 0.95 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+              className="bg-[#2563EB] text-white p-10 md:p-16 rounded-[2rem] shadow-xl flex flex-col"
+            >
+              <div className="font-display text-[4rem] leading-none text-blue-400/30 mb-8">03</div>
+              <h3 className="text-[1.5rem] font-display uppercase tracking-wide mb-4">Deploy & Scale</h3>
+              <p className="text-[1rem] font-sans text-blue-100 font-light leading-[1.618]">
+                Rigorous security audits, seamless legacy data migration, and a flawless launch. Built to scale infinitely.
+              </p>
+            </motion.div>
+          </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-white py-32 px-6 text-center border-t border-slate-200">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center bg-white py-32 px-6 text-center border-t border-slate-200 relative">
         <motion.div
           initial={{ opacity: 0, y: 40, scale: 0.95 }}
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-3xl mx-auto"
+          className="max-w-3xl mx-auto w-full"
         >
           <h2 className="text-[3rem] md:text-[5rem] font-display uppercase leading-[0.9] text-[#0F172A] mb-8">
             Ready to build <br /> <span className="text-transparent [-webkit-text-stroke:1.5px_#0F172A]">something real?</span>
@@ -253,6 +255,6 @@ export default function ServicesPage() {
         </motion.div>
       </section>
 
-    </div>
+    </>
   );
 }
