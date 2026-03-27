@@ -1,6 +1,11 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import { motion, useScroll, useTransform, AnimatePresence } from 'motion/react';
+import gsap from 'gsap';
+import { useGSAP } from '@gsap/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
 import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { Magnetic } from './components/Magnetic';
 
@@ -170,6 +175,49 @@ function Hero() {
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
   
+  // GSAP Entrance Animation
+  const textContainerRef = useRef<HTMLHeadingElement>(null);
+  
+  useGSAP(() => {
+    const tl = gsap.timeline({ delay: 0.2 });
+    
+    // Animate the main text lines
+    tl.fromTo(".hero-text-line", 
+      { y: 200, opacity: 0, rotate: 5, scaleY: 1.2 },
+      { 
+        y: 0, 
+        opacity: 1, 
+        rotate: 0, 
+        scaleY: 1, 
+        duration: 1.2, 
+        stagger: 0.15, 
+        ease: "power4.out" 
+      }
+    );
+    
+    // Animate the tags
+    tl.fromTo(".hero-tag",
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6, stagger: 0.05, ease: "back.out(1.5)" },
+      "-=0.8"
+    );
+    
+    // Animate the paragraphs
+    tl.fromTo(".hero-p",
+      { y: 20, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: "power3.out" },
+      "-=0.6"
+    );
+    
+    // Animate the CTA button
+    tl.fromTo(".hero-cta",
+      { scale: 0.8, opacity: 0 },
+      { scale: 1, opacity: 1, duration: 0.8, ease: "elastic.out(1, 0.5)" },
+      "-=0.6"
+    );
+    
+  }, { scope: sectionRef });
+
   const { scrollYProgress } = useScroll({
     container: containerRef || undefined,
     target: sectionRef,
@@ -257,87 +305,48 @@ function Hero() {
             style={{ opacity: opacityText }}
             className="mb-[3.82rem]"
           >
-            <h1 className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col relative">
-              <motion.div style={{ y: yText1 }} className="z-30">
-                <motion.span 
-                  animate={{ 
-                    y: [-400, -400, 0, -15, 0, 0],
-                    scaleY: [1, 1, 0.6, 1, 1, 1],
-                    rotate: [0, 0, -4, 0, 0, 0],
-                    opacity: [0, 0, 1, 1, 1, 1]
-                  }}
-                  transition={{ duration: 2.5, times: [0, 0.45, 0.6, 0.65, 0.7, 1], ease: "easeInOut" }}
-                  className="block origin-bottom"
-                >
+            <h1 ref={textContainerRef} className="text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col relative overflow-hidden">
+              <motion.div style={{ y: yText1 }} className="z-30 overflow-hidden">
+                <span className="hero-text-line block origin-bottom">
                   WE SHIP
-                </motion.span>
+                </span>
               </motion.div>
-              <motion.div style={{ y: yText2 }} className="z-20">
-                <motion.span 
-                  animate={{ 
-                    y: [-400, -400, 0, -20, 0, 0, 20, 0, 0],
-                    scaleY: [1, 1, 0.5, 1, 1, 1, 0.7, 1, 1],
-                    rotate: [0, 0, 3, 0, 0, 0, -2, 0, 0],
-                    opacity: [0, 0, 1, 1, 1, 1, 1, 1, 1]
-                  }}
-                  transition={{ duration: 2.5, times: [0, 0.25, 0.4, 0.45, 0.5, 0.55, 0.6, 0.65, 1], ease: "easeInOut" }}
-                  className="block origin-bottom text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]"
-                >
+              <motion.div style={{ y: yText2 }} className="z-20 overflow-hidden">
+                <span className="hero-text-line block origin-bottom text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">
                   BANGER
-                </motion.span>
+                </span>
               </motion.div>
-              <motion.div style={{ y: yText3 }} className="z-10">
-                <motion.span 
-                  animate={{ 
-                    y: [-400, 0, -30, 0, 0, 20, 0, 0, 30, 0, 0],
-                    scaleY: [1, 0.5, 1, 1, 1, 0.7, 1, 1, 0.6, 1, 1],
-                    rotate: [0, 0, -2, 0, 0, 2, 0, 0, -3, 0, 0],
-                    opacity: [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]
-                  }}
-                  transition={{ duration: 2.5, times: [0, 0.15, 0.2, 0.25, 0.35, 0.4, 0.45, 0.55, 0.6, 0.65, 1], ease: "easeInOut" }}
-                  className="block origin-bottom"
-                >
+              <motion.div style={{ y: yText3 }} className="z-10 overflow-hidden">
+                <span className="hero-text-line block origin-bottom">
                   APPS.
-                </motion.span>
+                </span>
               </motion.div>
             </h1>
           </motion.div>
 
-          <motion.div 
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.4, ease: [0.16, 1, 0.3, 1] }}
-            className="max-w-[42.36rem]"
-          >
+          <div className="max-w-[42.36rem]">
             <div className="flex flex-wrap gap-[1rem] mb-[2.618rem]">
               {['Custom ERPs', 'Mobile Apps', 'Web Platforms', 'HRMS & CRM'].map((tag, i) => (
                 <motion.span 
                   key={i} 
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
-                  className="px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10 cursor-default hover:bg-[#2563EB]/20 transition-colors duration-300"
+                  className="hero-tag px-[1rem] py-[0.618rem] rounded-full border border-[#2563EB]/40 text-[#0F172A] font-mono text-[0.75rem] tracking-widest uppercase bg-[#2563EB]/10 cursor-default hover:bg-[#2563EB]/20 transition-colors duration-300"
                 >
                   {tag}
                 </motion.span>
               ))}
             </div>
 
-            <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] mb-[1.618rem]">
+            <p className="hero-p text-[1rem] md:text-[1.2rem] font-sans text-[#64748B] font-light leading-[1.618] mb-[1.618rem]">
               We replace boring spreadsheets with custom software that actually slaps. <strong className="text-[#0F172A] font-medium">No cap, just clean code and good vibes.</strong>
             </p>
-            <p className="text-[1rem] md:text-[1.2rem] font-sans text-[#0F172A] font-medium">
+            <p className="hero-p text-[1rem] md:text-[1.2rem] font-sans text-[#0F172A] font-medium">
               You focus on the bag. We'll handle the tech.
             </p>
-          </motion.div>
+          </div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1, delay: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="mt-[4.236rem]"
-          >
+          <div className="mt-[4.236rem] hero-cta">
             <Magnetic>
               <a href="#cta" className="pointer-events-auto relative overflow-hidden px-8 py-4 border border-[#0F172A] rounded-full font-mono text-xs uppercase tracking-widest group inline-flex items-center gap-3 bg-[#0F172A] text-white">
                 <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-[#0F172A]">START A PROJECT</span>
@@ -345,7 +354,7 @@ function Hero() {
                 <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
               </a>
             </Magnetic>
-          </motion.div>
+          </div>
         </div>
 
         {/* 38.2% Width for Visual Element - Multi-Device Mockups */}
@@ -459,6 +468,74 @@ function Contrast() {
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
   
+  useGSAP(() => {
+    if (!containerRef?.current) return;
+    const scroller = containerRef.current;
+    
+    // Left side entrance
+    gsap.fromTo(".contrast-left", 
+      { opacity: 0, x: -50 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 75%",
+        }
+      }
+    );
+    
+    // Left list items stagger
+    gsap.fromTo(".contrast-li-left",
+      { opacity: 0, x: -20 },
+      {
+        opacity: 1,
+        x: 0,
+        duration: 0.5,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 65%",
+        }
+      }
+    );
+
+    // Right side entrance
+    gsap.fromTo(".contrast-right", 
+      { opacity: 0, x: 50 },
+      { 
+        opacity: 1, 
+        x: 0, 
+        duration: 0.8,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 75%",
+        }
+      }
+    );
+    
+    // Right text lines stagger
+    gsap.fromTo(".contrast-text-right",
+      { opacity: 0, y: 20 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        stagger: 0.2,
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 60%",
+        }
+      }
+    );
+    
+  }, { scope: sectionRef, dependencies: [containerRef?.current] });
+
   const { scrollYProgress } = useScroll({
     container: containerRef || undefined,
     target: sectionRef,
@@ -473,84 +550,56 @@ function Contrast() {
       {/* Golden Ratio Grid: 1fr to 1.618fr */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-[1fr_1.618fr] gap-[4.236rem]">
         <motion.div 
-          initial={{opacity:0, x:-50}} 
-          whileInView={{opacity:1, x:0}} 
-          transition={{duration:0.8}}
-          style={{ y: yLeft }}
-          className="flex flex-col justify-center"
-        >
-          <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
-            Off-the-shelf<br/>
-            <span className="text-transparent [-webkit-text-stroke:1px_#FFFFFF]">is broken.</span>
-          </h2>
-          <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#94A3B8]">
-            <motion.li 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              whileHover={{ x: 10 }} 
-              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
-            >
-              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
-              <div className="flex-1 line-through decoration-[#94A3B8]/40">
-                Paying monthly for features you never use
-              </div>
-            </motion.li>
-            <motion.li 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              whileHover={{ x: 10 }} 
-              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
-            >
-              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
-              <div className="flex-1 line-through decoration-[#94A3B8]/40">
-                Changing your business to fit the software
-              </div>
-            </motion.li>
-            <motion.li 
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.6 }}
-              whileHover={{ x: 10 }} 
-              className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
-            >
-              <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
-              <div className="flex-1 line-through decoration-[#94A3B8]/40">
-                Scattered data across 5 different apps
-              </div>
-            </motion.li>
-          </ul>
-        </motion.div>
+            style={{ y: yLeft }}
+            className="contrast-left flex flex-col justify-center"
+          >
+            <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
+              Off-the-shelf<br/>
+              <span className="text-transparent [-webkit-text-stroke:1px_#FFFFFF]">is broken.</span>
+            </h2>
+            <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#94A3B8]">
+              <motion.li 
+                whileHover={{ x: 10 }} 
+                className="contrast-li-left flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+              >
+                <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+                <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                  Paying monthly for features you never use
+                </div>
+              </motion.li>
+              <motion.li 
+                whileHover={{ x: 10 }} 
+                className="contrast-li-left flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+              >
+                <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+                <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                  Changing your business to fit the software
+                </div>
+              </motion.li>
+              <motion.li 
+                whileHover={{ x: 10 }} 
+                className="contrast-li-left flex items-start gap-[1rem] transition-transform duration-300 cursor-default"
+              >
+                <div className="w-2 h-2 bg-[#94A3B8]/40 rounded-full shrink-0 mt-2"/> 
+                <div className="flex-1 line-through decoration-[#94A3B8]/40">
+                  Scattered data across 5 different apps
+                </div>
+              </motion.li>
+            </ul>
+          </motion.div>
 
-        <motion.div 
-          initial={{opacity:0, x:50}} 
-          whileInView={{opacity:1, x:0}} 
-          transition={{duration:0.8, delay: 0.2}}
-          style={{ y: yRight }}
-          className="bg-[#F8FAFC] text-[#0F172A] p-[4.236rem] flex flex-col justify-center rounded-sm shadow-2xl"
-        >
-          <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
-            <motion.span 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.3 }}
-              className="block bg-clip-text text-transparent bg-gradient-to-r from-[#0F172A] to-[#2563EB]"
-            >
-              Custom fits
-            </motion.span>
-            <motion.span 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.5 }}
-              className="block bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] to-[#0F172A]"
-            >
-              perfectly.
-            </motion.span>
-          </h2>
+          <motion.div 
+            style={{ y: yRight }}
+            className="contrast-right bg-[#F8FAFC] text-[#0F172A] p-[4.236rem] flex flex-col justify-center rounded-sm shadow-2xl"
+          >
+            <h2 className="text-[2.618rem] md:text-[4.236rem] font-display uppercase mb-[2.618rem] leading-[1.05] pb-2">
+              <span className="contrast-text-right block bg-clip-text text-transparent bg-gradient-to-r from-[#0F172A] to-[#2563EB]">
+                Custom fits
+              </span>
+              <span className="contrast-text-right block bg-clip-text text-transparent bg-gradient-to-r from-[#2563EB] to-[#0F172A]">
+                perfectly.
+              </span>
+            </h2>
           <ul className="space-y-[1.618rem] font-mono text-[0.85rem] md:text-[1rem] text-[#64748B]">
             <motion.li whileHover={{ x: 10 }} className="flex items-start gap-[1rem] transition-transform duration-300 cursor-default">
               <div className="w-2 h-2 bg-[#2563EB] rounded-full shrink-0 mt-2"/> 
@@ -1353,6 +1402,47 @@ function CTA() {
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
   
+  useGSAP(() => {
+    if (!containerRef?.current) return;
+    const scroller = containerRef.current;
+    
+    // Marquee entrance animation
+    gsap.fromTo(".cta-marquee",
+      { opacity: 0, scale: 0.9, rotate: -2 },
+      {
+        opacity: 0.9,
+        scale: 1,
+        rotate: 0,
+        duration: 1.2,
+        stagger: 0.2,
+        ease: "power3.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 80%",
+        }
+      }
+    );
+
+    // Button pop-in animation
+    gsap.fromTo(".cta-button-container",
+      { scale: 0, opacity: 0, rotate: -15 },
+      {
+        scale: 1,
+        opacity: 1,
+        rotate: 0,
+        duration: 1.5,
+        ease: "elastic.out(1, 0.4)",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          scroller: scroller,
+          start: "top 60%",
+        }
+      }
+    );
+    
+  }, { scope: sectionRef, dependencies: [containerRef?.current] });
+
   const { scrollYProgress } = useScroll({
     container: containerRef || undefined,
     target: sectionRef,
@@ -1369,17 +1459,17 @@ function CTA() {
         style={{ y: yBg }}
         className="absolute inset-0 flex flex-col justify-center gap-4 md:gap-8 opacity-90 pointer-events-none"
       >
-        <div className="animate-marquee flex whitespace-nowrap">
+        <div className="cta-marquee animate-marquee flex whitespace-nowrap">
           <h2 className="text-[25vw] md:text-[20vw] leading-[1.05] py-2 md:py-4 font-display uppercase tracking-normal text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.4)] md:[-webkit-text-stroke:4px_rgba(255,255,255,0.4)] pr-8">
             LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — 
           </h2>
         </div>
-        <div className="animate-marquee-reverse flex whitespace-nowrap">
+        <div className="cta-marquee animate-marquee-reverse flex whitespace-nowrap">
           <h2 className="text-[25vw] md:text-[20vw] leading-[1.05] py-2 md:py-4 font-display uppercase tracking-normal text-[#F8FAFC] pr-8">
             LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — 
           </h2>
         </div>
-        <div className="animate-marquee-fast flex whitespace-nowrap">
+        <div className="cta-marquee animate-marquee-fast flex whitespace-nowrap">
           <h2 className="text-[25vw] md:text-[20vw] leading-[1.05] py-2 md:py-4 font-display uppercase tracking-normal text-transparent [-webkit-text-stroke:2px_rgba(255,255,255,0.4)] md:[-webkit-text-stroke:4px_rgba(255,255,255,0.4)] pr-8">
             LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — LET'S BUILD IT — 
           </h2>
@@ -1387,7 +1477,7 @@ function CTA() {
       </motion.div>
 
       {/* Floating Center Button */}
-      <div className="z-10 flex-1 flex items-center justify-center pointer-events-none w-full relative mt-12 md:mt-0">
+      <div className="cta-button-container z-10 flex-1 flex items-center justify-center pointer-events-none w-full relative mt-12 md:mt-0">
         <Magnetic>
           <motion.a
             href="mailto:hello@beforth.in"
