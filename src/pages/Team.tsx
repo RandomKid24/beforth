@@ -50,8 +50,8 @@ function TeamMemberCard({ member, index }: { member: any, index: number }) {
       )}
       
       <div className="flex gap-4 mt-auto pt-4 border-t border-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Instagram className="w-4 h-4" /></a>
-        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Linkedin className="w-4 h-4" /></a>
+        <a href="https://www.instagram.com/beforth.in" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-primary transition-colors"><Instagram className="w-4 h-4" /></a>
+        <a href="https://in.linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="text-slate-500 hover:text-primary transition-colors"><Linkedin className="w-4 h-4" /></a>
         <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Github className="w-4 h-4" /></a>
       </div>
     </motion.div>
@@ -81,14 +81,14 @@ export default function TeamPage() {
   ];
 
   return (
-    <>
-      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center pt-32 pb-20 px-6 md:px-[10%] relative">
+    <div className="page-container">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center px-0 md:px-0 relative">
         <div className="max-w-7xl mx-auto w-full">
           {/* Hero Section */}
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
+            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-[4.236rem]"
           >
             <div className="flex items-center gap-3 mb-[1.618rem]">
@@ -97,30 +97,19 @@ export default function TeamPage() {
             </div>
             
             <h1 className="hero-heading mb-8">
-              <motion.span 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-                className="block"
-              >
-                THE
-              </motion.span>
-              <motion.span 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: 0.1, ease: "easeOut" }}
-                className="block text-transparent [-webkit-text-stroke:1.5px_var(--color-slate-900)] md:[-webkit-text-stroke:2px_var(--color-slate-900)]"
-              >
+              <span className="block">THE</span>
+              <span className="block text-transparent [-webkit-text-stroke:1.5px_var(--color-slate-900)] md:[-webkit-text-stroke:2px_var(--color-slate-900)]">
                 SQUAD.
-              </motion.span>
+              </span>
             </h1>
             
             <div className="flex flex-wrap gap-[1rem] mb-[2.618rem]">
               {['Engineers', 'Designers', 'Strategists', 'Creators'].map((tag, i) => (
                 <motion.span 
                   key={i} 
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.4 + (i * 0.1), duration: 0.4 }}
                   whileHover={{ scale: 1.05, y: -2 }}
                   whileTap={{ scale: 0.95 }}
                   className="badge"
@@ -147,11 +136,11 @@ export default function TeamPage() {
       </section>
 
       {/* Dark Contrast Section */}
-      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center py-24 px-6 md:px-[10%] relative">
+      <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center py-24 relative px-6 md:px-[10%]">
         <div className="max-w-7xl mx-auto w-full">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
+            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
+            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="dark-section group"
@@ -178,6 +167,6 @@ export default function TeamPage() {
           </motion.div>
         </div>
       </section>
-    </>
+    </div>
   );
 }

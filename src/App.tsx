@@ -17,7 +17,8 @@ export const ScrollContext = React.createContext<React.RefObject<HTMLDivElement 
 // 3. Sage (Accent/Hover): #2563EB
 // 4. Pale (Subtle borders/text): #64748B
 
-import { CustomCursor } from "./components/ui/custom-cursor";
+import { CustomCursor } from "@/components/ui/custom-cursor";
+import DemoCustomCursor from "@/components/DemoCustomCursor";
 import ServicesPage from './pages/Services';
 import AboutPage from './pages/About';
 import TeamPage from './pages/Team';
@@ -46,8 +47,9 @@ function Navbar() {
       >
         <div className={`pointer-events-auto flex items-center justify-between md:justify-start gap-2 p-2 rounded-full transition-all duration-500 ${isOpen ? 'bg-[#0F172A] text-white w-full max-w-sm shadow-2xl' : 'bg-white/80 backdrop-blur-xl border border-slate-200/50 shadow-[0_8px_32px_rgba(0,0,0,0.08)] w-full md:w-auto'}`}>
           
-          <Link to="/" onClick={() => setIsOpen(false)} className="pl-4 pr-2 font-display text-xl tracking-widest uppercase hover:scale-105 transition-transform shrink-0">
-            BEFORTH
+          <Link to="/" onClick={() => setIsOpen(false)} className="pl-4 pr-2 flex items-center gap-2 font-display text-xl tracking-widest uppercase hover:scale-105 transition-transform shrink-0">
+            <img src="/befu.png" alt="BEFORTH Logo" className="w-8 h-8 object-contain" />
+            <span className={isOpen ? 'text-white' : 'text-[#0F172A]'}>BEFORTH</span>
           </Link>
           
           <div className="hidden md:flex items-center gap-1 font-mono text-xs tracking-widest uppercase ml-4 border-l border-slate-300/50 pl-4">
@@ -277,7 +279,6 @@ function Hero() {
           <motion.div 
             animate={{ 
               maskPosition: ["-50vw 0", "150vw 0"],
-              WebkitMaskPosition: ["-50vw 0", "150vw 0"]
             }}
             transition={{ 
               duration: 4, 
@@ -1361,7 +1362,7 @@ function Footer() {
         <div className="flex items-center gap-6">
           <Magnetic>
             <motion.a 
-              href="https://linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+              href="https://in.linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.3 } }}
               whileHover={{ scale: 1.2, rotate: -5, color: easterEgg ? '#fff' : '#2563EB' }}
@@ -1373,7 +1374,7 @@ function Footer() {
           </Magnetic>
           <Magnetic>
             <motion.a 
-              href="https://instagram.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+              href="https://www.instagram.com/beforth.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
               whileHover={{ scale: 1.2, rotate: 5, color: easterEgg ? '#fff' : '#2563EB' }}
@@ -1473,7 +1474,7 @@ function CTA() {
       <div className="cta-button-container z-10 flex-1 flex items-center justify-center pointer-events-none w-full relative mt-12 md:mt-0">
         <Magnetic>
           <motion.a
-            href="mailto:hello@beforth.in"
+            href="mailto:support@beforth.in"
             onHoverStart={() => setIsHovered(true)}
             onHoverEnd={() => setIsHovered(false)}
             whileHover={{ scale: 1.1 }}
@@ -1571,6 +1572,13 @@ export default function App() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
+  useEffect(() => {
+    // Force immediate scroll to top on every route change
+    if (scrollRef.current) {
+      scrollRef.current.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
+
   return (
     <ScrollContext.Provider value={scrollRef}>
       <style>{`
@@ -1635,6 +1643,7 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/demo-cursor" element={<DemoCustomCursor />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
