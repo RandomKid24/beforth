@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { motion, useScroll, useTransform } from 'motion/react';
-import { ArrowRight, Github, Linkedin, Twitter } from 'lucide-react';
+import { ArrowRight, Github, Linkedin, Instagram } from 'lucide-react';
 import { Magnetic } from '../components/Magnetic';
 
 function TeamMemberCard({ member, index }: { member: any, index: number }) {
@@ -50,7 +50,7 @@ function TeamMemberCard({ member, index }: { member: any, index: number }) {
       )}
       
       <div className="flex gap-4 mt-auto pt-4 border-t border-slate-900/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Twitter className="w-4 h-4" /></a>
+        <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Instagram className="w-4 h-4" /></a>
         <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Linkedin className="w-4 h-4" /></a>
         <a href="#" className="text-slate-500 hover:text-primary transition-colors"><Github className="w-4 h-4" /></a>
       </div>

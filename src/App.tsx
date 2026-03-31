@@ -6,7 +6,7 @@ import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
-import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Twitter, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
+import { ArrowRight, LayoutGrid, Smartphone, Monitor, Linkedin, Instagram, Search, Bell, User, Truck, Package, MapPin, BarChart3, Settings, Activity, Clock, CheckCircle2, AlertCircle, Users, DollarSign, CreditCard, PieChart, ArrowUpRight, ArrowDownRight } from 'lucide-react';
 import { Magnetic } from './components/Magnetic';
 
 export const ScrollContext = React.createContext<React.RefObject<HTMLDivElement | null> | null>(null);
@@ -22,6 +22,7 @@ import ServicesPage from './pages/Services';
 import AboutPage from './pages/About';
 import TeamPage from './pages/Team';
 import ContactPage from './pages/Contact';
+import NotFound from './pages/NotFound';
 
 function Navbar() {
   const [isOpen, setIsOpen] = React.useState(false);
@@ -1282,7 +1283,7 @@ function Footer() {
   useEffect(() => {
     if (clicks >= 5 && !easterEgg) {
       setEasterEgg(true);
-      console.log("%c🚀 BANGER MODE ACTIVATED!", "color: #2563EB; font-size: 20px; font-weight: bold;");
+      console.log("%cBANGER MODE ACTIVATED!", "color: #2563EB; font-size: 20px; font-weight: bold;");
     }
   }, [clicks, easterEgg]);
 
@@ -1319,7 +1320,7 @@ function Footer() {
               } : {}}
               transition={easterEgg ? { duration: 2, repeat: Infinity } : { duration: 0.2 }}
             >
-              {easterEgg ? "BANGER MODE 🚀" : "BEFORTH"}
+              {easterEgg ? "BANGER MODE" : "BEFORTH"}
             </motion.span>
             <motion.span 
               key={easterEgg ? 'egg' : 'normal'}
@@ -1372,26 +1373,18 @@ function Footer() {
           </Magnetic>
           <Magnetic>
             <motion.a 
-              href="https://twitter.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
+              href="https://instagram.com/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0, transition: { duration: 0.6, delay: 0.4 } }}
               whileHover={{ scale: 1.2, rotate: 5, color: easterEgg ? '#fff' : '#2563EB' }}
               whileTap={{ scale: 0.9 }}
             >
-              <Twitter className="w-4 h-4" />
-              <span className="hidden md:inline">Twitter</span>
+              <Instagram className="w-4 h-4" />
+              <span className="hidden md:inline">Instagram</span>
             </motion.a>
           </Magnetic>
         </div>
-        <motion.span 
-          className="hidden md:block cursor-default"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          whileHover={{ scale: 1.05, letterSpacing: "0.2em" }}
-        >
-          BESPOKE SYSTEMS
-        </motion.span>
+
       </div>
     </footer>
   );
@@ -1642,6 +1635,7 @@ export default function App() {
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
             <Footer />
           </PageTransition>

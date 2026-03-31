@@ -30,6 +30,64 @@
   .hero-heading {
     @apply text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col;
   }
+
+  /* Skeuomorphic Button */
+  .skeuo-btn {
+    @apply relative inline-flex items-center justify-center font-mono text-sm tracking-widest uppercase font-bold text-slate-800 transition-all duration-150 cursor-pointer;
+    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
+    border-radius: 12px;
+    border: 1px solid #cbd5e1;
+    box-shadow: 
+      inset 0 2px 0 rgba(255,255,255,0.8),
+      inset 0 -2px 0 rgba(0,0,0,0.05),
+      0 6px 0 #94a3b8,
+      0 10px 20px rgba(0,0,0,0.15);
+    padding: 1rem 2rem;
+    transform: translateY(0);
+  }
+  
+  .skeuo-btn:active {
+    box-shadow: 
+      inset 0 2px 0 rgba(255,255,255,0.8),
+      inset 0 2px 4px rgba(0,0,0,0.1),
+      0 0 0 #94a3b8,
+      0 2px 4px rgba(0,0,0,0.1);
+    transform: translateY(6px);
+  }
+
+  /* Skeuomorphic Switch */
+  .skeuo-switch {
+    @apply relative w-16 h-8 rounded-full transition-all duration-300 pointer-events-auto cursor-pointer;
+    background: linear-gradient(180deg, #cbd5e1 0%, #f1f5f9 100%);
+    box-shadow: 
+      inset 0 2px 6px rgba(0,0,0,0.2),
+      0 1px 0 rgba(255,255,255,0.8);
+  }
+
+  .skeuo-switch-knob {
+    @apply absolute top-1 left-1 w-6 h-6 rounded-full transition-all duration-300 flex items-center justify-center;
+    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.2),
+      inset 0 -2px 0 rgba(0,0,0,0.1),
+      inset 0 2px 0 rgba(255,255,255,1);
+  }
+
+  .skeuo-switch.active {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    box-shadow: 
+      inset 0 2px 6px rgba(0,0,0,0.6),
+      0 1px 0 rgba(255,255,255,0.1);
+  }
+
+  .skeuo-switch.active .skeuo-switch-knob {
+    transform: translateX(32px);
+    background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
+    box-shadow: 
+      0 2px 4px rgba(0,0,0,0.4),
+      inset 0 -2px 0 rgba(0,0,0,0.2),
+      inset 0 2px 0 rgba(255,255,255,0.4);
+  }
 }
 
 html {
