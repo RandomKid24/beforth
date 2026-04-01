@@ -113,7 +113,7 @@ export default function ServicesPage() {
               </h2>
             </div>
             <p className="font-mono text-xs tracking-widest text-slate-400 uppercase max-w-xs md:text-right">
-              Precision engineered systems for modern enterprise needs.
+              Custom software solutions that simplify your business workflows.
             </p>
           </motion.div>
 
@@ -180,7 +180,7 @@ export default function ServicesPage() {
             <div className="flex flex-col gap-4">
               {[
                 { label: "End-to-End Encryption", icon: Shield },
-                { label: "Regular Pen-Testing", icon: Zap },
+                { label: "Continuous Monitoring", icon: Zap },
                 { label: "Compliance Ready", icon: BarChart3 }
               ].map((item, i) => (
                 <motion.div 

@@ -49,20 +49,10 @@ export default function AboutPage() {
             <span className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">EXPECTATIONS.</span>
           </h1>
 
-          <div className="grid grid-cols-1 md:grid-cols-[1.618fr_1fr] gap-12 md:gap-24 items-center">
+          <div className="max-w-3xl">
             <p className="text-[1.2rem] md:text-[1.618rem] font-sans text-slate-700 font-light leading-[1.618]">
               BEFORTH was founded on a simple principle: <span className="font-medium text-slate-950">software shouldn't be boring or burdensome.</span> We build high-density digital experiences that solve real problems with premium aesthetics.
             </p>
-            <div className="flex flex-col gap-8 border-t border-slate-900/10 pt-12 md:border-t-0 md:pt-0">
-              <div className="flex flex-col gap-2">
-                <span className="font-display text-5xl text-primary">50+</span>
-                <span className="font-mono text-xs tracking-widest uppercase text-slate-500">Systems Deployed</span>
-              </div>
-              <div className="flex flex-col gap-2">
-                <span className="font-display text-5xl text-primary">100%</span>
-                <span className="font-mono text-xs tracking-widest uppercase text-slate-500">Clean Code Guarantee</span>
-              </div>
-            </div>
           </div>
         </motion.div>
       </section>

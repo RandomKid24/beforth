@@ -217,3 +217,58 @@ const [isOpen, setIsOpen] = useState(false);
   </AnimatePresence>
 </div>
 ```
+
+### H. Glassmorphic Solution Card
+Used for service categories and feature grids. Combines backdrop blur with interactive hover states.
+
+```tsx
+<motion.div 
+  whileHover={{ y: -10, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
+  className="group relative bg-white/40 backdrop-blur-md border border-slate-200/50 p-8 flex flex-col gap-6 hover:bg-white/80 hover:border-[#2563EB]/30 transition-colors duration-500 shadow-[0_0_50px_rgba(0,0,0,0.02)]"
+>
+  {/* Accent Line (Animated) */}
+  <div className="absolute top-0 left-0 w-full h-[2px] bg-[#2563EB] scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+  
+  {/* Icon Container */}
+  <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-[#2563EB]/10 group-hover:scale-110 transition-all duration-500">
+    <Icon className="w-5 h-5 text-slate-400 group-hover:text-[#2563EB] transition-colors duration-500" />
+  </div>
+  
+  {/* Content */}
+  <div className="flex flex-col gap-1">
+    <div className="text-3xl font-display uppercase tracking-tight text-slate-900">TITLE</div>
+    <div className="font-mono text-[10px] tracking-[0.1em] text-[#2563EB] uppercase font-bold">SUBTITLE</div>
+  </div>
+
+  <p className="font-sans text-sm text-slate-500 leading-relaxed transition-colors duration-500 group-hover:text-slate-600">
+    Description text goes here...
+  </p>
+
+  {/* Reveal Border */}
+  <div className="mt-4 flex items-center justify-between pointer-events-none">
+    <div className="w-8 h-[1px] bg-slate-200 group-hover:w-full group-hover:bg-[#2563EB]/20 transition-all duration-700" />
+  </div>
+</motion.div>
+```
+
+---
+
+## 5. Layout & Balancing Patterns
+
+To ensure the "premium" feel, we often use **Negative Margins** to lift elements and create overlap, which avoids the "boxy" look of standard grids.
+
+* **Top Lift:** Use `md:-mt-20` or `md:-mt-24` on secondary columns in a grid (e.g., Contact Form, Hero Visuals) to break the horizontal alignment and create vertical rhythm.
+* **Scroll-Based Parallax:** Use `Framer Motion`'s `useScroll` and `useTransform` to slightly shift background or side elements (e.g., `y: useTransform(scrollYProgress, [0, 1], [0, -100])`) to give the site a tactile, layered feel.
+
+---
+
+## 6. Brand Voice & Copywriting
+
+BEFORTH uses a direct, energetic ("Banger") voice that balances professional expertise with high-energy language.
+
+* **Tagline Philosophy:** Avoid generic "enterprise" speak.
+  * **Bad:** "We provide digital transformation services."
+  * **Good:** "Code that slaps. Software that scales."
+  * **Good:** "Bespoke systems. Zero BS."
+* **Clarity First:** While the voice is energetic, the core service names (HRMS, CRM, POS) must remain factual and clear.
+
