@@ -34,7 +34,6 @@ function Navbar() {
     { path: '/', label: 'Home' },
     { path: '/services', label: 'Services' },
     { path: '/about', label: 'About' },
-    { path: '/team', label: 'Team' },
   ];
 
   return (
@@ -1292,12 +1291,30 @@ function Footer() {
     { path: '/', label: 'Home' },
     { path: '/services', label: 'Services' },
     { path: '/about', label: 'About' },
-    { path: '/team', label: 'Team' },
     { path: '/contact', label: 'Contact' },
   ];
 
   return (
     <footer className={`w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 bg-[#0F172A] text-[#F8FAFC] snap-end shrink-0 overflow-hidden relative transition-colors duration-1000`}>
+      
+      {/* Animated Brand Backdrop (Washed out / Tracing Outlines) */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0 flex items-end">
+        <svg viewBox="0 0 1000 150" className="w-full h-auto opacity-20">
+          <motion.text
+            x="50%"
+            y="120"
+            textAnchor="middle"
+            className="font-display text-[130px] fill-transparent stroke-[#2563EB] uppercase"
+            style={{ letterSpacing: '0.1em' }}
+            strokeWidth="1.2"
+            strokeDasharray="40 60 100 150"
+            animate={{ strokeDashoffset: [0, -700] }}
+            transition={{ duration: 25, repeat: Infinity, ease: "linear" }}
+          >
+            BEFORTH
+          </motion.text>
+        </svg>
+      </div>
       
       {/* Easter Egg: Bouncing DVDs */}
       {easterEgg && (
@@ -1309,7 +1326,7 @@ function Footer() {
       )}
 
       {/* Sitemap */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 border-t border-white/20 pt-8 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 pt-8 relative z-10">
          <div className="flex flex-col gap-2">
             <motion.span 
               className="font-display text-3xl tracking-widest uppercase cursor-pointer select-none inline-block origin-left"
@@ -1335,8 +1352,12 @@ function Footer() {
          <div className="flex flex-wrap gap-6 md:gap-10 font-mono text-xs md:text-sm tracking-widest uppercase opacity-90">
             {footerLinks.map(link => (
               <Link key={link.path} to={link.path} className="relative overflow-hidden group h-5 md:h-6 flex items-center">
-                <motion.span className="block group-hover:-translate-y-[150%] transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)]">{link.label}</motion.span>
-                <motion.span className={`absolute top-0 left-0 block translate-y-[150%] group-hover:translate-y-0 transition-transform duration-300 ease-[cubic-bezier(0.19,1,0.22,1)] ${easterEgg ? 'text-white font-bold' : 'text-[#2563EB]'}`}>{link.label}</motion.span>
+                <motion.span className="block group-hover:-translate-y-[120%] transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]">
+                  {link.label}
+                </motion.span>
+                <motion.span className={`absolute top-0 left-0 block translate-y-[120%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] ${easterEgg ? 'text-white font-bold' : 'text-[#2563EB]'}`}>
+                  {link.label}
+                </motion.span>
               </Link>
             ))}
          </div>
