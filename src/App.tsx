@@ -231,7 +231,7 @@ function Hero() {
   const yText2 = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
   const yText3 = useTransform(scrollYProgress, [0, 1], ["0%", "60%"]);
   const opacityText = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
-  const yImage = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const yImage = useTransform(scrollYProgress, [0, 1], ["-20%", "0%"]);
   
   // Parallax background elements
   const yBg1 = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
@@ -1329,7 +1329,7 @@ function Footer() {
               animate={{ opacity: 1, y: 0 }}
               className="font-mono text-xs tracking-widest uppercase opacity-80"
             >
-              {easterEgg ? "We told you we ship bangers." : "Bespoke software. Zero BS."}
+              {easterEgg ? "We told you we ship bangers." : "Code that slaps. Software that scales."}
             </motion.span>
          </div>
          <div className="flex flex-wrap gap-6 md:gap-10 font-mono text-xs md:text-sm tracking-widest uppercase opacity-90">

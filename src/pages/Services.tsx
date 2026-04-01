@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
-import { LayoutGrid, Smartphone, Monitor, Shield, Zap, BarChart3, Database } from 'lucide-react';
+import { LayoutGrid, Smartphone, Monitor, Shield, Zap, BarChart3, Database, Users, Activity, CreditCard, Settings } from 'lucide-react';
 
 const services = [
   {
@@ -89,36 +89,69 @@ export default function ServicesPage() {
         </div>
       </section>
 
-      {/* Live System Metrics Section */}
-      <section className="min-h-screen snap-start flex flex-col justify-center py-24">
-        <div className="max-w-7xl mx-auto w-full">
-          <motion.h2 
-            initial={{ opacity: 0, x: -20, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
+      {/* Solutions We Deliver Section (Redesigned) */}
+      <section className="min-h-screen snap-start flex flex-col justify-center py-24 relative overflow-hidden">
+        {/* Background Decorative Blob */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+        
+        <div className="max-w-7xl mx-auto w-full relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-5xl font-display uppercase mb-16"
+            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
           >
-            LIVE SYSTEM METRICS
-          </motion.h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <div className="w-8 h-[1px] bg-primary" />
+                <span className="font-mono text-xs tracking-[0.2em] uppercase text-primary font-bold">Capabilities</span>
+              </div>
+              <h2 className="text-5xl md:text-6xl font-display uppercase leading-none">
+                SOLUTIONS <br />
+                <span className="text-transparent [-webkit-text-stroke:1px_#0F172A]">WE DELIVER.</span>
+              </h2>
+            </div>
+            <p className="font-mono text-xs tracking-widest text-slate-400 uppercase max-w-xs md:text-right">
+              Precision engineered systems for modern enterprise needs.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { label: 'UPTIME', val: '99.98%', icon: Zap },
-              { label: 'API LATENCY', val: '< 120ms', icon: BarChart3 },
-              { label: 'DATA SECURITY', val: 'AES-256', icon: Shield },
-              { label: 'SCALE', val: 'AUTO', icon: Database },
+              { label: 'HUMAN RESOURCE MGMT', val: 'HRMS', icon: Users, desc: 'Complete workforce lifecycle management.' },
+              { label: 'CLIENT RELATIONSHIPS', val: 'CRM', icon: Activity, desc: 'Advanced data-driven customer insights.' },
+              { label: 'POINT OF SALE', val: 'POS', icon: CreditCard, desc: 'High-velocity transaction processing.' },
+              { label: 'SOFTWARE BY NEED', val: 'CUSTOM', icon: Settings, desc: 'Tailored solutions for unique workflows.' },
             ].map((metric, i) => (
               <motion.div 
                 key={i} 
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
+                whileHover={{ y: -10, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col gap-4 border-l-2 border-primary pl-6 py-2"
+                className="group relative bg-white/40 backdrop-blur-md border border-slate-200/50 p-8 flex flex-col gap-6 hover:bg-white/80 hover:border-primary/30 transition-colors duration-500 shadow-[0_0_50px_rgba(0,0,0,0.02)]"
               >
-                <metric.icon className="w-5 h-5 text-primary" />
-                <div className="text-2xl font-display uppercase">{metric.val}</div>
-                <div className="font-mono text-xs tracking-widest text-slate-500 uppercase">{metric.label}</div>
+                {/* Accent line */}
+                <div className="absolute top-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
+                
+                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-500">
+                  <metric.icon className="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors duration-500" />
+                </div>
+                
+                <div className="flex flex-col gap-1">
+                  <div className="text-3xl font-display uppercase tracking-tight text-slate-900">{metric.val}</div>
+                  <div className="font-mono text-[10px] tracking-[0.1em] text-primary uppercase font-bold">{metric.label}</div>
+                </div>
+
+                <p className="font-sans text-sm text-slate-500 leading-relaxed transition-colors duration-500 group-hover:text-slate-600">
+                  {metric.desc}
+                </p>
+
+                <div className="mt-4 flex items-center justify-between pointer-events-none">
+                  <div className="w-8 h-[1px] bg-slate-200 group-hover:w-full group-hover:bg-primary/20 transition-all duration-700" />
+                </div>
               </motion.div>
             ))}
           </div>
