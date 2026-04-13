@@ -2,7 +2,7 @@
 
 This document contains the exact JSX structures and design patterns for every major section of the BEFORTH website. Use this as a reference to recreate or iterate on these designs elsewhere in the application.
 
----
+---   
 
 ## 1. Hero Sections
 

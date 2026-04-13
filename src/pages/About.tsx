@@ -66,7 +66,7 @@ export default function AboutPage() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="p-8 md:p-16 bg-[#020617] text-white relative overflow-hidden w-full"
         >
-           <div className="absolute top-0 right-0 w-[50%] h-full bg-primary/5 blur-[100px] pointer-events-none" />
+           <div className="absolute top-0 right-0 w-[50%] h-full pointer-events-none" style={{ background: 'radial-gradient(circle at center, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }} />
            <div className="relative z-10">
               <h2 className="text-3xl font-display uppercase mb-8">THE MISSION</h2>
               <p className="text-xl md:text-3xl font-sans font-light leading-relaxed max-w-4xl">

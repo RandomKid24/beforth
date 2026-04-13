@@ -92,7 +92,10 @@ export default function ServicesPage() {
       {/* Solutions We Deliver Section (Redesigned) */}
       <section className="min-h-screen snap-start flex flex-col justify-center py-24 relative overflow-hidden">
         {/* Background Decorative Blob */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 bg-primary/5 rounded-full blur-[120px] pointer-events-none" />
+        <div 
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 pointer-events-none" 
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
+        />
         
         <div className="max-w-7xl mx-auto w-full relative z-10">
           <motion.div

@@ -86,8 +86,8 @@ export default function TeamPage() {
         <div className="max-w-7xl mx-auto w-full">
           {/* Hero Section */}
           <motion.div
-            initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="mb-[4.236rem]"
           >
@@ -139,8 +139,8 @@ export default function TeamPage() {
       <section className="min-h-screen w-full snap-start shrink-0 flex flex-col justify-center py-24 relative px-6 md:px-[10%]">
         <div className="max-w-7xl mx-auto w-full">
           <motion.div
-            initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
             className="dark-section group"

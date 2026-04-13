@@ -47,12 +47,14 @@ export default function NotFound() {
         <motion.div
           animate={{ x: [0, 50, 0], y: [0, 30, 0] }}
           transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
-          className="absolute top-[10%] right-[10%] w-[50vw] h-[50vw] rounded-full bg-primary/5 blur-[120px]"
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
+          className="absolute top-[10%] right-[10%] w-[50vw] h-[50vw] rounded-full"
         />
         <motion.div
           animate={{ x: [0, -50, 0], y: [0, -30, 0] }}
           transition={{ duration: 18, repeat: Infinity, ease: "linear" }}
-          className="absolute bottom-[10%] left-[10%] w-[30vw] h-[30vw] rounded-full bg-primary/10 blur-[100px]"
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%)', willChange: 'transform' }}
+          className="absolute bottom-[10%] left-[10%] w-[30vw] h-[30vw] rounded-full"
         />
       </div>
 

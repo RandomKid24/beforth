@@ -138,9 +138,9 @@ export default function ContactPage() {
                                  <AnimatePresence mode="popLayout" key={i}>
                                    <motion.span
                                      key={char + i}
-                                     initial={{ y: 15, opacity: 0, filter: 'blur(4px)' }}
-                                     animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-                                     exit={{ y: -15, opacity: 0, filter: 'blur(4px)' }}
+                                     initial={{ y: 15, opacity: 0 }}
+                                     animate={{ y: 0, opacity: 1 }}
+                                     exit={{ y: -15, opacity: 0 }}
                                      transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                                      className="font-sans text-sm text-slate-900 font-medium tracking-tight inline-block whitespace-pre"
                                    >
@@ -170,9 +170,9 @@ export default function ContactPage() {
                                     <motion.span
                                       key={i}
                                       variants={{
-                                        hidden: { opacity: 0, y: 15, filter: "blur(8px)" },
-                                        visible: { opacity: 1, y: 0, filter: "blur(0px)" },
-                                        exit: { opacity: 0, y: -15, filter: "blur(8px)" }
+                                        hidden: { opacity: 0, y: 15 },
+                                        visible: { opacity: 1, y: 0 },
+                                        exit: { opacity: 0, y: -15 }
                                       }}
                                       transition={{
                                         duration: 0.5,

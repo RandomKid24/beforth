@@ -132,13 +132,15 @@ function Navbar() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.2 }}
-              className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-[#2563EB]/20 rounded-full blur-[100px] pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%)', willChange: 'transform' }}
+              className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] pointer-events-none"
             />
             <motion.div 
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 1, delay: 0.4 }}
-              className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-[#2563EB]/10 rounded-full blur-[100px] pointer-events-none"
+              style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%)', willChange: 'transform' }}
+              className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] pointer-events-none"
             />
 
             {[...navLinks, { path: '/contact', label: 'Contact' }].map((item, i) => (
@@ -244,22 +246,22 @@ function Hero() {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
-          style={{ y: yBg1, rotate: rotateBg1 }}
+          style={{ y: yBg1, rotate: rotateBg1, background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{ scale: [1, 1.1, 1], x: [0, -30, 0], opacity: [0.8, 1, 0.8] }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full bg-[#2563EB]/5 blur-[120px]"
+          className="absolute -top-[20%] -right-[10%] w-[50%] h-[50%] rounded-full"
         />
         <motion.div
-          style={{ y: yBg2, rotate: rotateBg2 }}
+          style={{ y: yBg2, rotate: rotateBg2, background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{ scale: [1, 1.2, 1], x: [0, 40, 0], opacity: [0.6, 1, 0.6] }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] rounded-full bg-[#2563EB]/5 blur-[100px]"
+          className="absolute top-[40%] -left-[10%] w-[40%] h-[40%] rounded-full"
         />
         <motion.div
-          style={{ y: yBg3 }}
+          style={{ y: yBg3, background: 'radial-gradient(circle, rgba(15, 23, 42, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{ scale: [1, 1.15, 1], x: [0, -20, 0], opacity: [0.7, 1, 0.7] }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[-10%] right-[20%] w-[30%] h-[30%] rounded-full bg-[#0F172A]/5 blur-[80px]"
+          className="absolute bottom-[-10%] right-[20%] w-[30%] h-[30%] rounded-full"
         />
         
         {/* Grid Pattern Container with Parallax & Radial Fade */}
@@ -665,22 +667,24 @@ function ServicesSection() {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{
             scale: [1, 1.1, 1],
             x: [0, -30, 0],
             y: [0, 40, 0],
           }}
           transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-0 right-0 w-1/3 h-1/2 bg-[#2563EB]/5 rounded-full blur-[100px]"
+          className="absolute bottom-0 right-0 w-1/3 h-1/2 rounded-full"
         />
         <motion.div
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{
             scale: [1, 1.2, 1],
             x: [0, 30, 0],
             y: [0, -40, 0],
           }}
           transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[30%] left-0 w-1/4 h-1/3 bg-[#2563EB]/5 rounded-full blur-[120px]"
+          className="absolute top-[30%] left-0 w-1/4 h-1/3 rounded-full"
         />
       </div>
 
@@ -780,6 +784,7 @@ function Work() {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.2) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{
             scale: [1, 1.2, 1],
             opacity: [0.1, 0.2, 0.1],
@@ -787,9 +792,10 @@ function Work() {
             y: [0, -30, 0],
           }}
           transition={{ duration: 15, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute top-[20%] left-[10%] w-[40%] h-[40%] bg-[#2563EB]/20 rounded-full blur-[150px]"
+          className="absolute top-[20%] left-[10%] w-[40%] h-[40%] rounded-full"
         />
         <motion.div
+          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.1) 0%, transparent 70%)', willChange: 'transform' }}
           animate={{
             scale: [1, 1.3, 1],
             opacity: [0.1, 0.15, 0.1],
@@ -797,7 +803,7 @@ function Work() {
             y: [0, 50, 0],
           }}
           transition={{ duration: 20, repeat: Infinity, ease: "easeInOut" }}
-          className="absolute bottom-[10%] right-[10%] w-[50%] h-[50%] bg-[#2563EB]/10 rounded-full blur-[150px]"
+          className="absolute bottom-[10%] right-[10%] w-[50%] h-[50%] rounded-full"
         />
       </div>
 

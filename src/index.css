@@ -8,6 +8,13 @@
   --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
+@layer base {
+  html, body {
+    @apply overflow-x-hidden w-full;
+    scrollbar-gutter: stable;
+  }
+}
+
 @layer components {
   .badge {
     @apply px-[1rem] py-[0.618rem] rounded-full border border-primary/40 text-slate-900 font-mono text-[0.85rem] tracking-widest uppercase bg-primary/10 cursor-default hover:bg-primary/20 transition-colors duration-300;
