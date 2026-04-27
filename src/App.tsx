@@ -321,7 +321,7 @@ function Hero() {
               </motion.div>
               <motion.div style={{ y: yText3 }} className="z-10 overflow-hidden">
                 <span className="hero-text-line block origin-bottom">
-                  APPS.
+                  PRODUCTS.
                 </span>
               </motion.div>
             </h1>
@@ -1386,7 +1386,7 @@ function Footer() {
           </motion.span> 
           {new Date().getFullYear()} BEFORTH
         </motion.div>
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 mr-16 md:mr-24">
           <Magnetic>
             <motion.a 
               href="https://in.linkedin.com/company/beforth" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300 flex items-center gap-2"
@@ -1420,8 +1420,40 @@ function Footer() {
 
 function CTA() {
   const [isHovered, setIsHovered] = useState(false);
+  const [isShattered, setIsShattered] = useState(false);
+  const [particles, setParticles] = useState<Array<{id: number, x: number, y: number, r: number, size: number, color: string, duration: number}>>([]);
+
   const containerRef = useContext(ScrollContext);
   const sectionRef = useRef<HTMLElement>(null);
+
+  const handleShatter = (e: React.MouseEvent) => {
+    e.preventDefault();
+    if (isShattered) return;
+    
+    // Kept to 50 particles for flawless 60fps mobile performance
+    const newParticles = Array.from({ length: 50 }).map((_, i) => {
+      const angle = Math.random() * Math.PI * 2;
+      const velocity = 150 + Math.random() * 250;
+      const colors = ['#2563EB', '#4F46E5', '#7C3AED', '#FFFFFF', '#0F172A'];
+      return {
+        id: i,
+        x: Math.cos(angle) * velocity,
+        y: Math.sin(angle) * velocity, 
+        r: 0,
+        size: 8 + Math.random() * 25,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        duration: 1.2
+      };
+    });
+    
+    setParticles(newParticles);
+    setIsShattered(true);
+    
+    setTimeout(() => {
+      window.location.href = "mailto:support@beforth.in";
+      setTimeout(() => setIsShattered(false), 2000);
+    }, 1200);
+  };
   
   useGSAP(() => {
     if (!containerRef?.current) return;
@@ -1499,15 +1531,46 @@ function CTA() {
 
       {/* Floating Center Button */}
       <div className="cta-button-container z-10 flex-1 flex items-center justify-center pointer-events-none w-full relative mt-12 md:mt-0">
-        <Magnetic>
-          <motion.a
-            href="mailto:support@beforth.in"
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.95 }}
-            className="pointer-events-auto relative w-[160px] h-[160px] md:w-[240px] md:h-[240px] rounded-full flex flex-col items-center justify-center overflow-hidden shadow-2xl group/btn"
-          >
+        
+        {/* Particles */}
+        <AnimatePresence>
+          {isShattered && particles.map(p => (
+            <motion.div
+              key={p.id}
+              initial={{ x: 0, y: 0, scale: 0 }}
+              animate={{ 
+                x: [0, p.x, p.x, 0], 
+                y: [0, p.y, p.y, 0],
+                scale: [0, 1, 1, 0]
+              }}
+              transition={{ 
+                duration: p.duration,
+                times: [0, 0.4, 0.7, 1],
+                ease: ["circOut", "linear", "backIn"]
+              }}
+              className="absolute pointer-events-none rounded-full z-50 will-change-transform"
+              style={{
+                width: p.size,
+                height: p.size,
+                backgroundColor: p.color,
+              }}
+            />
+          ))}
+        </AnimatePresence>
+
+        <AnimatePresence>
+          {!isShattered && (
+            <Magnetic>
+              <motion.a
+                href="mailto:support@beforth.in"
+                onClick={handleShatter}
+                onHoverStart={() => setIsHovered(true)}
+                onHoverEnd={() => setIsHovered(false)}
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.95 }}
+                exit={{ scale: 0, opacity: 0, filter: "blur(20px)", transition: { duration: 0.3 } }}
+                className="pointer-events-auto relative w-[160px] h-[160px] md:w-[240px] md:h-[240px] rounded-full flex flex-col items-center justify-center overflow-hidden shadow-2xl group/btn"
+              >
             {/* Default Dark Gradient */}
             <motion.div 
               className="absolute inset-0 bg-[linear-gradient(45deg,#020617,#0F172A,#1E293B,#020617)] bg-[length:300%_300%]"
@@ -1559,7 +1622,9 @@ function CTA() {
               </motion.div>
             </div>
           </motion.a>
-        </Magnetic>
+            </Magnetic>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );
@@ -1918,24 +1983,30 @@ export default function App() {
         .font-mono { font-family: 'JetBrains Mono', monospace; }
         
         @keyframes marquee {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
+          0% { transform: translate3d(0, 0, 0); }
+          100% { transform: translate3d(-50%, 0, 0); }
         }
         @keyframes marquee-reverse {
-          0% { transform: translateX(-50%); }
-          100% { transform: translateX(0); }
+          0% { transform: translate3d(-50%, 0, 0); }
+          100% { transform: translate3d(0, 0, 0); }
         }
         .animate-marquee {
           animation: marquee 20s linear infinite;
           width: max-content;
+          will-change: transform;
+          backface-visibility: hidden;
         }
         .animate-marquee-reverse {
           animation: marquee-reverse 25s linear infinite;
           width: max-content;
+          will-change: transform;
+          backface-visibility: hidden;
         }
         .animate-marquee-fast {
           animation: marquee 15s linear infinite;
           width: max-content;
+          will-change: transform;
+          backface-visibility: hidden;
         }
 
         /* Hide scrollbar for clean snap experience */
