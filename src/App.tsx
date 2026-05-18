@@ -2067,6 +2067,7 @@ export default function App() {
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
+              <Route path="/contact" element={<ContactPage />} />
 
               <Route path="/demo-cursor" element={<DemoCustomCursor />} />
               <Route path="*" element={<NotFound />} />
