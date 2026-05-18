@@ -1,10 +1,25 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import fs from 'fs';
 import { defineConfig, loadEnv } from 'vite';
 
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, '.', '');
+
+  // Dynamically resolve entry points based on existing prerendered source folders
+  const inputs: Record<string, string> = {
+    main: path.resolve(__dirname, 'index.html'),
+  };
+
+  const pages = ['services', 'about', 'team', 'contact'];
+  pages.forEach(page => {
+    const pagePath = path.resolve(__dirname, `${page}/index.html`);
+    if (fs.existsSync(pagePath)) {
+      inputs[page] = pagePath;
+    }
+  });
+
   return {
     plugins: [react(), tailwindcss()],
     define: {
@@ -13,6 +28,11 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src'),
+      },
+    },
+    build: {
+      rollupOptions: {
+        input: inputs,
       },
     },
     server: {
