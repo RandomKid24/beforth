@@ -112,7 +112,7 @@ html {
 }
 
 @media (min-width: 768px) {
-  * {
+  #root, #root * {
     cursor: none !important;
   }
 }

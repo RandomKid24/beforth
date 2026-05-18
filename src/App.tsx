@@ -754,10 +754,6 @@ function ServicesSection() {
                   </motion.span>
                 ))}
               </div>
-              
-              <div className="inline-flex items-center gap-[1rem] font-mono text-[0.75rem] tracking-widest uppercase text-[#0F172A] group-hover:text-[#2563EB] transition-colors duration-300 relative after:absolute after:bottom-[-4px] after:left-0 after:h-[1px] after:w-full after:origin-bottom-right after:scale-x-0 group-hover:after:origin-bottom-left group-hover:after:scale-x-100 after:transition-transform after:duration-300 after:bg-[#2563EB]">
-                EXPLORE <ArrowRight className="w-4 h-4 group-hover:translate-x-2 transition-transform duration-300" />
-              </div>
             </motion.div>
           ))}
         </div>

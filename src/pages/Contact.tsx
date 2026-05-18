@@ -263,7 +263,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">Email Us</div>
-                    <div className="font-display text-xl uppercase">support@beforth.in</div>
+                    <a href="mailto:support@beforth.in" className="font-display text-xl uppercase block transition-colors hover:text-primary">support@beforth.in</a>
                   </div>
                 </div>
 
@@ -273,7 +273,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">Call Us</div>
-                    <div className="font-display text-xl uppercase">+91 93222 34220</div>
+                    <a href="tel:+919766183834" className="font-display text-xl uppercase block transition-colors hover:text-primary">+91 97661 83834</a>
                   </div>
                 </div>
 

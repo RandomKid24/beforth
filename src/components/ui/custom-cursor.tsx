@@ -82,12 +82,15 @@ export function CustomCursor({
 
   useEffect(() => {
     let rafId: number
+    let isLoopActive = false
 
     const updateCursor = () => {
       const state = posState.current
       
       // Smoothly interpolate scale for click effect
+      const prevScale = state.scale
       state.scale += (state.targetScale - state.scale) * 0.2
+      const scaleChanged = Math.abs(state.scale - prevScale) > 0.001
 
       if (cursorRef.current) {
         const rotation = calculateRotation()
@@ -124,7 +127,26 @@ export function CustomCursor({
         dotRef.current.style.transform = `translate3d(${state.x - 3}px, ${state.y - 3}px, 0) scale(${state.scale})`
       }
 
-      rafId = requestAnimationFrame(updateCursor)
+      // Damp the distance so it settles to 0 when stationary
+      state.distanceX *= 0.85
+      state.distanceY *= 0.85
+      state.distance *= 0.85
+
+      // Determine if we should continue animating
+      const hasMoved = state.distance > 0.1
+      
+      if (hasMoved || scaleChanged || Math.abs(state.targetScale - state.scale) > 0.001) {
+        rafId = requestAnimationFrame(updateCursor)
+      } else {
+        isLoopActive = false
+      }
+    }
+
+    const startLoop = () => {
+      if (!isLoopActive) {
+        isLoopActive = true
+        rafId = requestAnimationFrame(updateCursor)
+      }
     }
 
     const handleMouseMove = (event: MouseEvent) => {
@@ -138,35 +160,65 @@ export function CustomCursor({
       state.lastX = event.clientX
       state.lastY = event.clientY
 
-      if (!isVisible) setIsVisible(true)
-
       const target = event.target as HTMLElement
-      const isInteractive =
-        target.closest("a, button") ||
-        target.onclick !== null ||
-        target.classList.contains("cursor-hover") ||
-        target.closest(".hover-target")
+      const isOutside = target && !target.closest("#root")
       
+      if (isOutside) {
+        if (isVisible) setIsVisible(false)
+      } else {
+        if (!isVisible) setIsVisible(true)
+      }
+
+      startLoop()
+    }
+
+    const handleMouseOver = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target) return
+
+      const isOutside = !target.closest("#root")
+      if (isOutside) {
+        if (isVisible) setIsVisible(false)
+        return
+      } else {
+        if (!isVisible) setIsVisible(true)
+      }
+
+      const isInteractive =
+        target.closest("a, button, [onclick], .cursor-hover, .hover-target")
+
       if (!!isInteractive !== isHovering) {
         setIsHovering(!!isInteractive)
       }
     }
 
-    const handleMouseDown = () => { posState.current.targetScale = 0.75 }
-    const handleMouseUp = () => { posState.current.targetScale = 1 }
+    const handleMouseDown = () => { 
+      posState.current.targetScale = 0.75 
+      startLoop()
+    }
+    const handleMouseUp = () => { 
+      posState.current.targetScale = 1 
+      startLoop()
+    }
     const handleMouseLeave = () => setIsVisible(false)
-    const handleMouseEnter = () => setIsVisible(true)
+    const handleMouseEnter = () => {
+      setIsVisible(true)
+      startLoop()
+    }
 
     window.addEventListener("mousemove", handleMouseMove, { passive: true })
+    window.addEventListener("mouseover", handleMouseOver, { passive: true })
     window.addEventListener("mousedown", handleMouseDown)
     window.addEventListener("mouseup", handleMouseUp)
     document.addEventListener("mouseleave", handleMouseLeave)
     document.addEventListener("mouseenter", handleMouseEnter)
 
-    rafId = requestAnimationFrame(updateCursor)
+    // Initial render
+    startLoop()
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove)
+      window.removeEventListener("mouseover", handleMouseOver)
       window.removeEventListener("mousedown", handleMouseDown)
       window.removeEventListener("mouseup", handleMouseUp)
       document.removeEventListener("mouseleave", handleMouseLeave)
