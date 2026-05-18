@@ -1,0 +1,9 @@
+{
+  "redirects": [
+    {
+      "source": "https://www.beforth.in/:path*",
+      "destination": "https://beforth.in/:path*",
+      "permanent": true
+    }
+  ]
+}

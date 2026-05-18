@@ -1668,36 +1668,37 @@ function SeoManager() {
     const pathname = location.pathname === '/demo-cursor' ? '/' : location.pathname;
     const canonicalUrl = new URL(pathname, origin).toString();
 
-    const routeMeta: Record<string, { title: string; description: string; keywords: string }> = {
+    const routeMeta: Record<string, { title: string; description: string; keywords: string; canonical: string }> = {
       '/': {
-        title: 'Beforth | Custom Software Development and ERP Solutions Company',
-        description:
-          'Beforth is an IT company delivering custom software development, ERP solutions, web platforms, mobile apps, CRM, and workflow automation for growing businesses.',
-        keywords:
-          'Beforth, IT company, custom software development, ERP solutions, custom ERP, web development, mobile app development, CRM software, business automation',
+        title: 'Beforth | Custom Software Development & ERP Solutions Company in Nashik, India',
+        description: 'Beforth is a custom software development company in Nashik, Maharashtra, India. We build ERP systems, CRMs, HRMS, web apps, and mobile apps for businesses across India and globally.',
+        keywords: 'IT company Nashik, custom software development Nashik, ERP developer Nashik, app developer Nashik, software company Maharashtra, ERP solutions India',
+        canonical: 'https://beforth.in/',
       },
       '/services': {
-        title: 'Services | Custom ERP, Software Development, Web and Mobile Apps | Beforth',
-        description:
-          'Explore Beforth services including custom ERP solutions, CRM systems, web application development, mobile apps, and business process automation.',
-        keywords:
-          'custom ERP services, software development company, CRM development, web app development, mobile app development, business automation',
+        title: 'Software Services | ERP, CRM, Web & Mobile App Development — Beforth Nashik India',
+        description: 'Explore Beforth\'s software services: custom ERP, CRM, HRMS, web application development, and mobile app development. Serving clients in Nashik, across India, and internationally.',
+        keywords: 'ERP development Nashik, CRM software India, web app development Maharashtra, mobile app developer Nashik, custom software services India',
+        canonical: 'https://beforth.in/services',
       },
       '/about': {
-        title: 'About Beforth | IT Company for Custom Software and ERP Solutions',
-        description:
-          'Learn about Beforth, an IT company focused on custom software, ERP solutions, operational efficiency, and scalable digital products.',
-        keywords:
-          'about Beforth, IT organization, ERP company, custom software agency, technology partner',
+        title: 'About Beforth | IT & Software Company in Nashik, Maharashtra, India',
+        description: 'Learn about Beforth — an IT company from Nashik, India, building enterprise-grade ERP, CRM, and custom software solutions for startups and businesses worldwide.',
+        keywords: 'about Beforth, IT company Nashik, software company Nashik Maharashtra, tech company India, ERP company India',
+        canonical: 'https://beforth.in/about',
       },
       '/team': {
-        title: 'Team | Beforth',
-        description:
-          'Meet the team behind Beforth and our approach to custom software development, ERP implementation, and product delivery.',
-        keywords:
-          'Beforth team, software engineers, ERP specialists, product delivery team',
+        title: 'Our Team | Software & ERP Developers at Beforth — Nashik, India',
+        description: 'Meet the Beforth team — engineers, designers, and strategists building custom software, ERP systems, and mobile apps in Nashik, Maharashtra, India.',
+        keywords: 'Beforth team, software developers Nashik, ERP developers India, app developers Maharashtra',
+        canonical: 'https://beforth.in/team',
       },
-
+      '/contact': {
+        title: 'Contact Beforth | Get a Custom Software & ERP Quote — Nashik, India',
+        description: 'Contact Beforth to discuss your custom ERP, CRM, web app, or mobile app project. We are based in Nashik, Maharashtra, India and serve clients globally.',
+        keywords: 'contact Beforth, hire software company Nashik, ERP consultation India, app developer contact Maharashtra, custom software quote',
+        canonical: 'https://beforth.in/contact',
+      },
     };
 
     const fallbackMeta = {
@@ -1706,9 +1707,11 @@ function SeoManager() {
         'Beforth builds custom software, ERP solutions, web platforms, and mobile applications for businesses that need operational clarity and scale.',
       keywords:
         'Beforth, custom software, ERP development, IT company',
+      canonical: 'https://beforth.in/',
     };
 
     const meta = routeMeta[pathname] ?? fallbackMeta;
+    const finalCanonicalUrl = meta.canonical ?? canonicalUrl;
 
     document.title = meta.title;
     upsertMetaTag('meta[name="description"]', { name: 'description' }, meta.description);
@@ -1717,12 +1720,18 @@ function SeoManager() {
     upsertMetaTag('meta[property="og:title"]', { property: 'og:title' }, meta.title);
     upsertMetaTag('meta[property="og:description"]', { property: 'og:description' }, meta.description);
     upsertMetaTag('meta[property="og:type"]', { property: 'og:type' }, 'website');
-    upsertMetaTag('meta[property="og:url"]', { property: 'og:url' }, canonicalUrl);
+    upsertMetaTag('meta[property="og:url"]', { property: 'og:url' }, finalCanonicalUrl);
     upsertMetaTag('meta[property="og:site_name"]', { property: 'og:site_name' }, 'Beforth');
     upsertMetaTag('meta[name="twitter:card"]', { name: 'twitter:card' }, 'summary_large_image');
     upsertMetaTag('meta[name="twitter:title"]', { name: 'twitter:title' }, meta.title);
     upsertMetaTag('meta[name="twitter:description"]', { name: 'twitter:description' }, meta.description);
-    upsertLinkTag('link[rel="canonical"]', 'canonical', canonicalUrl);
+    upsertLinkTag('link[rel="canonical"]', 'canonical', finalCanonicalUrl);
+
+    // Dynamic OG and Twitter Image tags
+    upsertMetaTag('meta[property="og:image"]', { property: 'og:image' }, 'https://beforth.in/og-image.png');
+    upsertMetaTag('meta[property="og:image:width"]', { property: 'og:image:width' }, '1200');
+    upsertMetaTag('meta[property="og:image:height"]', { property: 'og:image:height' }, '630');
+    upsertMetaTag('meta[name="twitter:image"]', { name: 'twitter:image' }, 'https://beforth.in/og-image.png');
   }, [location.pathname]);
 
   return null;
@@ -1747,8 +1756,20 @@ function StructuredData() {
           description:
             'Beforth is an IT company providing custom software development, custom ERP solutions, CRM systems, web platforms, mobile applications, and workflow automation.',
           email: 'support@beforth.in',
+          telephone: '+91-97661-83834',
+          address: {
+            '@type': 'PostalAddress',
+            streetAddress: 'Shop No.6005, 6th Floor, SSRF',
+            addressLocality: 'Nashik',
+            addressRegion: 'Maharashtra',
+            postalCode: '422002',
+            addressCountry: 'IN'
+          },
           areaServed: 'Worldwide',
-          sameAs: [origin],
+          sameAs: [
+            'https://www.linkedin.com/company/beforth',
+            'https://www.instagram.com/beforth.in'
+          ],
         },
         {
           '@type': 'ProfessionalService',

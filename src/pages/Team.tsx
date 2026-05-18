@@ -39,7 +39,7 @@ function TeamMemberCard({ member, index }: { member: any, index: number }) {
         </motion.div>
       </div>
       
-      <h3 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h3>
+      <h2 className="text-[2rem] font-display uppercase leading-[1.1] mb-2">{member.name}</h2>
       <p className="font-mono text-sm text-primary tracking-widest uppercase mb-4">
         {member.role}
       </p>
@@ -148,10 +148,10 @@ export default function TeamPage() {
             <div className="card-hover-border" />
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="max-w-xl">
-                <h3 className="text-[clamp(2.5rem,5vw,3.5rem)] font-display uppercase leading-[1.1] mb-4">
+                <h2 className="text-[clamp(2.5rem,5vw,3.5rem)] font-display uppercase leading-[1.1] mb-4">
                   Want to join <br />
                   <span className="text-transparent [-webkit-text-stroke:1px_white] md:[-webkit-text-stroke:2px_white]">the team?</span>
-                </h3>
+                </h2>
                 <p className="font-sans font-light text-[1rem] text-slate-400 leading-[1.618]">
                   We're always looking for talented individuals who are passionate about creating exceptional digital experiences. Check out our open positions.
                 </p>

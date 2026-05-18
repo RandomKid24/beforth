@@ -256,6 +256,7 @@ export default function ContactPage() {
                 </div>
               </div>
               
+              <h2 className="font-display text-2xl uppercase tracking-wider text-slate-800 mb-6">Our Contact Info</h2>
               <div className="flex flex-col gap-8">
                 <div className="flex items-start gap-4 group/item">
                   <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-none border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
@@ -284,6 +285,7 @@ export default function ContactPage() {
             {/* Contact Form */}
             <div className="bg-white p-8 md:p-12 border border-slate-900/10 relative shadow-2xl md:-mt-20">
               <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
+              <h2 className="font-display text-2xl uppercase tracking-wider text-slate-800 mb-6">Send Us a Message</h2>
               <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                    <div className="flex flex-col gap-2">

@@ -72,7 +72,7 @@ export default function ServicesPage() {
               >
                 <div className="font-mono text-[0.75rem] tracking-widest text-primary mb-12 uppercase">{service.id}</div>
                 <service.icon className="w-12 h-12 mb-8 text-slate-400 group-hover:text-primary transition-colors duration-500" />
-                <h3 className="text-2xl font-display uppercase mb-6 group-hover:translate-x-2 transition-transform duration-500">{service.title}</h3>
+                <h2 className="text-2xl font-display uppercase mb-6 group-hover:translate-x-2 transition-transform duration-500">{service.title}</h2>
                 <p className="font-sans font-light text-slate-500 group-hover:text-slate-300 leading-relaxed mb-8">
                   {service.desc}
                 </p>
