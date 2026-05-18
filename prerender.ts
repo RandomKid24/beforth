@@ -23,15 +23,15 @@ app.get('*', (req, res) => {
 function cleanHtml(html: string): string {
   let cleaned = html;
 
-  // 1. Remove all Vite injected assets like stylesheet links to let Vite re-inject them at build time
-  cleaned = cleaned.replace(/<link rel="stylesheet"[^>]*href="\/assets\/[^"]*"[^>]*>/g, '');
+  // 1. Remove all Vite injected CSS asset links (order-independent)
+  cleaned = cleaned.replace(/<link\b[^>]*href="\/assets\/[^"]*\.css"[^>]*>/gi, '');
 
-  // 2. Remove all modulepreload link tags
-  cleaned = cleaned.replace(/<link rel="modulepreload"[^>]*>/g, '');
+  // 2. Remove all modulepreload link tags (order-independent)
+  cleaned = cleaned.replace(/<link\b[^>]*rel="modulepreload"[^>]*>/gi, '');
 
-  // 3. Find the production JS script tag and replace it back with the source script tag
+  // 3. Find the production JS script tag and replace it back with the source script tag (order-independent)
   cleaned = cleaned.replace(
-    /<script type="module"[^>]*src="\/assets\/[^"]*"[^>]*><\/script>/g,
+    /<script\b[^>]*src="\/assets\/[^"]*\.js"[^>]*><\/script>/gi,
     '<script type="module" src="/src/main.tsx"></script>'
   );
 
