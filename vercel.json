@@ -1,18 +1,19 @@
 {
-  "redirects": [
+  "headers": [
     {
-      "source": "/:path*",
-      "has": [
+      "source": "/assets/(.*)",
+      "headers": [
         {
-          "type": "host",
-          "value": "www.beforth.in"
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
         }
-      ],
-      "destination": "https://beforth.in/:path*",
-      "permanent": true
+      ]
     }
   ],
   "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+    {
+      "source": "/((?!assets/).*)",
+      "destination": "/index.html"
+    }
   ]
 }
