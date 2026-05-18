@@ -80,7 +80,7 @@ function Navbar() {
 
           <div className="hidden md:flex items-center ml-2 shrink-0">
             <Magnetic>
-              <Link to="/contact" className="relative overflow-hidden px-6 py-2.5 bg-[#0F172A] text-white rounded-full font-mono text-xs uppercase tracking-widest group flex items-center justify-center border border-[#0F172A] transition-all duration-500">
+              <Link to="/#lets-talk" className="relative overflow-hidden px-6 py-2.5 bg-[#0F172A] text-white rounded-full font-mono text-xs uppercase tracking-widest group flex items-center justify-center border border-[#0F172A] transition-all duration-500">
                 <div className="absolute inset-0 bg-[#2563EB] translate-y-[100%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] rounded-full" />
                 <span className="relative z-10 flex items-center gap-2">
                   <span>Let's Talk</span>
@@ -143,7 +143,7 @@ function Navbar() {
               className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] pointer-events-none"
             />
 
-            {[...navLinks, { path: '/contact', label: 'Contact' }].map((item, i) => (
+            {[...navLinks, { path: '/#lets-talk', label: 'Contact' }].map((item, i) => (
               <motion.div
                 key={item.path}
                 variants={{
@@ -351,7 +351,17 @@ function Hero() {
 
           <div className="mt-[4.236rem] hero-cta">
             <Magnetic>
-              <a href="#cta" className="pointer-events-auto relative overflow-hidden px-8 py-4 border border-[#0F172A] rounded-full font-mono text-xs uppercase tracking-widest group inline-flex items-center gap-3 bg-[#0F172A] text-white">
+              <a 
+                href="#lets-talk" 
+                onClick={(e) => {
+                  e.preventDefault();
+                  const element = document.getElementById('lets-talk');
+                  if (element) {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                  }
+                }}
+                className="pointer-events-auto relative overflow-hidden px-8 py-4 border border-[#0F172A] rounded-full font-mono text-xs uppercase tracking-widest group inline-flex items-center gap-3 bg-[#0F172A] text-white"
+              >
                 <span className="relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-[#0F172A]">START A PROJECT</span>
                 <ArrowRight className="w-4 h-4 relative z-10 transition-colors duration-500 ease-[cubic-bezier(0.19,1,0.22,1)] group-hover:text-[#0F172A] group-hover:translate-x-1" />
                 <div className="absolute inset-0 bg-white translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
@@ -1293,7 +1303,7 @@ function Footer() {
     { path: '/', label: 'Home' },
     { path: '/services', label: 'Services' },
     { path: '/about', label: 'About' },
-    { path: '/contact', label: 'Contact' },
+    { path: '/#lets-talk', label: 'Contact' },
   ];
 
   return (
@@ -1687,13 +1697,7 @@ function SeoManager() {
         keywords:
           'Beforth team, software engineers, ERP specialists, product delivery team',
       },
-      '/contact': {
-        title: 'Contact Beforth | Discuss Custom Software and ERP Requirements',
-        description:
-          'Contact Beforth to discuss custom software development, ERP solutions, CRM systems, and workflow automation for your business.',
-        keywords:
-          'contact Beforth, ERP consultation, custom software quote, software development contact',
-      },
+
     };
 
     const fallbackMeta = {
@@ -1937,6 +1941,8 @@ const PageTransition = ({ children, scrollRef }: { children: React.ReactNode, ke
         const element = document.getElementById(id);
         if (element) {
           element.scrollIntoView({ behavior: 'smooth' });
+          // Clear the hash from the URL so refreshing doesn't trigger it again
+          window.history.replaceState(null, '', window.location.pathname + window.location.search);
         }
       }, 100);
     }
@@ -1945,7 +1951,7 @@ const PageTransition = ({ children, scrollRef }: { children: React.ReactNode, ke
   return (
     <motion.div
       ref={scrollRef}
-      className="w-full h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory"
+      className="w-full h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
@@ -2034,12 +2040,13 @@ export default function App() {
                   <Work />
                   <Process />
                   <CTA />
+                  <ContactPage />
                 </>
               } />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
-              <Route path="/contact" element={<ContactPage />} />
+
               <Route path="/demo-cursor" element={<DemoCustomCursor />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
