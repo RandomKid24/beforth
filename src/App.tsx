@@ -242,7 +242,7 @@ function Hero() {
   const rotateBg2 = useTransform(scrollYProgress, [0, 1], [0, -45]);
 
   return (
-    <section ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen w-full md:snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <motion.div
@@ -559,7 +559,7 @@ function Contrast() {
   const yRight = useTransform(scrollYProgress, [0, 1], ["10%", "-10%"]);
 
   return (
-    <section ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full md:snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Golden Ratio Grid: 1fr to 1.618fr */}
       <div className="max-w-7xl mx-auto w-full grid grid-cols-1 md:grid-cols-[1fr_1.618fr] gap-[4.236rem]">
         <motion.div 
@@ -673,7 +673,7 @@ function ServicesSection() {
   const yMarquee = useTransform(scrollYProgress, [0, 1], ["-50px", "150px"]);
 
   return (
-    <section id="services" ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col relative overflow-hidden">
+    <section id="services" ref={sectionRef} className="min-h-screen w-full md:snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
@@ -786,7 +786,7 @@ function Work() {
   const yRight = useTransform(scrollYProgress, [0, 1], ["15%", "0%"]);
 
   return (
-    <section id="work" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section id="work" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full md:snap-start shrink-0 bg-[#020617] text-[#F8FAFC] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
         <motion.div
@@ -836,7 +836,7 @@ function Work() {
             className="group hover-target cursor-pointer flex flex-col justify-end"
           >
             {/* Golden Rectangle Aspect Ratio */}
-            <div className="w-full aspect-[1.618/1] bg-[#0a0a0a] mb-[1.618rem] overflow-hidden relative rounded-sm border border-[#262626] font-mono text-[0.45rem] md:text-[0.55rem] text-[#a3a3a3] flex flex-col">
+            <div className="w-full md:aspect-[1.618/1] bg-[#0a0a0a] mb-[1.618rem] overflow-hidden relative rounded-sm border border-[#262626] font-mono text-[0.45rem] md:text-[0.55rem] text-[#a3a3a3] flex flex-col">
               {/* Header */}
               <div className="flex justify-between items-center border-b border-[#262626] px-3 py-2">
                 <div className="text-white font-bold tracking-widest">LOGISTICSHUB</div>
@@ -847,7 +847,7 @@ function Work() {
               </div>
               
               {/* Content */}
-              <div className="flex flex-1 overflow-hidden">
+              <div className="flex flex-1">
                 {/* Sidebar */}
                 <div className="w-[20%] border-r border-[#262626] flex flex-col p-2 gap-1">
                   <div className="flex items-center gap-2 px-2 py-1.5 text-white bg-[#1a1a1a] rounded-sm">
@@ -896,7 +896,7 @@ function Work() {
                   </div>
                   
                   {/* Table */}
-                  <div className="flex-1 flex flex-col p-3 gap-2 overflow-hidden">
+                  <div className="flex-1 flex flex-col p-3 gap-2">
                     <div className="flex justify-between border-b border-[#262626] pb-1 uppercase tracking-widest text-[0.4rem] md:text-[0.45rem]">
                       <div className="w-1/4">SHIPMENT</div>
                       <div className="w-1/4">DESTINATION</div>
@@ -1115,7 +1115,7 @@ function Process() {
   const yTitle = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
 
   return (
-    <section id="process" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
+    <section id="process" ref={sectionRef} className="min-h-screen py-24 md:py-0 w-full md:snap-start shrink-0 bg-[#F8FAFC] text-[#0F172A] flex flex-col justify-center px-6 md:px-[10%] relative overflow-hidden">
       <div className="max-w-7xl mx-auto w-full">
         {/* 61.8% Width for Title */}
         <motion.div style={{ y: yTitle }} className="mb-[4.236rem] md:w-[61.8%]">
@@ -1307,7 +1307,7 @@ function Footer() {
   ];
 
   return (
-    <footer className={`w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 bg-[#0F172A] text-[#F8FAFC] snap-end shrink-0 overflow-hidden relative transition-colors duration-1000`}>
+    <footer className={`w-full px-6 md:px-[2.618rem] pb-[1.618rem] pt-12 z-20 flex flex-col gap-8 md:gap-12 bg-[#0F172A] text-[#F8FAFC] md:snap-end shrink-0 overflow-hidden relative transition-colors duration-1000`}>
       
       {/* Animated Brand Backdrop (Washed out / Tracing Outlines) */}
       <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0 flex items-end">
@@ -1456,7 +1456,7 @@ function CTA() {
     setIsShattered(true);
     
     setTimeout(() => {
-      window.location.href = "mailto:support@beforth.in";
+      document.getElementById('lets-talk')?.scrollIntoView({ behavior: 'smooth' });
       setTimeout(() => setIsShattered(false), 2000);
     }, 1200);
   };
@@ -1511,7 +1511,7 @@ function CTA() {
   const yBg = useTransform(scrollYProgress, [0, 1], ["-20%", "20%"]);
 
   return (
-    <section id="cta" ref={sectionRef} className="min-h-screen w-full snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col relative overflow-hidden">
+    <section id="cta" ref={sectionRef} className="min-h-screen w-full md:snap-start shrink-0 bg-[#2563EB] text-[#F8FAFC] flex flex-col relative overflow-hidden">
       
       {/* Background Marquee */}
       <motion.div 
@@ -1568,7 +1568,7 @@ function CTA() {
           {!isShattered && (
             <Magnetic>
               <motion.a
-                href="mailto:support@beforth.in"
+                href="#lets-talk"
                 onClick={handleShatter}
                 onHoverStart={() => setIsHovered(true)}
                 onHoverEnd={() => setIsHovered(false)}
@@ -1972,7 +1972,7 @@ const PageTransition = ({ children, scrollRef }: { children: React.ReactNode, ke
   return (
     <motion.div
       ref={scrollRef}
-      className="w-full h-full overflow-y-auto overflow-x-hidden snap-y snap-mandatory scroll-smooth"
+      className="w-full h-full overflow-y-auto overflow-x-hidden md:snap-y md:snap-mandatory scroll-smooth"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
