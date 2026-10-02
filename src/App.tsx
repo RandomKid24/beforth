@@ -8,6 +8,7 @@ import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
 import ProductShowcase from '@/components/ProductShowcase';
 import PlatformShowcase from '@/components/PlatformShowcase';
+import SectionHead from '@/components/SectionHead';
 import { useMotionPreset, springSmooth, springSnappy } from '@/lib/motion';
 
 import ServicesPage from './pages/Services';
@@ -15,6 +16,8 @@ import AboutPage from './pages/About';
 import TeamPage from './pages/Team';
 import ContactPage from './pages/Contact';
 import NotFound from './pages/NotFound';
+import ProductPage from './pages/ProductPage';
+import { PLATFORMS, getPlatform } from '@/components/platforms/catalog';
 
 const NAV = [
   { path: '/', label: 'Home' },
@@ -372,24 +375,6 @@ function Hero() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Shared head                                                         */
-/* ------------------------------------------------------------------ */
-function SectionHead({ label, title, note }: { label: string; title: React.ReactNode; note?: string }) {
-  return (
-    <div className="mb-10 md:mb-14">
-      <div className="rule mb-6" />
-      <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
-        <div>
-          <span className="label block mb-4">{label}</span>
-          <h2 className="display-lg text-[clamp(1.8rem,4.2vw,3.2rem)] max-w-[20ch]">{title}</h2>
-        </div>
-        {note && <p className="body max-w-sm lg:text-right">{note}</p>}
-      </div>
-    </div>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* Positioning                                                         */
 /* ------------------------------------------------------------------ */
 function Positioning() {
@@ -654,7 +639,7 @@ function Why() {
 /* ------------------------------------------------------------------ */
 function Products() {
   return (
-    <section className="section">
+    <section id="platforms" className="section scroll-mt-20">
       <div className="wrap">
         <SectionHead
           label="Platforms"
@@ -893,7 +878,7 @@ function Footer() {
   return (
     <footer className="border-t border-ink/12 bg-bone/40 grain">
       <div className="wrap relative z-10 pt-12 pb-8">
-        <div className="grid md:grid-cols-2 lg:grid-cols-[1.4fr_0.7fr_1fr_1fr] gap-10">
+        <div className="grid md:grid-cols-2 lg:grid-cols-[1.25fr_0.6fr_0.95fr_1.05fr_1fr] gap-10">
           <div>
             <div className="flex items-center gap-2.5 mb-4">
               <img src="/befu.png" alt="" className="w-7 h-7 object-contain" />
@@ -928,6 +913,22 @@ function Footer() {
                     className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
                   >
                     {s.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <span className="label block mb-3">Platforms</span>
+            <ul className="flex flex-col">
+              {PLATFORMS.map((x) => (
+                <li key={x.slug}>
+                  <Link
+                    to={`/product/${x.slug}`}
+                    className="flex items-center min-h-[28px] body-tight hover:text-signal transition-colors"
+                  >
+                    {x.name}
                   </Link>
                 </li>
               ))}
@@ -1036,7 +1037,10 @@ function SeoManager() {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    const meta = META[pathname] ?? {
+    const product = pathname.startsWith('/product/') ? getPlatform(pathname.split('/')[2]) : undefined;
+    const meta = product
+      ? { title: product.seoTitle, description: product.seoDescription, keywords: product.keywords }
+      : META[pathname] ?? {
       title: 'Beforth | Custom Software & Automation Company',
       description: 'Beforth builds custom software, business systems and automation from Nashik, India.',
       keywords: 'Beforth, custom software, business systems, automation',
@@ -1148,12 +1152,19 @@ function StructuredData() {
 /* App                                                                  */
 /* ------------------------------------------------------------------ */
 export default function App() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   const { shouldReduce } = useMotionPreset();
 
+  // New page: start at the top. A link like /#platforms: land on that section instead.
   useEffect(() => {
+    if (hash) {
+      const t = window.setTimeout(() => {
+        try { document.querySelector(hash)?.scrollIntoView({ block: 'start' }); } catch { /* not a valid selector */ }
+      }, 90);
+      return () => window.clearTimeout(t);
+    }
     window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
-  }, [pathname]);
+  }, [pathname, hash]);
 
   /**
    * View Transitions give the browser a chance to animate the route swap on
@@ -1184,6 +1195,7 @@ export default function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/team" element={<TeamPage />} />
             <Route path="/contact" element={<ContactPage />} />
+            <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </div>
