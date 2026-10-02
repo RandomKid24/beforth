@@ -1,118 +1,261 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300..800&family=JetBrains+Mono:wght@400;500&display=swap');
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2563EB;
-  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  /* BEFORTH brand palette. RGB + CMYK breakdown in COLOR_PALETTE.md */
+  --color-paper: #F2F7F9;        /* Paper       — Card Background: page canvas        */
+  --color-bone: #D6E7F1;         /* Bone        — Light Wave: section contrast        */
+  --color-ink: #231F20;          /* Ink         — Black / Logo Ink: text, dark fills  */
+  --color-ash: #6D737F;          /* Ash         — Grey Tagline: secondary text        */
+  --color-signal: #1C75BC;       /* Signal      — Dark Wave: primary accent           */
+  --color-wave: #75BAE6;         /* Wave        — Middle Wave: accent on dark surfaces */
+  --color-signal-deep: #165B93;  /* Signal Deep — Dark Wave at 80% brightness: hover  */
+
+  --font-display: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-sans: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
 }
 
 @layer base {
-  html, body {
-    @apply overflow-x-hidden w-full;
-    scrollbar-gutter: stable;
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-paper text-ink font-sans;
+    overflow-x: hidden;
+  }
+
+  ::selection {
+    background: var(--color-signal);
+    color: #FFFFFF;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display font-semibold tracking-[-0.025em];
   }
 }
 
 @layer components {
-  .badge {
-    @apply px-[1rem] py-[0.618rem] rounded-full border border-primary/40 text-slate-900 font-mono text-[0.85rem] tracking-widest uppercase bg-primary/10 cursor-default hover:bg-primary/20 transition-colors duration-300;
+  /* ---- Layout ------------------------------------------------------- */
+  .wrap {
+    @apply w-full max-w-[1280px] mx-auto px-6 md:px-10;
   }
-  .card {
-    @apply bg-white p-8 md:p-12 rounded-none border border-slate-900/10 relative flex flex-col;
+  .rule {
+    @apply h-px w-full bg-ink/12;
   }
-  .card-hover-border {
-    @apply absolute top-0 left-0 w-full h-1 bg-primary transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500;
-  }
-  .icon-box {
-    @apply w-12 h-12 bg-primary/10 text-primary rounded-none flex items-center justify-center mb-6 border border-primary/20;
-  }
-  .page-container {
-    @apply min-h-screen bg-slate-50 text-slate-900 pt-[15vh] pb-32 px-6 md:px-[10%];
-  }
-  .dark-section {
-    @apply mt-[8.5vh] bg-slate-950 text-white p-8 md:p-16 rounded-none relative overflow-hidden;
-  }
-  .hero-heading {
-    @apply text-[clamp(3.5rem,14vw,6rem)] md:text-[clamp(4rem,8.5vw,8rem)] leading-[1.05] py-2 font-display uppercase tracking-normal flex flex-col;
+  .section {
+    @apply py-20 md:py-28;
   }
 
-  /* Skeuomorphic Button */
-  .skeuo-btn {
-    @apply relative inline-flex items-center justify-center font-mono text-sm tracking-widest uppercase font-bold text-slate-800 transition-all duration-150 cursor-pointer;
-    background: linear-gradient(180deg, #f8fafc 0%, #e2e8f0 100%);
-    border-radius: 12px;
-    border: 1px solid #cbd5e1;
-    box-shadow: 
-      inset 0 2px 0 rgba(255,255,255,0.8),
-      inset 0 -2px 0 rgba(0,0,0,0.05),
-      0 6px 0 #94a3b8,
-      0 10px 20px rgba(0,0,0,0.15);
-    padding: 1rem 2rem;
-    transform: translateY(0);
+  /* ---- Type --------------------------------------------------------- */
+  .display-xl {
+    @apply font-display font-extrabold tracking-[-0.035em] leading-[0.95];
   }
-  
-  .skeuo-btn:hover {
-    @apply -translate-y-1;
-    box-shadow: 
-      inset 0 2px 0 rgba(255,255,255,0.8),
-      inset 0 -2px 0 rgba(0,0,0,0.05),
-      0 10px 0 #94a3b8,
-      0 15px 30px rgba(0,0,0,0.2);
-    background: linear-gradient(180deg, #ffffff 0%, #f1f5f9 100%);
+  .display-lg {
+    @apply font-display font-bold tracking-[-0.025em] leading-[1.1];
   }
-  
-  .skeuo-btn:active {
-    box-shadow: 
-      inset 0 2px 0 rgba(255,255,255,0.8),
-      inset 0 2px 4px rgba(0,0,0,0.1),
-      0 0 0 #94a3b8,
-      0 2px 4px rgba(0,0,0,0.1);
-    transform: translateY(6px);
+  .display-md {
+    @apply font-display font-semibold tracking-[-0.015em] leading-[1.2];
+  }
+  .accent {
+    @apply text-signal;
+  }
+  .label {
+    @apply font-mono text-[10px] md:text-[11px] uppercase tracking-[0.22em] text-ash;
+  }
+  .body {
+    @apply text-ash text-[15px] md:text-[16px] font-normal leading-[1.75];
+  }
+  .body-tight {
+    @apply text-ash text-[13.5px] font-normal leading-[1.65];
+  }
+  .lead {
+    @apply text-ink/80 text-lg md:text-[21px] font-normal leading-[1.5] tracking-[-0.012em];
+  }
+  .figure-cap {
+    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-ash;
   }
 
-  /* Skeuomorphic Switch */
-  .skeuo-switch {
-    @apply relative w-16 h-8 rounded-full transition-all duration-300 pointer-events-auto cursor-pointer;
-    background: linear-gradient(180deg, #cbd5e1 0%, #f1f5f9 100%);
-    box-shadow: 
-      inset 0 2px 6px rgba(0,0,0,0.2),
-      0 1px 0 rgba(255,255,255,0.8);
+  /* ---- Buttons ------------------------------------------------------ */
+  .btn-solid {
+    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink bg-ink text-paper;
+  }
+  .btn-solid:hover {
+    @apply bg-signal border-signal text-white;
+  }
+  .btn-signal {
+    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-signal bg-signal text-white;
+  }
+  .btn-signal:hover {
+    @apply bg-signal-deep border-signal-deep;
+  }
+  .btn-line {
+    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-ink/22 text-ink;
+  }
+  .btn-line:hover {
+    @apply border-ink bg-ink text-paper;
+  }
+  .btn-invert {
+    @apply inline-flex items-center justify-center gap-2.5 font-mono text-[10.5px] font-medium uppercase tracking-[0.18em] transition-[color,background-color,border-color,transform] duration-300 whitespace-nowrap px-6 py-[15px] border border-paper bg-paper text-ink;
+  }
+  .btn-invert:hover {
+    @apply bg-bone border-bone;
   }
 
-  .skeuo-switch-knob {
-    @apply absolute top-1 left-1 w-6 h-6 rounded-full transition-all duration-300 flex items-center justify-center;
-    background: linear-gradient(180deg, #ffffff 0%, #e2e8f0 100%);
-    box-shadow: 
-      0 2px 4px rgba(0,0,0,0.2),
-      inset 0 -2px 0 rgba(0,0,0,0.1),
-      inset 0 2px 0 rgba(255,255,255,1);
+  /* ---- Text link ----------------------------------------------------- */
+  .ulink {
+    @apply relative inline-flex items-center gap-2 min-h-[28px] font-mono text-[10.5px] uppercase tracking-[0.18em] text-ink transition-colors duration-300 py-1;
+    border-bottom: 1px solid rgba(35,31,32, 0.25);
+  }
+  .ulink:hover {
+    @apply text-signal;
+    border-color: var(--color-signal);
   }
 
-  .skeuo-switch.active {
-    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
-    box-shadow: 
-      inset 0 2px 6px rgba(0,0,0,0.6),
-      0 1px 0 rgba(255,255,255,0.1);
+  /* ---- Surfaces ------------------------------------------------------ */
+  .surface {
+    @apply border border-ink/12 bg-white;
+  }
+  .surface-ink {
+    @apply border border-ink/12 bg-ink text-paper;
   }
 
-  .skeuo-switch.active .skeuo-switch-knob {
-    transform: translateX(32px);
-    background: linear-gradient(180deg, #3b82f6 0%, #2563eb 100%);
-    box-shadow: 
-      0 2px 4px rgba(0,0,0,0.4),
-      inset 0 -2px 0 rgba(0,0,0,0.2),
-      inset 0 2px 0 rgba(255,255,255,0.4);
+  /* ---- Form fields --------------------------------------------------- */
+  .field {
+    @apply w-full bg-white border border-ink/15 px-4 py-3.5 text-sm text-ink placeholder:text-ash/50 outline-none transition-[border-color,box-shadow] duration-300;
+  }
+  .field:hover {
+    @apply border-ink/30;
+  }
+  .field:focus {
+    @apply border-signal ring-2 ring-signal/15;
+  }
+  .flabel {
+    @apply font-mono text-[10px] uppercase tracking-[0.2em] text-ash mb-2 block;
+  }
+
+  /* ---- Texture -------------------------------------------------------- */
+  .grain::before {
+    content: "";
+    @apply absolute inset-0 pointer-events-none z-0;
+    opacity: 0.32;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+  .blueprint-grid {
+    background-image:
+      linear-gradient(to right, rgba(35,31,32, 0.06) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(35,31,32, 0.06) 1px, transparent 1px);
+    background-size: 60px 60px;
+  }
+  .blueprint-fade {
+    -webkit-mask-image: radial-gradient(ellipse 75% 70% at 50% 30%, #000 20%, transparent 80%);
+    mask-image: radial-gradient(ellipse 75% 70% at 50% 30%, #000 20%, transparent 80%);
   }
 }
 
-html {
-  scroll-behavior: smooth;
+@layer utilities {
+  .marquee-track { animation: marquee 46s linear infinite; }
+  .marquee-slow { animation: marquee 84s linear infinite; }
+  .marquee-pause:hover .marquee-track,
+  .marquee-pause:hover .marquee-slow { animation-play-state: paused; }
+  .spin-slow { animation: spin 52s linear infinite; }
+  .pulse-dot { animation: pulse-dot 2.2s ease-in-out infinite; }
+  .no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
 }
 
-@media (min-width: 768px) {
-  #root, #root * {
-    cursor: none !important;
+@keyframes marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.8); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .animate-\[fadeDown_\.3s_ease-out\] { animation: none; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Offscreen / background animation gating                             */
+/*                                                                     */
+/* Applied by a shared observer so continuous work (the diagram's      */
+/* travelling particles, the demo heartbeat) stops when the element is */
+/* not on screen or the tab is hidden, instead of running forever.     */
+/* ------------------------------------------------------------------ */
+.is-offscreen .spin-slow,
+.is-offscreen .wf-particle,
+.is-hidden-tab .spin-slow,
+.is-hidden-tab .wf-particle {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track, .marquee-slow, .spin-slow, .pulse-dot { animation: none !important; }
+  html { scroll-behavior: auto; }
+}
+
+/* ------------------------------------------------------------------ */
+/* Scroll-driven animations                                            */
+/*                                                                     */
+/* These run on the compositor thread rather than the main thread, so */
+/* they cannot jank regardless of how busy the page is. Chrome/Edge    */
+/* 115+ and Safari 17.4+ only — Firefox needs a flag, so every rule    */
+/* below is wrapped in @supports and the JS fallback in Reveal.tsx      */
+/* stays in place for engines without support.                         */
+/*                                                                     */
+/* Only `opacity` and `transform` are animated. Animating width,       */
+/* height, background-color or colour here would force main-thread     */
+/* recalculation and defeat the purpose.                               */
+/* ------------------------------------------------------------------ */
+@supports (animation-timeline: view()) {
+  /* Reveal on enter. `animation-timeline` must be declared after the
+     `animation` shorthand, because the shorthand resets it. */
+  [data-reveal] {
+    animation: scroll-reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 38%;
+  }
+
+  /* Hero parallax. Amount and end opacity are per-element custom props. */
+  [data-parallax] {
+    animation: scroll-parallax linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 100vh;
+  }
+}
+
+@keyframes scroll-reveal {
+  from { opacity: 0; transform: translate3d(0, 26px, 0); }
+  to   { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes scroll-parallax {
+  from { transform: translate3d(0, 0, 0); opacity: var(--parallax-opacity-from, 1); }
+  to   { transform: translate3d(0, var(--parallax-shift, 0px), 0);
+         opacity: var(--parallax-opacity-to, 1); }
+}
+
+/* Reduced motion does NOT cancel a view()/scroll() timeline by itself —
+   the element keeps tracking scroll and can be left stuck at opacity 0.
+   Both the animation and the timeline have to be reset explicitly. */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-parallax] {
+    animation: none !important;
+    animation-timeline: auto !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

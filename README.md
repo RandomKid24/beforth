@@ -8,101 +8,73 @@
 </p>
 
 <p align="center">
-  <strong>We ship banger apps. Bespoke software. Zero BS.</strong><br />
-  A high-density, modern digital agency platform built for maximum conversion and premium feel.
+  <strong>We build custom software — ERP, web platforms &amp; mobile apps.</strong><br />
+  Software engineered around how your business actually works, not the other way around.
 </p>
 
 ---
 
 ## ⚡ Quick Links
 
-| [Live Demo](https://beforth.in) | [Documentation](#-design-system) | [Components Catalog](#-core-components) | [Contact Us](https://beforth.in/contact) |
-| :--- | :--- | :--- | :--- |
-
----
-
-## 🎨 Design System
-
-Our design system is built around the **Golden Ratio** ($\phi \approx 1.618$) for spacing and typography, combined with a brutalist yet refined visual language.
-
-### 🍱 The Palette
-Managed via Tailwind CSS variables in `src/index.css` for a high-contrast, professional aesthetic.
-
-| Color | Hex | Role |
+| [Live Demo](https://beforth.in) | [COLOR_PALETTE.md](COLOR_PALETTE.md) | [Contact](https://beforth.in/contact) |
 | :--- | :--- | :--- |
-| **Primary Accent** | `#2563EB` | Active states, primary buttons, brand identity. |
-| **Cream (Light)** | `#F8FAFC` | Primary background for light mode sections. |
-| **Dark (Slate)** | `#020617` | Contrast sections, footers, and deep backgrounds. |
-| **Text Dark** | `#0F172A` | High-readability body text on light backgrounds. |
-| **Muted Text** | `#64748B` | Secondary metadata and decorative descriptions. |
-
-### 🖋️ Typography
-A fluid typographic scale using three distinct font families to reduce visual clutter.
-
-- **Display:** `Space Grotesk` — Massive, uppercase headings for impact.
-- **Sans:** `Inter` — Precision body text for readability.
-- **Mono:** `JetBrains Mono` — Metadata, navigation, and technical labels.
 
 ---
 
-## 🧩 Core Components
+## 🎨 Design System — "Signal Ink"
 
-### 🏗️ Global Layout
-The project follows a modular architecture where pages are assembled from high-density sections.
+A high-contrast, professional palette in a **Paper / Ink / Deep / Signal / Muted**
+family. Every color ships with an exact **CMYK** equivalent in
+[`COLOR_PALETTE.md`](COLOR_PALETTE.md) so the site and printed brand documents
+always match.
 
-- **Navbar:** Smart fixed navigation using `mix-blend-difference` to adapt dynamically to background shifts.
-- **Hero Sections:** Massive fluid headings with parallax visual layers.
-- **Dark Sections:** Every page concludes with an inverted contrast section to anchor the brand identity before the footer.
+| Color | HEX (RGB) | CMYK | Role |
+| :--- | :--- | :--- | :--- |
+| **Paper** (Card Background) | `#F2F7F9` | `C 3 M 1 Y 0 K 2` | Main background |
+| **Bone** (Light Wave) | `#D6E7F1` | `C 11 M 4 Y 0 K 5` | Section contrast |
+| **Ink** (Black / Logo Ink) | `#231F20` | `C 0 M 11 Y 9 K 86` | Primary text, dark sections |
+| **Ash** (Grey Tagline) | `#6D737F` | `C 14 M 9 Y 0 K 50` | Secondary text |
+| **Signal** (Dark Wave) | `#1C75BC` | `C 85 M 38 Y 0 K 26` | Accent / primary |
+| **Wave** (Middle Wave) | `#75BAE6` | `C 49 M 19 Y 0 K 10` | Accent on dark surfaces |
 
-### 🛠️ Reusable UI Primitives
-Defined in `@layer components` within `src/index.css`:
-- `badge`: Pill-shaped metadata labels.
-- `card`: Standard containers with 1.618 spacing rhythm.
-- `skeuo-btn`: Premium skeuomorphic buttons with depth and tactile response.
-- `skeuo-switch`: Architectural toggle switches for settings and modes.
+Tokens are defined in `src/index.css` via Tailwind v4 `@theme`.
 
----
-
-## 📄 Page Architecture
-
-- **Home:** Introduces the "We Ship Banger Apps" mantra with a device mockup showcase.
-- **Services:** Detailed grid of offerings from Custom ERPs to Native Mobile Apps.
-- **About:** Mission statement and core values grid.
-- **Team:** Dynamic cards featuring social integrations and profile hover effects.
-- **Contact:** Sleek lead capture form and global presence headquarters map.
+### Typography
+- **Display:** `Bebas Neue` — massive uppercase headings.
+- **Sans:** `Inter` — body copy and readability.
+- **Mono:** `JetBrains Mono` — metadata, labels, technical text.
 
 ---
 
-## 🎬 Creative Physics & Animations
+## 🧩 Site Structure
 
-We leverage hardware-accelerated animations via `motion/react` and `gsap`.
+- **Home** — a clear narrative: what we do (ERP / web / mobile), why custom
+  beats off-the-shelf, featured work, the delivery process, and a contact CTA.
+- **Services** — the three core offerings plus the modules we deliver
+  (ERP, CRM, HRMS, POS, automation) and our security guarantees.
+- **About** — who we are, the mission, values, and quick stats.
+- **Team** — the founding team behind the builds.
+- **Contact** — lead-capture form with live availability + contact channels.
 
-- **Snappiness:** Transitions use `ease: [0.16, 1, 0.3, 1]` for an immediate yet organic feel.
-- **Parallax:** Scroll-triggered transformations that add depth to device mockups and headings.
-- **Interactive:** Hover-triggered border expansions and magnetic button effects.
+### Reusable UI Primitives (`src/index.css`)
+- `badge` · `card` · `icon-box` · `page-container` · `dark-section`
+- `eyebrow` / `eyebrow-dot` / `eyebrow-text` — section labels
+- `skeuo-btn` / `skeuo-switch` — tactile skeuomorphic controls
 
 ---
 
 ## 🚀 Getting Started
 
-### Installation
 ```bash
-npm install
-```
-
-### Development
-```bash
-npm run dev
-```
-
-### Build
-```bash
-npm run build
+npm install        # dependencies
+npm run dev        # local dev server (port 3000)
+npm run build      # production build
+npm run lint       # TypeScript check (tsc --noEmit)
 ```
 
 ---
 
 <p align="center">
   Made with 💙 by <strong>BEFORTH</strong><br />
-  <em>Bespoke Software for Visionaries.</em>
+  <em>Bespoke software for ambitious businesses. Nashik · India · Worldwide.</em>
 </p>

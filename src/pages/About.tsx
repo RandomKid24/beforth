@@ -1,149 +1,205 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { Target, Users, Zap, Globe, Heart, Rocket } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
+import Reveal from '../components/Reveal';
+import { Magnetic } from '../components/Magnetic';
 
-const values = [
-  {
-    num: "01",
-    title: "Uncompromising Quality",
-    desc: "We don't ship 'good enough'. We ship exceptional, or we don't ship at all.",
-    icon: Zap
-  },
-  {
-    num: "02",
-    title: "Client Partnership",
-    desc: "We aren't just vendors; we're your technical partners invested in your success.",
-    icon: Heart
-  },
-  {
-    num: "03",
-    title: "Radical Transparency",
-    desc: "Open communication and honest feedback are at the core of our technical process.",
-    icon: Target
-  },
-  {
-    num: "04",
-    title: "Innovation First",
-    desc: "We stay ahead of the curve so your business never falls behind.",
-    icon: Rocket
-  }
+const POINTS = [
+  { n: '01', t: 'Business first', d: "We start with the problem, not the technology." },
+  { n: '02', t: 'Built around your workflow', d: 'The system fits you, not the other way round.' },
+  { n: '03', t: 'Simple and practical', d: 'Your team understands it on day one.' },
+  { n: '04', t: 'Scalable by design', d: 'New modules slot in without a rebuild.' },
+  { n: '05', t: 'One accountable partner', d: 'One team, one point of responsibility.' },
+  { n: '06', t: 'Honest recommendations', d: 'If a spreadsheet solves it, we say so.' },
 ];
+
+const VALUES = [
+  { k: 'Clarity', v: 'Plain language, documented scope, no jargon between you and the build.' },
+  { k: 'Craft', v: 'Work we are happy to put our name on — tested, tidy and built to last.' },
+  { k: 'Ownership', v: 'Your deadlines and data treated as our own.' },
+  { k: 'Continuity', v: 'Reachable for the years after go-live.' },
+];
+
+const PRINCIPLES = [
+  { t: 'Understand the problem', d: 'We focus on the actual business challenge, not just the requested feature.' },
+  { t: 'Build for the workflow', d: 'Software should support how the business operates.' },
+  { t: 'Keep information connected', d: 'Data is more useful when the right teams can access it in the right context.' },
+  { t: 'Automate where it matters', d: 'Automation should remove unnecessary work, not make simple work complicated.' },
+  { t: 'Build for change', d: 'A business system should be able to evolve as the business does.' },
+];
+
+const INDUSTRIES = [
+  'Manufacturing', 'Logistics & Distribution', 'Pharma', 'Sales & Marketing',
+  'Human Resources', 'Growing Businesses',
+];
+
+function PageHead({ label, title, children }: { label: string; title: React.ReactNode; children?: React.ReactNode }) {
+  return (
+    <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
+      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
+      <div className="wrap relative z-10">
+        <Reveal>
+          <div className="rule mb-6" />
+          <span className="label block mb-6">{label}</span>
+          <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[17ch]">{title}</h1>
+          {children && <div className="mt-8">{children}</div>}
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
 export default function AboutPage() {
   return (
-    <div className="page-container">
-      <section className="min-h-screen snap-start flex flex-col pt-48">
-        <motion.div
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-7xl mx-auto w-full"
-        >
-          <div className="flex items-center gap-3 mb-[1.618rem]">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-slate-500">Our Story</span>
-          </div>
+    <>
+      <PageHead
+        label="About"
+        title={<>Technology that <span className="accent">fits</span> the business.</>}
+      >
+        <div className="grid md:grid-cols-2 gap-8 md:gap-14 max-w-5xl">
+          <p className="lead">
+            BeForth is a software company in Nashik, India. We build custom business software,
+            automation and digital platforms.
+          </p>
+          <p className="body">
+            Our work is simple to state: understand how a business really runs, then build
+            technology around it. Our span covers ERP, CRM, HRMS, inventory systems, business
+            applications, web platforms and mobile applications.
+          </p>
+        </div>
+      </PageHead>
 
-          <h1 className="hero-heading mb-12">
-            <span className="block">BEYOND</span>
-            <span className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">EXPECTATIONS.</span>
-          </h1>
-
-          <div className="max-w-3xl">
-            <p className="text-[1.2rem] md:text-[1.618rem] font-sans text-slate-700 font-light leading-[1.618]">
-              BEFORTH was founded on a simple principle: <span className="font-medium text-slate-950">software shouldn't be boring or burdensome.</span> We build high-density digital experiences that solve real problems with premium aesthetics.
-            </p>
-          </div>
-        </motion.div>
-      </section>
-
-      {/* Mission Section */}
-      <section className="min-h-screen snap-start flex flex-col justify-center py-20 px-0 md:px-0">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95, filter: "blur(10px)" }}
-          whileInView={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="p-8 md:p-16 bg-[#020617] text-white relative overflow-hidden w-full"
-        >
-           <div className="absolute top-0 right-0 w-[50%] h-full pointer-events-none" style={{ background: 'radial-gradient(circle at center, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }} />
-           <div className="relative z-10">
-              <h2 className="text-3xl font-display uppercase mb-8">THE MISSION</h2>
-              <p className="text-xl md:text-3xl font-sans font-light leading-relaxed max-w-4xl">
-                To eliminate digital friction and replace outdated systems with custom software that is powerful, secure, and a joy to use.
-              </p>
-           </div>
-        </motion.div>
-      </section>
-
-      {/* Core Values Grid */}
-      <section className="min-h-screen snap-start flex flex-col justify-center py-24">
-        <div className="max-w-7xl mx-auto w-full">
-          <motion.h2 
-            initial={{ opacity: 0, x: -20, filter: "blur(10px)" }}
-            whileInView={{ opacity: 1, x: 0, filter: "blur(0px)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-5xl font-display uppercase mb-16"
-          >
-            OUR CORE VALUES
-          </motion.h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {values.map((value, i) => (
-              <motion.div 
-                key={i}
-                initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col gap-6"
-              >
-                <div className="flex items-center gap-4">
-                  <span className="font-mono text-sm text-primary">{value.num}</span>
-                  <div className="h-[1px] flex-1 bg-slate-900/10" />
-                </div>
-                <value.icon className="w-8 h-8 text-primary group-hover:scale-110 transition-transform" />
-                <h3 className="text-xl font-display uppercase">{value.title}</h3>
-                <p className="font-sans font-light text-slate-500 leading-relaxed">
-                  {value.desc}
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <div className="grid md:grid-cols-2 gap-5">
+            <Reveal>
+              <div className="surface p-7 md:p-9 h-full">
+                <span className="label block mb-5">Vision</span>
+                <p className="display-md text-lg md:text-[24px] leading-[1.28]">
+                  Business technology that is simpler, smarter and accessible to any company, at
+                  any size.
                 </p>
-              </motion.div>
+              </div>
+            </Reveal>
+            <Reveal delay={0.07}>
+              <div className="surface-ink p-7 md:p-9 h-full">
+                <span className="label !text-paper/50 block mb-5">Mission</span>
+                <p className="display-md text-lg md:text-[24px] leading-[1.28] text-paper">
+                  Replace manual processes and disconnected tools with practical, scalable
+                  technology that makes businesses run better. Our job is not simply to deliver
+                  software — it is to understand the problem behind the request.
+                </p>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <div className="rule mb-6" />
+          <span className="label block mb-4">Why BeForth</span>
+          <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-10 max-w-[18ch]">
+            Six things that make us different.
+          </h2>
+
+          <div className="border-t border-ink/12">
+            {POINTS.map((item, i) => (
+              <Reveal key={item.n} delay={(i % 3) * 0.05}>
+                <div className="group grid md:grid-cols-[3.5rem_1fr_1.2fr] gap-x-8 gap-y-2 py-5 md:py-7 border-b border-ink/12">
+                  <span className="label text-signal">{item.n}</span>
+                  <h3 className="display-md text-base md:text-lg transition-colors duration-500 group-hover:text-signal">
+                    {item.t}
+                  </h3>
+                  <p className="body">{item.d}</p>
+                </div>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Dark Contrast Section */}
-      <section className="min-h-screen snap-start flex flex-col justify-center">
-        <div className="dark-section group w-full">
-          <div className="card-hover-border" />
-          <div className="flex flex-col md:flex-row items-center justify-between gap-12 max-w-7xl mx-auto w-full">
-            <div className="max-w-xl">
-              <motion.h2 
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl md:text-5xl font-display uppercase mb-6 leading-tight"
-              >
-                Ready to <br />
-                <span className="text-transparent [-webkit-text-stroke:1px_white]">Innovate?</span>
-              </motion.h2>
-              <p className="font-sans font-light text-slate-400 leading-relaxed mb-8">
-                Let's discuss how we can transform your business processes with custom software. No cap, just results.
-              </p>
-              <a href="/contact" className="badge bg-white text-slate-950 font-bold hover:bg-primary hover:text-white transition-all transform hover:scale-105 inline-block">
-                START CONVERSATION
-              </a>
-            </div>
-            <div className="w-full md:w-auto flex justify-center">
-              <div className="w-48 h-48 rounded-full border-2 border-white/10 flex items-center justify-center animate-spin-slow">
-                 <div className="font-display text-8xl opacity-10">B</div>
-              </div>
-            </div>
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <div className="rule mb-6" />
+          <span className="label block mb-4">Our principles</span>
+          <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-10 max-w-[18ch]">
+            Five things we hold to.
+          </h2>
+
+          <div className="border-t border-ink/12">
+            {PRINCIPLES.map((p, i) => (
+              <Reveal key={p.t} delay={Math.min(i, 4) * 0.05}>
+                <div className="group grid md:grid-cols-[3.5rem_1fr_1.2fr] gap-x-8 gap-y-2 py-5 md:py-6 border-b border-ink/12">
+                  <span className="label text-signal">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="display-md text-base md:text-lg transition-colors duration-500 group-hover:text-signal">
+                    {p.t}
+                  </h3>
+                  <p className="body">{p.d}</p>
+                </div>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
-    </div>
+
+      <section className="section bg-bone grain">
+        <div className="wrap relative z-10">
+          <div className="rule mb-6" />
+          <span className="label block mb-4">How we operate</span>
+          <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-10 max-w-[18ch]">
+            Values we ship by.
+          </h2>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-9">
+            {VALUES.map((value, i) => (
+              <Reveal key={value.k} delay={i * 0.06}>
+                <div>
+                  <span className="block w-7 h-px bg-signal mb-4" />
+                  <h3 className="display-md text-base mb-2">{value.k}</h3>
+                  <p className="body-tight">{value.v}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="wrap">
+          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-20 items-start">
+            <Reveal>
+              <div className="rule mb-6" />
+              <span className="label block mb-4">Who we work with</span>
+              <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)]">Sectors we know well.</h2>
+            </Reveal>
+
+            <Reveal delay={0.08}>
+              <div className="flex flex-wrap gap-2.5">
+                {INDUSTRIES.map((industry) => (
+                  <span
+                    key={industry}
+                    className="label border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
+                  >
+                    {industry}
+                  </span>
+                ))}
+              </div>
+
+              <div className="mt-10 pt-8 border-t border-ink/12">
+                <p className="body max-w-lg mb-6">
+                  If your sector is not listed, that is not a blocker. The method is the same.
+                </p>
+                <Magnetic>
+                  <Link to="/contact" className="btn-signal">
+                    Start a conversation <ArrowRight className="w-4 h-4" />
+                  </Link>
+                </Magnetic>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }

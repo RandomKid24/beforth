@@ -1,207 +1,318 @@
 import React from 'react';
-import { motion } from 'motion/react';
-import { LayoutGrid, Smartphone, Monitor, Shield, Zap, BarChart3, Database, Users, Activity, CreditCard, Settings } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
+import Reveal from '../components/Reveal';
+import { Magnetic } from '../components/Magnetic';
+import WorkflowDiagram from '../components/WorkflowDiagram';
 
-const services = [
+const SERVICES = [
   {
-    id: "01",
-    category: "ERP Solutions",
-    title: "CUSTOM ERP",
-    desc: "End-to-end enterprise resource planning built from scratch for your workflows — not off-the-shelf compromises.",
-    tags: ["INVENTORY", "FINANCE", "HR", "CRM"],
-    icon: LayoutGrid
+    n: '01',
+    title: 'Custom ERP',
+    summary: 'A business management system designed around your operations.',
+    detail:
+      'Manage departments, workflows and business data through one connected platform — starting with the processes you need today and expanding as the business grows.',
+    points: [
+      'Inventory management', 'Purchase management', 'Sales management',
+      'Production workflows', 'Finance & operations', 'Employee management',
+      'Approvals', 'CRM', 'Reporting', 'Dashboards', 'Business analytics', 'Workflow automation',
+    ],
   },
   {
-    id: "02",
-    category: "Mobile Apps",
-    title: "IOS & ANDROID",
-    desc: "Native and cross-platform mobile apps with fluid UX, performance-first architecture, and zero compromise on feel.",
-    tags: ["SWIFT", "KOTLIN", "FLUTTER", "REACT NATIVE"],
-    icon: Smartphone
+    n: '02',
+    title: 'CRM',
+    summary: 'Make every lead and follow-up count.',
+    detail:
+      'A CRM built around your actual sales process, instead of changing your process to fit generic software.',
+    points: [
+      'Lead management', 'Custom sales pipelines', 'Follow-up management',
+      'Customer records', 'Campaign tracking', 'Sales activity',
+      'Notifications & reminders', 'Reports & analytics', 'Workflow automation',
+    ],
   },
   {
-    id: "03",
-    category: "Web Platforms",
-    title: "WEB PLATFORMS",
-    desc: "Blazing fast, beautifully crafted web applications. From landing pages to complex SaaS dashboards.",
-    tags: ["NEXT.JS", "REACT", "NODE", "POSTGRESQL"],
-    icon: Monitor
-  }
+    n: '03',
+    title: 'HRMS & Payroll',
+    summary: 'One system for your workforce operations.',
+    detail:
+      'Employee information, attendance, shifts, leave and payroll through workflows designed around your policies and salary structure — whether the team is ten people or several hundred.',
+    points: [
+      'Employee management', 'Attendance tracking', 'Shift management',
+      'Leave management', 'Payroll processing', 'Salary calculations',
+      'Approval workflows', 'Biometric integration', 'Reports', 'Dashboards', 'Workforce analytics',
+    ],
+  },
+  {
+    n: '04',
+    title: 'Inventory Management',
+    summary: 'Know what you have, where it is and what needs attention.',
+    detail:
+      'Inventory gets harder to manage as operations grow. We build systems that give real visibility across stock, materials, warehouses and operational workflows.',
+    points: [
+      'Real-time stock visibility', 'Raw material management', 'Warehouse management',
+      'Stock movement', 'Reorder alerts', 'Purchase & issue workflows',
+      'Production-related inventory', 'Reporting & analytics',
+    ],
+  },
+  {
+    n: '05',
+    title: 'Business Automation',
+    summary: 'Reduce repetitive work.',
+    detail:
+      'Not every task needs handling by hand. We connect workflows, data and notifications so routine processes move automatically.',
+    points: [
+      'Approval workflows', 'Automated notifications', 'Follow-up reminders',
+      'Status updates', 'Data synchronisation', 'Report generation',
+      'Lead workflows', 'HR processes', 'Inventory alerts', 'Operational triggers',
+    ],
+  },
+  {
+    n: '06',
+    title: 'Web Applications',
+    summary: 'Business software that runs in the browser.',
+    detail:
+      'Modern web platforms from internal applications to complex dashboards and customer-facing systems, with a focus on usability, performance, maintainability and scalable architecture.',
+    stack: 'Next.js · React · Node.js · PostgreSQL',
+  },
+  {
+    n: '07',
+    title: 'Mobile Applications',
+    summary: 'Take your business wherever work happens.',
+    detail:
+      'Applications for employees, field teams, customers and business operations — from field apps to enterprise mobile workflows, designed around the people actually using them.',
+    stack: 'Flutter · React Native · Swift · Kotlin',
+  },
 ];
+
+const SECTORS = [
+  {
+    n: 'Manufacturing',
+    desc: 'Connect inventory, materials, production, sales and operations through a unified system.',
+    uses: ['Manufacturing ERP', 'Inventory visibility', 'Raw-material tracking', 'Production workflows', 'Warehouse management', 'Operational dashboards'],
+  },
+  {
+    n: 'Logistics & Distribution',
+    desc: 'Bring shipments, routes, deliveries, vendors and operational information into one system.',
+    uses: ['Shipment management', 'Delivery workflows', 'Route tracking', 'Vendor management', 'Proof of delivery', 'Real-time visibility'],
+  },
+  {
+    n: 'Sales & Marketing',
+    desc: 'Give sales teams a single place to manage leads, customers and follow-ups.',
+    uses: ['CRM', 'Lead generation', 'Follow-up management', 'Sales pipelines', 'Campaign management', 'Sales dashboards'],
+  },
+  {
+    n: 'Human Resources',
+    desc: 'Simplify employee administration and workforce operations.',
+    uses: ['HRMS', 'Attendance', 'Leave', 'Shifts', 'Payroll', 'Biometric integration'],
+  },
+  {
+    n: 'Growing Businesses',
+    desc: 'Replace fragmented workflows with systems that bring departments, information and processes together.',
+    uses: ['Spreadsheet replacement', 'Department systems', 'Connected workflows', 'Shared data', 'Dashboards'],
+  },
+];
+
+const ENGAGEMENT = [
+  { k: 'Discovery', v: 'We map your process and agree what success looks like.' },
+  { k: 'Proposal', v: 'Scope, sequence and cost — in plain language.' },
+  { k: 'Build', v: 'Modular delivery, with working software early.' },
+  { k: 'Handover', v: 'Training, documentation and support.' },
+];
+
+function PageHead({ label, title, lead }: { label: string; title: React.ReactNode; lead?: string }) {
+  return (
+    <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
+      <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
+      <div className="wrap relative z-10">
+        <Reveal>
+          <div className="rule mb-6" />
+          <span className="label block mb-6">{label}</span>
+          <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[16ch]">{title}</h1>
+          {lead && <p className="lead max-w-2xl mt-7">{lead}</p>}
+        </Reveal>
+      </div>
+    </section>
+  );
+}
 
 export default function ServicesPage() {
   return (
-    <div className="page-container">
-      <section className="min-h-screen snap-start flex flex-col pt-48">
-        <motion.div
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-7xl mx-auto w-full"
-        >
-          <div className="flex items-center gap-3 mb-[1.618rem]">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-slate-500">Expertise</span>
-          </div>
+    <>
+      <PageHead
+        label="Services"
+        title={<>Everything you need to <span className="accent">run on.</span></>}
+        lead="Seven service lines, one accountable partner."
+      />
 
-          <h1 className="hero-heading mb-12">
-            <span className="block">OUR</span>
-            <span className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">SERVICES.</span>
-          </h1>
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <div className="flex flex-col gap-16 md:gap-20">
+            {SERVICES.map((service, i) => (
+              <Reveal key={service.n}>
+                <article className="grid lg:grid-cols-[0.9fr_1.1fr] gap-8 lg:gap-16">
+                  <div className="lg:sticky lg:top-28 lg:self-start">
+                    <div className="flex items-center gap-4 mb-4">
+                      <span className="label text-signal">{service.n}</span>
+                      <span className="h-px flex-1 bg-ink/15" />
+                    </div>
+                    <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.4rem)] mb-2">
+                      {service.title}
+                    </h2>
+                    <p className="accent text-lg md:text-xl mb-4">{service.summary}</p>
+                    <p className="body max-w-md">{service.detail}</p>
+                    {service.stack && (
+                      <p className="label !text-[10px] !tracking-[0.14em] mt-5 pt-5 border-t border-ink/12">
+                        {service.stack}
+                      </p>
+                    )}
+                  </div>
 
-          <p className="text-[1.2rem] md:text-[1.618rem] font-sans text-slate-500 font-light leading-[1.618] max-w-2xl">
-            We build robust, scalable, and beautifully designed software that helps your business move faster and more efficiently.
-          </p>
-        </motion.div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="min-h-screen snap-start flex flex-col justify-center py-24">
-        <div className="max-w-7xl mx-auto w-full">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 border border-slate-900/10 mb-12">
-            {services.map((service, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30, filter: "blur(10px)" }}
-                whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.8, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className={`group p-8 md:p-12 hover:bg-slate-950 hover:text-white transition-all duration-700 cursor-default border-slate-900/10 ${
-                  index !== 0 ? 'border-t md:border-t-0 md:border-l' : ''
-                }`}
-              >
-                <div className="font-mono text-[0.75rem] tracking-widest text-primary mb-12 uppercase">{service.id}</div>
-                <service.icon className="w-12 h-12 mb-8 text-slate-400 group-hover:text-primary transition-colors duration-500" />
-                <h2 className="text-2xl font-display uppercase mb-6 group-hover:translate-x-2 transition-transform duration-500">{service.title}</h2>
-                <p className="font-sans font-light text-slate-500 group-hover:text-slate-300 leading-relaxed mb-8">
-                  {service.desc}
-                </p>
-                <div className="flex flex-wrap gap-2">
-                  {service.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 border border-slate-200 group-hover:border-slate-800 text-[10px] font-mono tracking-widest uppercase text-slate-500 transition-colors">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </motion.div>
+                  <div className="surface p-6 md:p-9 h-fit">
+                    {service.points && (
+                      <>
+                        <span className="label block mb-5">Capabilities can include</span>
+                        <ul className="grid sm:grid-cols-2 gap-x-6 gap-y-2.5">
+                          {service.points.map((point) => (
+                            <li key={point} className="flex items-start gap-2.5">
+                              <Check className="w-3.5 h-3.5 text-signal mt-1 shrink-0" />
+                              <span className="text-[13.5px] text-ink/85 leading-snug">{point}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </>
+                    )}
+                    {i === 0 && (
+                      <div className="mt-6 pt-5 border-t border-ink/12">
+                        <p className="body mb-4 max-w-md">
+                          Any module can stand alone, or be wired into one connected system.
+                        </p>
+                        <Link to="/contact" className="ulink">
+                          Discuss your requirements <ArrowUpRight className="w-3.5 h-3.5" />
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                </article>
+              </Reveal>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Solutions We Deliver Section (Redesigned) */}
-      <section className="min-h-screen snap-start flex flex-col justify-center py-24 relative overflow-hidden">
-        {/* Background Decorative Blob */}
-        <div 
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-2/3 h-2/3 pointer-events-none" 
-          style={{ background: 'radial-gradient(circle, rgba(37, 99, 235, 0.05) 0%, transparent 70%)', willChange: 'transform' }}
-        />
-        
-        <div className="max-w-7xl mx-auto w-full relative z-10">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6"
-          >
-            <div>
-              <div className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-[1px] bg-primary" />
-                <span className="font-mono text-xs tracking-[0.2em] uppercase text-primary font-bold">Capabilities</span>
+      {/* Solutions by business need */}
+      <section className="section bg-bone grain">
+        <div className="wrap relative z-10">
+          <div className="rule mb-6" />
+          <span className="label block mb-4">Solutions by business need</span>
+          <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-12 max-w-[20ch]">
+            Common use cases, by sector.
+          </h2>
+
+          <div className="grid sm:grid-cols-2 gap-5">
+            {SECTORS.map((sector, i) => (
+              <Reveal key={sector.n} delay={(i % 2) * 0.06}>
+                <div className="h-full p-6 md:p-7 bg-paper border border-ink/12">
+                  <h3 className="display-md text-base mb-2">{sector.n}</h3>
+                  <p className="body-tight mb-5">{sector.desc}</p>
+                  <span className="label block mb-2.5 !text-[10px]">Common use cases</span>
+                  <ul className="flex flex-wrap gap-1.5">
+                    {sector.uses.map((u) => (
+                      <li key={u} className="label !text-[10px] border border-ink/12 px-2.5 py-1">
+                        {u}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Topology */}
+      <section className="pb-20 md:pb-24">
+        <div className="wrap">
+          <Reveal>
+            <div className="rule mb-6" />
+            <span className="label block mb-4">How it fits together</span>
+            <h2 className="display-lg text-[clamp(1.7rem,3.8vw,2.8rem)] mb-9 max-w-[18ch]">
+              Separate modules, one source of truth.
+            </h2>
+
+            <div className="surface p-6 md:p-10">
+              <div className="flex flex-wrap items-start justify-between gap-3 pb-4 mb-7 border-b border-ink/12">
+                <div>
+                  <span className="figure-cap block mb-1.5">Figure 01</span>
+                  <h3 className="display-md text-base">Integration topology</h3>
+                </div>
+                <span className="figure-cap hidden md:block max-w-[26ch] leading-relaxed">
+                  Operational modules resolved into one connected system
+                </span>
               </div>
-              <h2 className="text-5xl md:text-6xl font-display uppercase leading-none">
-                SOLUTIONS <br />
-                <span className="text-transparent [-webkit-text-stroke:1px_#0F172A]">WE DELIVER.</span>
-              </h2>
+
+              <div className="relative">
+                <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none opacity-60" />
+                <div className="relative mx-auto max-w-[500px]">
+                  <WorkflowDiagram />
+                </div>
+              </div>
+
+              <div className="mt-7 pt-4 border-t border-ink/12 flex flex-wrap items-center justify-between gap-2">
+                <span className="figure-cap">Sales · Inventory · Finance · People · Service</span>
+                <span className="figure-cap">Hover a node to trace</span>
+              </div>
             </div>
-            <p className="font-mono text-xs tracking-widest text-slate-400 uppercase max-w-xs md:text-right">
-              Custom software solutions that simplify your business workflows.
-            </p>
-          </motion.div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { label: 'HUMAN RESOURCE MGMT', val: 'HRMS', icon: Users, desc: 'Complete workforce lifecycle management.' },
-              { label: 'CLIENT RELATIONSHIPS', val: 'CRM', icon: Activity, desc: 'Advanced data-driven customer insights.' },
-              { label: 'POINT OF SALE', val: 'POS', icon: CreditCard, desc: 'High-velocity transaction processing.' },
-              { label: 'SOFTWARE BY NEED', val: 'CUSTOM', icon: Settings, desc: 'Tailored solutions for unique workflows.' },
-            ].map((metric, i) => (
-              <motion.div 
-                key={i} 
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                whileHover={{ y: -10, transition: { duration: 0.4, ease: [0.16, 1, 0.3, 1] } }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                className="group relative bg-white/40 backdrop-blur-md border border-slate-200/50 p-8 flex flex-col gap-6 hover:bg-white/80 hover:border-primary/30 transition-colors duration-500 shadow-[0_0_50px_rgba(0,0,0,0.02)]"
-              >
-                {/* Accent line */}
-                <div className="absolute top-0 left-0 w-full h-[2px] bg-primary scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left" />
-                
-                <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center group-hover:bg-primary/10 group-hover:scale-110 transition-all duration-500">
-                  <metric.icon className="w-5 h-5 text-slate-400 group-hover:text-primary transition-colors duration-500" />
-                </div>
-                
-                <div className="flex flex-col gap-1">
-                  <div className="text-3xl font-display uppercase tracking-tight text-slate-900">{metric.val}</div>
-                  <div className="font-mono text-[10px] tracking-[0.1em] text-primary uppercase font-bold">{metric.label}</div>
-                </div>
-
-                <p className="font-sans text-sm text-slate-500 leading-relaxed transition-colors duration-500 group-hover:text-slate-600">
-                  {metric.desc}
-                </p>
-
-                <div className="mt-4 flex items-center justify-between pointer-events-none">
-                  <div className="w-8 h-[1px] bg-slate-200 group-hover:w-full group-hover:bg-primary/20 transition-all duration-700" />
-                </div>
-              </motion.div>
-            ))}
-          </div>
+          </Reveal>
         </div>
       </section>
 
-      {/* Dark Contrast Section */}
-      <section className="min-h-screen snap-start flex flex-col justify-center">
-        <div className="dark-section group w-full">
-          <div className="card-hover-border" />
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-7xl mx-auto w-full">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            >
-              <h2 className="text-4xl md:text-5xl font-display uppercase mb-6 leading-tight">
-                Enterprise-Grade <br />
-                <span className="text-transparent [-webkit-text-stroke:1px_white]">Security First.</span>
+      <section className="section surface-ink grain">
+        <div className="wrap relative z-10">
+          <div className="grid lg:grid-cols-[0.8fr_1.2fr] gap-10 lg:gap-20">
+            <Reveal>
+              <span className="label !text-paper/45 block mb-5">How an engagement runs</span>
+              <h2 className="display-lg text-[clamp(1.7rem,4vw,2.8rem)] text-paper mb-4">
+                No surprises.<br />No black box.
               </h2>
-              <p className="font-sans font-light text-slate-400 leading-relaxed">
-                We believe software is only as good as its security. Every line of code we write is hardened against vulnerabilities and designed to protect your most valuable assets.
+              <p className="text-paper/60 leading-relaxed max-w-xs">
+                You always know what is being built, what it costs, and what happens next.
               </p>
-            </motion.div>
-            <div className="flex flex-col gap-4">
-              {[
-                { label: "End-to-End Encryption", icon: Shield },
-                { label: "Continuous Monitoring", icon: Zap },
-                { label: "Compliance Ready", icon: BarChart3 }
-              ].map((item, i) => (
-                <motion.div 
-                  key={i}
-                  initial={{ opacity: 0, x: 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: i * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                  className="p-6 bg-slate-900/50 border border-white/5 flex items-center justify-between group/item hover:bg-slate-900 transition-colors"
-                >
-                  <span className="font-mono text-sm uppercase tracking-widest">{item.label}</span>
-                  <item.icon className="w-5 h-5 text-primary group-hover/item:scale-125 transition-transform" />
-                </motion.div>
+            </Reveal>
+
+            <div className="grid sm:grid-cols-2 gap-px bg-paper/15 border border-paper/15">
+              {ENGAGEMENT.map((step, i) => (
+                <Reveal key={step.k} delay={i * 0.06}>
+                  <div className="bg-ink p-6 h-full">
+                    <span className="label !text-wave block mb-3">
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <h3 className="display-md text-base mb-1.5">{step.k}</h3>
+                    <p className="text-paper/55 text-[13.5px] leading-relaxed">{step.v}</p>
+                  </div>
+                </Reveal>
               ))}
             </div>
           </div>
         </div>
       </section>
-    </div>
+
+      <section className="py-16 md:py-20">
+        <div className="wrap">
+          <Reveal>
+            <div className="rule mb-9" />
+            <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-7">
+              <h2 className="display-lg text-[clamp(1.5rem,3.4vw,2.5rem)] max-w-[22ch]">
+                Not sure which one you need? That is normal.
+              </h2>
+              <Magnetic>
+                <Link to="/contact" className="btn-signal shrink-0">
+                  Tell us the problem <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Magnetic>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+    </>
   );
 }

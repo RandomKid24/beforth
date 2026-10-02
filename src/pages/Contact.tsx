@@ -1,65 +1,81 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { Mail, Phone, MapPin, Send, ChevronDown } from 'lucide-react';
+import { AnimatePresence } from 'motion/react';
+import * as m from 'motion/react-m';
+import { Mail, Phone, MapPin, Clock, Send, ChevronDown, Check, AlertCircle } from 'lucide-react';
+import Reveal from '../components/Reveal';
 
-function CustomDropdown({ options, value, onChange }: { options: string[], value: string, onChange: (val: string) => void }) {
-  const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+const SUBJECTS = [
+  'General Inquiry',
+  'Custom ERP',
+  'CRM',
+  'HRMS & Payroll',
+  'Inventory Management',
+  'Business Automation',
+  'Web / Mobile Application',
+  'Request a Demo',
+  'Career Opportunities',
+];
+
+const STATUSES = [
+  'We reply to every serious enquiry within one working day.',
+  'Currently taking on new projects for this quarter.',
+  'Discovery calls available this week.',
+  'Tell us the problem — we will say if software is the answer.',
+];
+
+function Dropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
+    const onClick = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
     };
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    document.addEventListener('mousedown', onClick);
+    return () => document.removeEventListener('mousedown', onClick);
   }, []);
 
   return (
-    <div className="relative" ref={dropdownRef}>
+    <div ref={ref} className="relative">
       <button
         type="button"
-        onClick={() => setIsOpen(!isOpen)}
-        className="w-full bg-slate-50 border border-slate-200 p-4 flex items-center justify-between focus:border-primary outline-none transition-colors text-left"
+        onClick={() => setOpen((v) => !v)}
+        className="field flex items-center justify-between text-left"
+        aria-haspopup="listbox"
+        aria-expanded={open}
       >
-        <span className="font-sans text-sm text-slate-700">
-          {value}
-        </span>
-        <motion.div
-           animate={{ rotate: isOpen ? 180 : 0 }}
-           transition={{ duration: 0.3, ease: [0.19, 1, 0.22, 1] }}
-        >
-          <ChevronDown className="w-4 h-4 text-slate-400" />
-        </motion.div>
+        <span>{value}</span>
+        <m.span animate={{ rotate: open ? 180 : 0 }} transition={{ duration: 0.22 }}>
+          <ChevronDown className="w-4 h-4 text-ash" />
+        </m.span>
       </button>
 
       <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 10, scale: 0.95 }}
-            transition={{ duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-            className="absolute z-50 top-full left-0 w-full mt-2 bg-white/90 backdrop-blur-xl border border-slate-900/5 shadow-2xl py-2 overflow-hidden"
+        {open && (
+          <m.ul
+            role="listbox"
+            initial={{ opacity: 0, y: -6 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.16 }}
+            className="absolute z-30 top-full left-0 right-0 mt-px bg-white border border-ink/15 py-1.5"
           >
-            {options.map((option, i) => (
-              <motion.button
-                key={option}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.05, duration: 0.4, ease: [0.19, 1, 0.22, 1] }}
-                type="button"
-                onClick={() => {
-                  onChange(option);
-                  setIsOpen(false);
-                }}
-                className="w-full text-left px-6 py-3 hover:bg-primary/5 hover:text-primary transition-colors font-sans text-sm text-slate-900"
-              >
-                {option}
-              </motion.button>
+            {SUBJECTS.map((subject) => (
+              <li key={subject}>
+                <button
+                  type="button"
+                  role="option"
+                  aria-selected={subject === value}
+                  onClick={() => { onChange(subject); setOpen(false); }}
+                  className={`w-full text-left px-4 py-2.5 text-sm transition-colors ${
+                    subject === value ? 'text-signal bg-bone' : 'text-ink/80 hover:bg-bone/60'
+                  }`}
+                >
+                  {subject}
+                </button>
+              </li>
             ))}
-          </motion.div>
+          </m.ul>
         )}
       </AnimatePresence>
     </div>
@@ -67,271 +83,231 @@ function CustomDropdown({ options, value, onChange }: { options: string[], value
 }
 
 export default function ContactPage() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [subject, setSubject] = useState('General Inquiry');
-  const [message, setMessage] = useState('');
-  
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
-  const [submitMessage, setSubmitMessage] = useState('');
-
+  const [form, setForm] = useState({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+  const [state, setState] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [feedback, setFeedback] = useState('');
   const [statusIndex, setStatusIndex] = useState(0);
-  const [time, setTime] = useState(new Date());
-  
-  const statuses = [
-    "On standby · Reaching out to you as soon as possible",
-    "Always here · Ready for your next big idea",
-    "On standby · Connecting with you shortly",
-    "Ready for your brief · Reaching out soon"
-  ];
 
   useEffect(() => {
-    const statusTimer = setInterval(() => {
-      setStatusIndex((prev) => (prev + 1) % statuses.length);
-    }, 5000);
-    
-    const timeTimer = setInterval(() => {
-      setTime(new Date());
-    }, 1000);
+    const timer = setInterval(() => setStatusIndex((i) => (i + 1) % STATUSES.length), 6000);
+    return () => clearInterval(timer);
+  }, []);
 
-    return () => {
-      clearInterval(statusTimer);
-      clearInterval(timeTimer);
-    };
-  }, [statuses.length]);
+  const update = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setForm((f) => ({ ...f, [key]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!name || !email || !message) {
-      setSubmitStatus('error');
-      setSubmitMessage('Please fill out all required fields.');
-      return;
-    }
-
-    setIsSubmitting(true);
-    setSubmitStatus('idle');
-    setSubmitMessage('');
+    setState('sending');
+    setFeedback('');
 
     try {
-      const response = await fetch('/api/contact', {
+      const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, subject, message })
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          subject: form.subject,
+          message: form.message,
+        }),
       });
 
-      const responseText = await response.text();
+      const text = await res.text();
       let data: { message?: string } = {};
-
-      if (responseText) {
+      if (text) {
         try {
-          data = JSON.parse(responseText);
+          data = JSON.parse(text);
         } catch {
-          throw new Error(
-            response.ok
-              ? 'The server returned an unreadable response.'
-              : 'The contact endpoint is unavailable or returned an invalid response.'
-          );
+          throw new Error(res.ok ? 'Unreadable server response.' : 'The contact service is unavailable right now.');
         }
       }
 
-      if (!response.ok) throw new Error(data.message || 'Something went wrong');
+      if (!res.ok) throw new Error(data.message || 'Something went wrong. Please try again.');
 
-      setSubmitStatus('success');
-      setSubmitMessage('Your message has been sent successfully!');
-      
-      // Reset form
-      setName('');
-      setEmail('');
-      setMessage('');
-      setSubject('General Inquiry');
-      
-      setTimeout(() => setSubmitStatus('idle'), 5000); // Hide success message after 5s
-    } catch (error: any) {
-      setSubmitStatus('error');
-      setSubmitMessage(error.message || 'Failed to send the message. Please try again later.');
-    } finally {
-      setIsSubmitting(false);
+      setState('success');
+      setFeedback('Message sent. We will get back to you shortly.');
+      setForm({ name: '', email: '', company: '', subject: SUBJECTS[0], message: '' });
+      setTimeout(() => setState('idle'), 6000);
+    } catch (err) {
+      setState('error');
+      setFeedback(err instanceof Error ? err.message : 'Failed to send. Please email support@beforth.in.');
     }
   };
 
   return (
-    <div className="page-container">
-      <section id="lets-talk" className="min-h-screen snap-start flex flex-col pt-48">
-        <motion.div
-          initial={{ opacity: 0, y: 40, filter: "blur(10px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="max-w-7xl mx-auto w-full"
-        >
-          <div className="flex items-center gap-3 mb-[1.618rem]">
-            <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-            <span className="font-mono text-[0.85rem] tracking-widest uppercase text-slate-500">Contact</span>
-          </div>
-
-          <h1 className="hero-heading mb-6">
-            <span className="block">LET'S</span>
-            <span className="block text-transparent [-webkit-text-stroke:1.5px_#0F172A] md:[-webkit-text-stroke:2px_#0F172A]">TALK.</span>
-          </h1>
-
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_1.618fr] gap-12 md:gap-24 items-start">
-            {/* Contact Details */}
-            <div className="flex flex-col gap-10">
-              <div>
-                <p className="text-[1rem] font-sans text-slate-700 font-light leading-relaxed mb-8">
-                  Have a project in mind or just want to say hi? Reach out using the form, or through our direct channels.
-                </p>
-                
-                {/* Availability Card */}
-                <div className="bg-white border border-slate-900/10 p-6 relative shadow-lg mb-8">
-                   <div className="absolute top-0 left-0 w-full h-0.5 bg-primary/40" />
-                   <div className="flex flex-col gap-5">
-                      <div className="flex items-center gap-4">
-                         <div className="w-1.5 h-1.5 rounded-full bg-slate-400 group-hover:bg-[#22C55E] transition-colors" />
-                         <div className="flex flex-col">
-                            <span className="font-mono text-[10px] tracking-widest text-slate-400">Local Time</span>
-                            <div className="flex items-center gap-[0.1em] h-5 overflow-hidden">
-                               {time.toLocaleTimeString('en-US', { 
-                                 hour12: true, 
-                                 hour: '2-digit', 
-                                 minute: '2-digit', 
-                                 second: '2-digit' 
-                               }).split("").map((char, i) => (
-                                 <AnimatePresence mode="popLayout" key={i}>
-                                   <motion.span
-                                     key={char + i}
-                                     initial={{ y: 15, opacity: 0 }}
-                                     animate={{ y: 0, opacity: 1 }}
-                                     exit={{ y: -15, opacity: 0 }}
-                                     transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                                     className="font-sans text-sm text-slate-900 font-medium tracking-tight inline-block whitespace-pre"
-                                   >
-                                     {char}
-                                   </motion.span>
-                                 </AnimatePresence>
-                               ))}
-                               <span className="ml-1 font-mono text-[9px] text-slate-400 uppercase tracking-widest">IST</span>
-                            </div>
-                         </div>
-                      </div>
-                      <div className="w-full h-px bg-slate-900/5" />
-                      <div className="flex items-center gap-4">
-                         <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                         <div className="flex flex-col overflow-hidden">
-                            <span className="font-mono text-[10px] tracking-widest text-slate-400">Availability</span>
-                            <div className="h-6 relative overflow-hidden">
-                              <AnimatePresence mode="wait">
-                                <motion.div 
-                                  key={statusIndex}
-                                  initial="hidden"
-                                  animate="visible"
-                                  exit="exit"
-                                  className="flex flex-wrap gap-[0.1em]"
-                                >
-                                  {statuses[statusIndex].split("").map((char, i) => (
-                                    <motion.span
-                                      key={i}
-                                      variants={{
-                                        hidden: { opacity: 0, y: 15 },
-                                        visible: { opacity: 1, y: 0 },
-                                        exit: { opacity: 0, y: -15 }
-                                      }}
-                                      transition={{
-                                        duration: 0.5,
-                                        delay: i * 0.015,
-                                        ease: [0.16, 1, 0.3, 1]
-                                      }}
-                                      className="font-sans text-sm text-primary font-medium tracking-tight whitespace-pre"
-                                    >
-                                      {char}
-                                    </motion.span>
-                                  ))}
-                                </motion.div>
-                              </AnimatePresence>
-                            </div>
-                         </div>
-                      </div>
-                   </div>
-                </div>
-              </div>
-              
-              <h2 className="font-display text-2xl uppercase tracking-wider text-slate-800 mb-6">Our Contact Info</h2>
-              <div className="flex flex-col gap-8">
-                <div className="flex items-start gap-4 group/item">
-                  <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-none border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
-                    <Mail className="w-5 h-5 text-primary group-hover/item:text-white transition-colors" />
-                  </div>
-                  <div>
-                    <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">Email Us</div>
-                    <a href="mailto:support@beforth.in" className="font-display text-xl uppercase block transition-colors hover:text-primary">support@beforth.in</a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4 group/item">
-                  <div className="w-12 h-12 bg-primary/10 flex items-center justify-center rounded-none border border-primary/20 group-hover/item:bg-primary group-hover/item:text-white transition-all duration-500">
-                    <Phone className="w-5 h-5 text-primary group-hover/item:text-white transition-colors" />
-                  </div>
-                  <div>
-                    <div className="font-mono text-[10px] tracking-widest uppercase text-slate-500 mb-1">Call Us</div>
-                    <a href="tel:+919766183834" className="font-display text-xl uppercase block transition-colors hover:text-primary">+91 97661 83834</a>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-
-            {/* Contact Form */}
-            <div className="bg-white p-8 md:p-12 border border-slate-900/10 relative shadow-2xl md:-mt-20">
-              <div className="absolute top-0 left-0 w-full h-1 bg-primary" />
-              <h2 className="font-display text-2xl uppercase tracking-wider text-slate-800 mb-6">Send Us a Message</h2>
-              <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                   <div className="flex flex-col gap-2">
-                      <label className="font-mono text-[10px] tracking-widest uppercase text-slate-500">Name</label>
-                      <input type="text" value={name} onChange={e => setName(e.target.value)} required className="bg-slate-50 border border-slate-200 p-4 focus:border-primary outline-none transition-colors" placeholder="Your Name" />
-                   </div>
-                   <div className="flex flex-col gap-2">
-                      <label className="font-mono text-[10px] tracking-widest uppercase text-slate-500">Email</label>
-                      <input type="email" value={email} onChange={e => setEmail(e.target.value)} required className="bg-slate-50 border border-slate-200 p-4 focus:border-primary outline-none transition-colors" placeholder="Your Email" />
-                   </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                   <label className="font-mono text-[10px] tracking-widest uppercase text-slate-500">Subject</label>
-                   <CustomDropdown 
-                      options={['General Inquiry', 'Project Request', 'Career Opportunities']} 
-                      value={subject} 
-                      onChange={setSubject} 
-                   />
-                </div>
-
-                <div className="flex flex-col gap-2">
-                   <label className="font-mono text-[10px] tracking-widest uppercase text-slate-500">Message</label>
-                   <textarea rows={6} value={message} onChange={e => setMessage(e.target.value)} required className="bg-slate-50 border border-slate-200 p-4 focus:border-primary outline-none transition-colors resize-none" placeholder="How can we help?" />
-                </div>
-
-                {submitStatus === 'error' && (
-                  <div className="text-red-500 text-sm font-sans">{submitMessage}</div>
-                )}
-                {submitStatus === 'success' && (
-                  <div className="text-[#22C55E] text-sm font-sans">{submitMessage}</div>
-                )}
-
-                <button disabled={isSubmitting} type="submit" className="relative overflow-hidden group py-4 bg-slate-950 text-white font-mono text-[0.85rem] tracking-widest uppercase flex items-center justify-center gap-3 mt-4 disabled:opacity-70 transition-all hover:shadow-lg">
-                   <span className="relative z-10 transition-colors duration-500 group-hover:text-white">
-                     {isSubmitting ? 'Sending...' : 'Send Message'}
-                   </span>
-                   {!isSubmitting && <Send className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" />}
-                   <div className="absolute inset-0 bg-primary translate-y-[101%] group-hover:translate-y-0 transition-transform duration-500 ease-[cubic-bezier(0.19,1,0.22,1)]" />
-                </button>
-              </form>
-            </div>
-          </div>
-        </motion.div>
+    <>
+      <section className="pt-32 md:pt-40 pb-14 md:pb-20 grain relative overflow-hidden">
+        <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
+        <div className="wrap relative z-10">
+          <Reveal>
+            <div className="rule mb-6" />
+            <span className="label block mb-7">Contact</span>
+            <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[14ch]">
+              Let's talk about <span className="accent">your business.</span>
+            </h1>
+          </Reveal>
+        </div>
       </section>
 
-    </div>
+      <section className="pb-20 md:pb-28">
+        <div className="wrap">
+          <div className="grid lg:grid-cols-[0.85fr_1.15fr] gap-12 lg:gap-16 items-start">
+            <div className="lg:sticky lg:top-28">
+              <Reveal>
+                <p className="lead mb-9 max-w-md">
+                  Have a process that needs digitising? An ERP to build around your organisation?
+                  Spreadsheets to replace? Let's talk.
+                </p>
+              </Reveal>
+
+              <Reveal delay={0.07}>
+                <div className="surface p-6 mb-9">
+                  <div className="flex items-start gap-3.5">
+                    <span className="mt-1.5 w-1.5 h-1.5 rounded-full bg-signal pulse-dot shrink-0" />
+                    <AnimatePresence mode="wait">
+                      <m.p
+                        key={statusIndex}
+                        initial={{ opacity: 0, y: 6 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -6 }}
+                        transition={{ duration: 0.3 }}
+                        className="text-[14px] text-ink/80 leading-relaxed"
+                      >
+                        {STATUSES[statusIndex]}
+                      </m.p>
+                    </AnimatePresence>
+                  </div>
+                </div>
+              </Reveal>
+
+              <div className="flex flex-col gap-6">
+                {[
+                  {
+                    icon: Mail,
+                    label: 'Email',
+                    lines: [
+                      { text: 'support@beforth.in', href: 'mailto:support@beforth.in' },
+                    ],
+                  },
+                  {
+                    icon: Phone,
+                    label: 'Phone',
+                    lines: [{ text: '+91 97661 83834', href: 'tel:+919766183834' }],
+                  },
+                  {
+                    icon: MapPin,
+                    label: 'Office',
+                    lines: [{ text: 'Nashik, Maharashtra, India' }],
+                  },
+                  {
+                    icon: Clock,
+                    label: 'Hours',
+                    lines: [{ text: 'Mon – Fri, 9:00 AM – 6:00 PM IST' }],
+                  },
+                ].map((item, i) => (
+                  <Reveal key={item.label} delay={i * 0.05}>
+                    <div className="flex items-start gap-4">
+                      <span className="w-9 h-9 border border-ink/15 flex items-center justify-center shrink-0">
+                        <item.icon className="w-4 h-4 text-ash" />
+                      </span>
+                      <div>
+                        <span className="flabel !mb-1">{item.label}</span>
+                        {item.lines.map((line) => (
+                          line.href ? (
+                            <a
+                              key={line.text}
+                              href={line.href}
+                              className="flex items-center min-h-[28px] text-[15px] text-ink hover:text-signal transition-colors duration-300"
+                            >
+                              {line.text}
+                            </a>
+                          ) : (
+                            <p key={line.text} className="text-[15px] text-ink/85">
+                              {line.text}
+                            </p>
+                          )
+                        ))}
+                      </div>
+                    </div>
+                  </Reveal>
+                ))}
+              </div>
+            </div>
+
+            <Reveal delay={0.08}>
+              <form onSubmit={handleSubmit} className="surface p-6 md:p-10">
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-8 pb-5 border-b border-ink/12">
+                  <h2 className="display-md text-lg md:text-xl">Start a project enquiry</h2>
+                  <span className="label">Reply within 1 working day</span>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-5 mb-5">
+                  <div>
+                    <label className="flabel" htmlFor="name">Full name *</label>
+                    <input id="name" type="text" required value={form.name} onChange={update('name')} className="field" placeholder="Your name" autoComplete="name" />
+                  </div>
+                  <div>
+                    <label className="flabel" htmlFor="email">Email *</label>
+                    <input id="email" type="email" required value={form.email} onChange={update('email')} className="field" placeholder="you@company.com" autoComplete="email" />
+                  </div>
+                </div>
+
+                <div className="grid sm:grid-cols-2 gap-5 mb-5">
+                  <div>
+                    <label className="flabel" htmlFor="company">Company</label>
+                    <input id="company" type="text" value={form.company} onChange={update('company')} className="field" placeholder="Optional" autoComplete="organization" />
+                  </div>
+                  <div>
+                    <span className="flabel">What do you need?</span>
+                    <Dropdown value={form.subject} onChange={(v) => setForm((f) => ({ ...f, subject: v }))} />
+                  </div>
+                </div>
+
+                <div className="mb-6">
+                  <label className="flabel" htmlFor="message">Project details *</label>
+                  <textarea
+                    id="message"
+                    required
+                    rows={7}
+                    value={form.message}
+                    onChange={update('message')}
+                    className="field resize-none"
+                    placeholder="What does the business do today, and which process do you want to improve?"
+                  />
+                </div>
+
+                <AnimatePresence>
+                  {feedback && (
+                    <m.div
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0 }}
+                      className={`flex items-start gap-2.5 border px-4 py-3 mb-5 text-sm ${
+                        state === 'success'
+                          ? 'bg-emerald-50 text-emerald-800 border-emerald-200'
+                          : 'bg-red-50 text-red-700 border-red-200'
+                      }`}
+                    >
+                      {state === 'success' ? <Check className="w-4 h-4 mt-0.5 shrink-0" /> : <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" />}
+                      <span>{feedback}</span>
+                    </m.div>
+                  )}
+                </AnimatePresence>
+
+                <button type="submit" disabled={state === 'sending'} className="btn-signal w-full disabled:opacity-60 disabled:cursor-wait">
+                  {state === 'sending' ? 'Sending…' : 'Send enquiry'}
+                  {state !== 'sending' && <Send className="w-4 h-4" />}
+                </button>
+
+                <p className="label !normal-case !tracking-[0.06em] mt-5 text-center leading-relaxed">
+                  We never share your details. No mailing lists, no spam.
+                </p>
+              </form>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+    </>
   );
 }
