@@ -82,11 +82,13 @@ export default function PlatformShowcase() {
             <h3 className="display-md text-[17px]">{p.name}</h3>
             <p className="body-tight mt-1.5">{p.summary}</p>
           </div>
-          <Link to={`/product/${p.slug}`} className="ulink shrink-0">
-            Full page <ArrowUpRight className="w-3.5 h-3.5" />
-          </Link>
+          <div className="flex items-center gap-5 shrink-0">
+            <span className="text-[11px] text-ash">Sample data</span>
+            <Link to={`/product/${p.slug}`} className="ulink">
+              Full page <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          </div>
         </div>
-        <p className="mt-3 text-[12px] text-ash">Sample data. We build it, run it and maintain it.</p>
       </div>
     </div>
   );

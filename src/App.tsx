@@ -234,15 +234,7 @@ function Hero() {
     >
       {/* Parallax layers run on the compositor via CSS scroll timelines
           where supported, and stay static where they are not. */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 pointer-events-none bg-no-repeat bg-cover bg-center"
-        style={{
-          backgroundImage: "url('/hero-bg.svg')",
-          maskImage: 'linear-gradient(to bottom, #000 62%, transparent 92%)',
-          WebkitMaskImage: 'linear-gradient(to bottom, #000 62%, transparent 92%)',
-        }}
-      />
+
       <div
         data-parallax
         className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none"
@@ -646,11 +638,6 @@ function Products() {
   return (
     <section id="platforms" className="section scroll-mt-20">
       <div className="wrap">
-        <SectionHead
-          label="Platforms"
-          title={<>Platforms we build and <span className="accent">maintain.</span></>}
-          note="Pick one to try it. Sample data."
-        />
         <Reveal>
           <PlatformShowcase />
         </Reveal>
