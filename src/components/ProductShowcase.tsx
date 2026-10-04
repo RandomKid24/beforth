@@ -361,7 +361,7 @@ export default function ProductShowcase() {
           <span className="w-8 h-8 shrink-0 rounded-full bg-paper/10 border border-paper/15 flex items-center justify-center text-[11px] font-semibold text-paper/85">E1</span>
           <div className="min-w-0">
             <p className="text-[13px] leading-none truncate">Employee 1</p>
-            <p className="text-[10.5px] text-paper/50 mt-1.5 leading-none truncate">Sahyadri Industrial Supply</p>
+            <p className="text-[10.5px] text-paper/50 mt-1.5 leading-none truncate">Your company</p>
           </div>
         </div>
 

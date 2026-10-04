@@ -495,6 +495,7 @@ function ServicesSection() {
 /* Product proof                                                        */
 /* ------------------------------------------------------------------ */
 function ProductProof() {
+  const [live, setLive] = useState(false);
   return (
     <section className="section bg-bone grain">
       <div className="wrap relative z-10">
@@ -506,7 +507,20 @@ function ProductProof() {
 
         <Reveal>
           <div className="surface overflow-hidden">
-            <ProductShowcase />
+            <div className="relative">
+              <div inert={!live} aria-hidden={!live}>
+                <ProductShowcase />
+              </div>
+              {!live && (
+                <div className="absolute inset-0 z-20 flex items-center justify-center bg-ink/[0.04]">
+                  <Magnetic>
+                    <button type="button" onClick={() => setLive(true)} className="btn-signal !px-8 !py-4 shadow-[0_18px_40px_-18px_rgba(28,117,188,0.8)]">
+                      Interact <MousePointerClick className="w-4 h-4" />
+                    </button>
+                  </Magnetic>
+                </div>
+              )}
+            </div>
             <div className="flex flex-wrap items-center justify-between gap-3 px-5 md:px-7 py-4 border-t border-ink/12 bg-paper">
               <span className="figure-cap">Sales · Inventory · Service · People · Finance · Reports</span>
               <Link to="/contact" className="ulink">

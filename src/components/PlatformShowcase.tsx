@@ -72,23 +72,29 @@ export default function PlatformShowcase() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -6 }}
             transition={{ duration: 0.22, ease: 'easeOut' }}
+            className="bg-white border border-ink/12 p-6 md:p-9"
           >
-            <p.Preview />
+            <span className="w-11 h-11 bg-signal/10 text-signal flex items-center justify-center mb-5">
+              <p.icon className="w-5 h-5" strokeWidth={1.7} />
+            </span>
+            <h3 className="display-lg text-[clamp(1.5rem,3vw,2.2rem)]">{p.name}</h3>
+            <p className="body max-w-xl mt-3">{p.summary}</p>
+
+            <span className="label block mt-8 mb-3">Built for · {p.built}</span>
+            <ul className="flex flex-wrap gap-2">
+              {p.caps.map((c) => (
+                <li key={c} className="text-[13px] border border-ink/15 px-3 py-1.5">{c}</li>
+              ))}
+            </ul>
+
+            <div className="mt-8 pt-6 border-t border-ink/12 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <p className="text-[13px] text-ash">We build it, run it and maintain it.</p>
+              <Link to={`/product/${p.slug}`} className="ulink">
+                See how it works <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
           </m.div>
         </AnimatePresence>
-
-        <div className="mt-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
-          <div className="max-w-xl">
-            <h3 className="display-md text-[17px]">{p.name}</h3>
-            <p className="body-tight mt-1.5">{p.summary}</p>
-          </div>
-          <div className="flex items-center gap-5 shrink-0">
-            <span className="text-[11px] text-ash">Sample data</span>
-            <Link to={`/product/${p.slug}`} className="ulink">
-              Full page <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
       </div>
     </div>
   );
