@@ -277,7 +277,7 @@ function Hero() {
         </m.div>
 
         <h1 className="display-xl text-[clamp(1.75rem,7.4vw,6.2rem)] max-w-[16ch]">
-          {['Software that fits', 'the way your', 'business runs.'].map((line, i) => (
+          {['Custom ERP,', 'software that fits', 'your business.'].map((line, i) => (
             <span key={line} className="block overflow-hidden">
               <m.span
                 initial={shouldReduce ? false : { y: '106%' }}
@@ -287,6 +287,7 @@ function Hero() {
               >
                 {i === 2 ? (
                   <>
+                    {'your '}
                     <m.span
                       initial={shouldReduce ? false : { opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -295,7 +296,7 @@ function Hero() {
                     >
                       business
                     </m.span>
-                    {' runs.'}
+                    {'.'}
                   </>
                 ) : (
                   line
