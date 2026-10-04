@@ -228,12 +228,25 @@
     animation-range: entry 0% entry 38%;
   }
 
+  /* Section rules draw in from the left as they enter. */
+  .rule {
+    transform-origin: left;
+    animation: rule-draw linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 70%;
+  }
+
   /* Hero parallax. Amount and end opacity are per-element custom props. */
   [data-parallax] {
     animation: scroll-parallax linear both;
     animation-timeline: scroll(root block);
     animation-range: 0 100vh;
   }
+}
+
+@keyframes rule-draw {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 @keyframes scroll-reveal {
@@ -252,6 +265,7 @@
    Both the animation and the timeline have to be reset explicitly. */
 @media (prefers-reduced-motion: reduce) {
   [data-reveal],
+  .rule,
   [data-parallax] {
     animation: none !important;
     animation-timeline: auto !important;

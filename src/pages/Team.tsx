@@ -11,14 +11,14 @@ const TEAM = [
     initials: 'VZ',
     role: 'Chief Executive Officer',
     focus: 'Strategy & Growth',
-    desc: 'Leads client partnerships and product direction, keeping every engagement tied to a business outcome.',
+    desc: 'Leads client work and product direction. Every engagement ties to a business result.',
   },
   {
     name: 'Ritesh Mahale',
     initials: 'RM',
     role: 'Chief Technology Officer',
     focus: 'Architecture & Backend',
-    desc: 'Owns architecture, data modelling and backend engineering — the decisions that outlast the project.',
+    desc: 'Owns architecture, data modelling and backend. The decisions that outlast the project.',
   },
   {
     name: 'Aditya Badgujar',
@@ -64,7 +64,7 @@ export default function TeamPage() {
             {TEAM.map((person, i) => (
               <Reveal key={person.name} delay={i * 0.06}>
                 <div className="group grid md:grid-cols-[auto_1fr_1.1fr] gap-6 md:gap-10 items-start py-7 md:py-9 border-b border-ink/12">
-                  <span className="font-display font-extrabold text-2xl md:text-3xl text-signal w-14 md:w-16 shrink-0 leading-none">
+                  <span className="font-display font-extrabold text-2xl md:text-3xl text-signal w-14 md:w-16 shrink-0 leading-none transition-transform duration-500 origin-left group-hover:scale-110">
                     {person.initials}
                   </span>
                   <div>
@@ -74,7 +74,7 @@ export default function TeamPage() {
                     <p className="label mb-1.5">{person.role}</p>
                     <p className="accent text-base">{person.focus}</p>
                   </div>
-                  <p className="body max-w-md">{person.desc}</p>
+                  <p className="body max-w-md transition-transform duration-500 group-hover:translate-x-1">{person.desc}</p>
                 </div>
               </Reveal>
             ))}
@@ -92,7 +92,7 @@ export default function TeamPage() {
                 Everything under one roof.
               </h2>
               <p className="body max-w-sm mb-7">
-                Requirements, design, engineering, testing and deployment — same team throughout.
+                Requirements, design, engineering, testing and deployment. Same team throughout.
               </p>
               <Magnetic>
                 <Link to="/contact" className="btn-solid">
@@ -104,7 +104,7 @@ export default function TeamPage() {
             <Reveal delay={0.08}>
               <div className="flex flex-wrap gap-2.5">
                 {DISCIPLINES.map((d) => (
-                  <span key={d} className="label bg-white border border-ink/15 px-4 py-2.5">
+                  <span key={d} className="label bg-white border border-ink/15 px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal">
                     {d}
                   </span>
                 ))}

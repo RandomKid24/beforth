@@ -13,7 +13,7 @@ const SERVICES = [
     title: 'Custom ERP',
     summary: 'A business management system designed around your operations.',
     detail:
-      'Manage departments, workflows and business data through one connected platform — starting with the processes you need today and expanding as the business grows.',
+      'Run departments, workflows and data from one platform. Start with what you need today and add modules as you grow.',
     points: [
       'Inventory management', 'Purchase management', 'Sales management',
       'Production workflows', 'Finance & operations', 'Employee management',
@@ -25,7 +25,7 @@ const SERVICES = [
     title: 'CRM',
     summary: 'Make every lead and follow-up count.',
     detail:
-      'A CRM built around your actual sales process, instead of changing your process to fit generic software.',
+      'A CRM built around your sales process, not generic software.',
     points: [
       'Lead management', 'Custom sales pipelines', 'Follow-up management',
       'Customer records', 'Campaign tracking', 'Sales activity',
@@ -37,7 +37,7 @@ const SERVICES = [
     title: 'HRMS & Payroll',
     summary: 'One system for your workforce operations.',
     detail:
-      'Employee information, attendance, shifts, leave and payroll through workflows designed around your policies and salary structure — whether the team is ten people or several hundred.',
+      'Employees, attendance, shifts, leave and payroll, built around your policies and salary structure. For ten people or several hundred.',
     points: [
       'Employee management', 'Attendance tracking', 'Shift management',
       'Leave management', 'Payroll processing', 'Salary calculations',
@@ -49,7 +49,7 @@ const SERVICES = [
     title: 'Inventory Management',
     summary: 'Know what you have, where it is and what needs attention.',
     detail:
-      'Inventory gets harder to manage as operations grow. We build systems that give real visibility across stock, materials, warehouses and operational workflows.',
+      'Stock gets harder to track as you grow. We give you one view across materials, warehouses and workflows.',
     points: [
       'Real-time stock visibility', 'Raw material management', 'Warehouse management',
       'Stock movement', 'Reorder alerts', 'Purchase & issue workflows',
@@ -61,7 +61,7 @@ const SERVICES = [
     title: 'Business Automation',
     summary: 'Reduce repetitive work.',
     detail:
-      'Not every task needs handling by hand. We connect workflows, data and notifications so routine processes move automatically.',
+      'Routine work should move on its own. We connect workflows, data and notifications.',
     points: [
       'Approval workflows', 'Automated notifications', 'Follow-up reminders',
       'Status updates', 'Data synchronisation', 'Report generation',
@@ -73,7 +73,7 @@ const SERVICES = [
     title: 'Web Applications',
     summary: 'Business software that runs in the browser.',
     detail:
-      'Modern web platforms from internal applications to complex dashboards and customer-facing systems, with a focus on usability, performance, maintainability and scalable architecture.',
+      'Web platforms for internal tools, dashboards and customer-facing systems. Fast, usable and easy to maintain.',
     stack: 'Next.js · React · Node.js · PostgreSQL',
   },
   {
@@ -81,14 +81,14 @@ const SERVICES = [
     title: 'Mobile Applications',
     summary: 'Take your business wherever work happens.',
     detail:
-      'Applications for employees, field teams, customers and business operations — from field apps to enterprise mobile workflows, designed around the people actually using them.',
+      'Apps for employees, field teams and customers, designed around the people who use them.',
     stack: 'Flutter · React Native · Swift · Kotlin',
   },
 ];
 
 const ENGAGEMENT = [
   { k: 'Discovery', v: 'We map your process and agree what success looks like.' },
-  { k: 'Proposal', v: 'Scope, sequence and cost — in plain language.' },
+  { k: 'Proposal', v: 'Scope, order of work and cost, in plain language.' },
   { k: 'Build', v: 'Modular delivery, with working software early.' },
   { k: 'Handover', v: 'Training, documentation and support.' },
 ];
@@ -141,7 +141,7 @@ export default function ServicesPage() {
                     )}
                   </div>
 
-                  <div className="surface p-6 md:p-9 h-fit">
+                  <div className="surface p-6 md:p-9 h-fit transition-[transform,border-color,box-shadow] duration-500 hover:-translate-y-1 hover:border-signal/40 hover:shadow-[0_18px_36px_-24px_rgba(28,117,188,0.5)]">
                     {service.points && (
                       <>
                         <span className="label block mb-5">Capabilities can include</span>
@@ -249,14 +249,14 @@ export default function ServicesPage() {
                 No surprises.<br />No black box.
               </h2>
               <p className="text-paper/60 leading-relaxed max-w-xs">
-                You always know what is being built, what it costs, and what happens next.
+                You always know what is being built, what it costs and what comes next.
               </p>
             </Reveal>
 
             <div className="grid sm:grid-cols-2 gap-px bg-paper/15 border border-paper/15">
               {ENGAGEMENT.map((step, i) => (
                 <Reveal key={step.k} delay={i * 0.06}>
-                  <div className="bg-ink p-6 h-full">
+                  <div className="bg-ink p-6 h-full transition-colors duration-500 hover:bg-[#2d2a2b]">
                     <span className="label !text-wave block mb-3">
                       {String(i + 1).padStart(2, '0')}
                     </span>

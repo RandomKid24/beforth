@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'motion/react';
+import { AnimatePresence, LazyMotion, MotionConfig, domAnimation, useScroll, useSpring } from 'motion/react';
 import * as m from 'motion/react-m';
 import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compass, Handshake, MousePointerClick, Puzzle } from 'lucide-react';
 
@@ -1116,6 +1116,20 @@ function StructuredData() {
 /* ------------------------------------------------------------------ */
 /* App                                                                  */
 /* ------------------------------------------------------------------ */
+function ScrollProgress() {
+  const { shouldReduce } = useMotionPreset();
+  const { scrollYProgress } = useScroll();
+  const scaleX = useSpring(scrollYProgress, { stiffness: 220, damping: 34, mass: 0.4 });
+  if (shouldReduce) return null;
+  return (
+    <m.div
+      aria-hidden="true"
+      style={{ scaleX }}
+      className="fixed top-0 left-0 right-0 h-[2px] bg-signal origin-left z-[60] pointer-events-none"
+    />
+  );
+}
+
 export default function App() {
   const { pathname, hash } = useLocation();
   const { shouldReduce } = useMotionPreset();
@@ -1144,6 +1158,7 @@ export default function App() {
       <MotionConfig reducedMotion="user">
         <SeoManager />
         <StructuredData />
+        <ScrollProgress />
         <Navbar />
 
         <AnimatePresence mode="wait" initial={false} onExitComplete={toTop}>

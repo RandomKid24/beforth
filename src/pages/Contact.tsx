@@ -19,9 +19,7 @@ const SUBJECTS = [
 
 const STATUSES = [
   'We reply to every serious enquiry within one working day.',
-  'Currently taking on new projects for this quarter.',
-  'Discovery calls available this week.',
-  'Tell us the problem — we will say if software is the answer.',
+  'Tell us the problem. We will say if software is the answer.',
 ];
 
 function Dropdown({ value, onChange }: { value: string; onChange: (v: string) => void }) {
@@ -157,8 +155,7 @@ export default function ContactPage() {
             <div className="lg:sticky lg:top-28">
               <Reveal>
                 <p className="lead mb-9 max-w-md">
-                  Have a process that needs digitising? An ERP to build around your organisation?
-                  Spreadsheets to replace? Let's talk.
+                  A process to digitise? An ERP to build? Spreadsheets to replace? Tell us.
                 </p>
               </Reveal>
 

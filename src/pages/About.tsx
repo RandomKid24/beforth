@@ -15,18 +15,18 @@ const POINTS = [
 ];
 
 const VALUES = [
-  { k: 'Clarity', v: 'Plain language, documented scope, no jargon between you and the build.' },
-  { k: 'Craft', v: 'Work we are happy to put our name on — tested, tidy and built to last.' },
-  { k: 'Ownership', v: 'Your deadlines and data treated as our own.' },
-  { k: 'Continuity', v: 'Reachable for the years after go-live.' },
+  { k: 'Clarity', v: 'Plain language and a written scope.' },
+  { k: 'Craft', v: 'Tested, tidy work we put our name on.' },
+  { k: 'Ownership', v: 'We treat your deadlines and data as ours.' },
+  { k: 'Continuity', v: 'We stay reachable long after go-live.' },
 ];
 
 const PRINCIPLES = [
-  { t: 'Understand the problem', d: 'We focus on the actual business challenge, not just the requested feature.' },
-  { t: 'Build for the workflow', d: 'Software should support how the business operates.' },
-  { t: 'Keep information connected', d: 'Data is more useful when the right teams can access it in the right context.' },
-  { t: 'Automate where it matters', d: 'Automation should remove unnecessary work, not make simple work complicated.' },
-  { t: 'Build for change', d: 'A business system should be able to evolve as the business does.' },
+  { t: 'Understand the problem', d: 'We solve the business problem, not just the requested feature.' },
+  { t: 'Build for the workflow', d: 'Software follows how the business operates.' },
+  { t: 'Keep information connected', d: 'The right people see the right data in context.' },
+  { t: 'Automate where it matters', d: 'Automation removes work. It never complicates a simple task.' },
+  { t: 'Build for change', d: 'The system changes as the business does.' },
 ];
 
 const INDUSTRIES = [
@@ -63,9 +63,8 @@ export default function AboutPage() {
             automation and digital platforms.
           </p>
           <p className="body">
-            Our work is simple to state: understand how a business really runs, then build
-            technology around it. Our span covers ERP, CRM, HRMS, inventory systems, business
-            applications, web platforms and mobile applications.
+            We learn how your business runs, then build around it. ERP, CRM, HRMS, inventory,
+            web and mobile.
           </p>
         </div>
       </PageHead>
@@ -77,8 +76,7 @@ export default function AboutPage() {
               <div className="surface p-7 md:p-9 h-full">
                 <span className="label block mb-5">Vision</span>
                 <p className="display-md text-lg md:text-[24px] leading-[1.28]">
-                  Business technology that is simpler, smarter and accessible to any company, at
-                  any size.
+                  Business software that is simple, smart and within reach of any company.
                 </p>
               </div>
             </Reveal>
@@ -86,9 +84,8 @@ export default function AboutPage() {
               <div className="surface-ink p-7 md:p-9 h-full">
                 <span className="label !text-paper/50 block mb-5">Mission</span>
                 <p className="display-md text-lg md:text-[24px] leading-[1.28] text-paper">
-                  Replace manual processes and disconnected tools with practical, scalable
-                  technology that makes businesses run better. Our job is not simply to deliver
-                  software — it is to understand the problem behind the request.
+                  Replace manual work and disconnected tools with software that is practical and
+                  scales. We start by understanding the problem behind the request.
                 </p>
               </div>
             </Reveal>
@@ -108,8 +105,8 @@ export default function AboutPage() {
             {POINTS.map((item, i) => (
               <Reveal key={item.n} delay={(i % 3) * 0.05}>
                 <div className="group grid md:grid-cols-[3.5rem_1fr_1.2fr] gap-x-8 gap-y-2 py-5 md:py-7 border-b border-ink/12">
-                  <span className="label text-signal">{item.n}</span>
-                  <h3 className="display-md text-base md:text-lg transition-colors duration-500 group-hover:text-signal">
+                  <span className="label text-signal transition-transform duration-500 group-hover:translate-x-1">{item.n}</span>
+                  <h3 className="display-md text-base md:text-lg transition-[color,transform] duration-500 group-hover:text-signal group-hover:translate-x-2">
                     {item.t}
                   </h3>
                   <p className="body">{item.d}</p>
@@ -132,8 +129,8 @@ export default function AboutPage() {
             {PRINCIPLES.map((p, i) => (
               <Reveal key={p.t} delay={Math.min(i, 4) * 0.05}>
                 <div className="group grid md:grid-cols-[3.5rem_1fr_1.2fr] gap-x-8 gap-y-2 py-5 md:py-6 border-b border-ink/12">
-                  <span className="label text-signal">{String(i + 1).padStart(2, '0')}</span>
-                  <h3 className="display-md text-base md:text-lg transition-colors duration-500 group-hover:text-signal">
+                  <span className="label text-signal transition-transform duration-500 group-hover:translate-x-1">{String(i + 1).padStart(2, '0')}</span>
+                  <h3 className="display-md text-base md:text-lg transition-[color,transform] duration-500 group-hover:text-signal group-hover:translate-x-2">
                     {p.t}
                   </h3>
                   <p className="body">{p.d}</p>
@@ -155,8 +152,8 @@ export default function AboutPage() {
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-9">
             {VALUES.map((value, i) => (
               <Reveal key={value.k} delay={i * 0.06}>
-                <div>
-                  <span className="block w-7 h-px bg-signal mb-4" />
+                <div className="group">
+                  <span className="block w-7 h-px bg-signal mb-4 transition-[width] duration-500 group-hover:w-16" />
                   <h3 className="display-md text-base mb-2">{value.k}</h3>
                   <p className="body-tight">{value.v}</p>
                 </div>
@@ -189,7 +186,7 @@ export default function AboutPage() {
 
               <div className="mt-10 pt-8 border-t border-ink/12">
                 <p className="body max-w-lg mb-6">
-                  If your sector is not listed, that is not a blocker. The method is the same.
+                  Your sector not listed? The method is the same.
                 </p>
                 <Magnetic>
                   <Link to="/contact" className="btn-signal">
