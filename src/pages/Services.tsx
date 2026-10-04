@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Check } from 'lucide-react';
 import Reveal from '../components/Reveal';
 import Intro from '../components/Intro';
+import { SECTORS } from '../lib/sectors';
 import { Magnetic } from '../components/Magnetic';
 import WorkflowDiagram from '../components/WorkflowDiagram';
 
@@ -82,34 +83,6 @@ const SERVICES = [
     detail:
       'Applications for employees, field teams, customers and business operations — from field apps to enterprise mobile workflows, designed around the people actually using them.',
     stack: 'Flutter · React Native · Swift · Kotlin',
-  },
-];
-
-const SECTORS = [
-  {
-    n: 'Manufacturing',
-    desc: 'Connect inventory, materials, production, sales and operations through a unified system.',
-    uses: ['Manufacturing ERP', 'Inventory visibility', 'Raw-material tracking', 'Production workflows', 'Warehouse management', 'Operational dashboards'],
-  },
-  {
-    n: 'Logistics & Distribution',
-    desc: 'Bring shipments, routes, deliveries, vendors and operational information into one system.',
-    uses: ['Shipment management', 'Delivery workflows', 'Route tracking', 'Vendor management', 'Proof of delivery', 'Real-time visibility'],
-  },
-  {
-    n: 'Sales & Marketing',
-    desc: 'Give sales teams a single place to manage leads, customers and follow-ups.',
-    uses: ['CRM', 'Lead generation', 'Follow-up management', 'Sales pipelines', 'Campaign management', 'Sales dashboards'],
-  },
-  {
-    n: 'Human Resources',
-    desc: 'Simplify employee administration and workforce operations.',
-    uses: ['HRMS', 'Attendance', 'Leave', 'Shifts', 'Payroll', 'Biometric integration'],
-  },
-  {
-    n: 'Growing Businesses',
-    desc: 'Replace fragmented workflows with systems that bring departments, information and processes together.',
-    uses: ['Spreadsheet replacement', 'Department systems', 'Connected workflows', 'Shared data', 'Dashboards'],
   },
 ];
 

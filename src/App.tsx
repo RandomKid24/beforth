@@ -6,6 +6,7 @@ import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compas
 
 import { Magnetic } from '@/components/Magnetic';
 import Reveal from '@/components/Reveal';
+import { SECTORS } from '@/lib/sectors';
 import ProductShowcase from '@/components/ProductShowcase';
 import PlatformShowcase from '@/components/PlatformShowcase';
 import SectionHead from '@/components/SectionHead';
@@ -79,11 +80,6 @@ const PILLARS = [
   { k: 'Inventory', v: 'Stock and materials' },
   { k: 'Automation', v: 'Workflows that run themselves' },
   { k: 'Web & Mobile', v: 'Anywhere work happens' },
-];
-
-const INDUSTRIES = [
-  'Manufacturing', 'Logistics & Distribution', 'Pharma', 'Sales & Marketing',
-  'Human Resources', 'Growing Businesses',
 ];
 
 /* ------------------------------------------------------------------ */
@@ -238,6 +234,15 @@ function Hero() {
     >
       {/* Parallax layers run on the compositor via CSS scroll timelines
           where supported, and stay static where they are not. */}
+      <div
+        aria-hidden="true"
+        className="absolute inset-0 pointer-events-none bg-no-repeat bg-cover bg-right opacity-60 md:opacity-100"
+        style={{
+          backgroundImage: "url('/hero-bg.svg')",
+          maskImage: 'linear-gradient(to left, #000 25%, transparent 85%)',
+          WebkitMaskImage: 'linear-gradient(to left, #000 25%, transparent 85%)',
+        }}
+      />
       <div
         data-parallax
         className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none"
@@ -705,43 +710,6 @@ function SelectedWork() {
 }
 
 /* ------------------------------------------------------------------ */
-/* Technology                                                           */
-/* ------------------------------------------------------------------ */
-const TECH = [
-  { group: 'Web', items: ['Next.js', 'React', 'Node.js', 'PostgreSQL'] },
-  { group: 'Mobile', items: ['Flutter', 'React Native', 'Swift', 'Kotlin'] },
-  { group: 'Backend', items: ['Python', 'Django', 'REST APIs', 'Docker', 'Git / GitHub'] },
-  { group: 'Systems', items: ['AI-powered workflows', 'Automation', 'Data-driven applications'] },
-];
-
-function Technology() {
-  return (
-    <section className="section">
-      <div className="wrap">
-        <SectionHead
-          label="Technology"
-          title={<>Chosen per product, not by <span className="accent">default.</span></>}
-        />
-
-        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-px bg-ink/12 border border-ink/12">
-          {TECH.map((group) => (
-            <div key={group.group} className="bg-paper p-6">
-              <span className="block w-6 h-px bg-signal mb-4" />
-              <h3 className="display-md text-sm uppercase tracking-[0.1em] mb-3">{group.group}</h3>
-              <ul className="flex flex-col gap-1.5">
-                {group.items.map((item) => (
-                  <li key={item} className="body-tight">{item}</li>
-                ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ------------------------------------------------------------------ */
 /* FAQ                                                                  */
 /* ------------------------------------------------------------------ */
 const FAQ = [
@@ -810,15 +778,21 @@ function Sectors() {
   return (
     <section className="pb-20 md:py-20">
       <div className="wrap">
-        <SectionHead label="Sectors" title={<>Where we do our best work.</>} />
-        <div className="flex flex-wrap gap-2.5">
-          {INDUSTRIES.map((industry) => (
-            <span
-              key={industry}
-              className="label border border-ink/15 bg-white px-4 py-2.5 transition-colors duration-300 hover:border-signal hover:text-signal"
-            >
-              {industry}
-            </span>
+        <SectionHead label="Industries" title={<>Industries we work in.</>} />
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {SECTORS.map((sector, i) => (
+            <Reveal key={sector.n} delay={(i % 3) * 0.06}>
+              <div className="group h-full bg-white border border-ink/12 p-6 transition-[border-color,transform] duration-500 hover:border-signal/50 hover:-translate-y-0.5">
+                <span className="block w-6 h-px bg-signal mb-4 transition-[width] duration-500 group-hover:w-12" />
+                <h3 className="display-md text-base mb-2">{sector.n}</h3>
+                <p className="body-tight mb-4">{sector.desc}</p>
+                <ul className="flex flex-wrap gap-1.5">
+                  {sector.uses.slice(0, 3).map((u) => (
+                    <li key={u} className="label !text-[10px] border border-ink/12 px-2.5 py-1">{u}</li>
+                  ))}
+                </ul>
+              </div>
+            </Reveal>
           ))}
         </div>
       </div>
@@ -1190,7 +1164,7 @@ export default function App() {
             transition={shouldReduce ? { duration: 0 } : { duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
           >
             <Routes location={location}>
-              <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><Products /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+              <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><Products /><SelectedWork /><Sectors /><Faq /><CTA /></>} />
               <Route path="/services" element={<ServicesPage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/team" element={<TeamPage />} />
