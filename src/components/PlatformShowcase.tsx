@@ -64,50 +64,29 @@ export default function PlatformShowcase() {
       </div>
 
       {/* Stage */}
-      <div id="platform-panel" role="tabpanel" aria-labelledby={`platform-tab-${p.slug}`} className="min-w-0 bg-white border border-ink/12">
-        <div className="px-5 py-3.5 border-b border-ink/10 flex flex-wrap items-center justify-between gap-x-4 gap-y-1">
-          <div className="flex items-center gap-3 min-w-0">
-            <span className="w-8 h-8 bg-signal/10 text-signal flex items-center justify-center shrink-0"><p.icon className="w-4 h-4" strokeWidth={1.7} /></span>
-            <h3 className="display-md text-[17px] truncate">{p.name}</h3>
-          </div>
-          <div className="flex items-center gap-x-5 gap-y-1 flex-wrap">
-            <span className="inline-flex items-center gap-1.5 text-[11px] text-ash"><i className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Live preview · sample data · try it</span>
-            <Link to={`/product/${p.slug}`} className="ulink !min-h-[24px] !py-0">
-              Full page <ArrowUpRight className="w-3.5 h-3.5" />
-            </Link>
-          </div>
-        </div>
+      <div id="platform-panel" role="tabpanel" aria-labelledby={`platform-tab-${p.slug}`} className="min-w-0">
+        <AnimatePresence mode="wait" initial={false}>
+          <m.div
+            key={p.slug}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -6 }}
+            transition={{ duration: 0.22, ease: 'easeOut' }}
+          >
+            <p.Preview />
+          </m.div>
+        </AnimatePresence>
 
-        <div className="relative bg-bone/55 blueprint-grid p-4 sm:p-6 min-h-[520px] flex items-center justify-center overflow-hidden">
-          <div className="w-full relative z-10">
-            <AnimatePresence mode="wait" initial={false}>
-              <m.div
-                key={p.slug}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.22, ease: 'easeOut' }}
-              >
-                <p.Preview />
-              </m.div>
-            </AnimatePresence>
+        <div className="mt-5 flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3">
+          <div className="max-w-xl">
+            <h3 className="display-md text-[17px]">{p.name}</h3>
+            <p className="body-tight mt-1.5">{p.summary}</p>
           </div>
+          <Link to={`/product/${p.slug}`} className="ulink shrink-0">
+            Full page <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
         </div>
-
-        <div className="px-5 py-4 grid md:grid-cols-[1.4fr_1fr] gap-x-8 gap-y-3 border-t border-ink/10">
-          <p className="body-tight">{p.summary}</p>
-          <div>
-            <p className="label !text-[10px] mb-2">Built for · {p.built}</p>
-            <ul className="flex flex-wrap gap-1.5">
-              {p.caps.map((c) => <li key={c} className="text-[11.5px] border border-ink/15 px-2.5 py-1">{c}</li>)}
-            </ul>
-          </div>
-        </div>
-        <div className="px-5 py-3 border-t border-ink/10 bg-paper flex flex-wrap items-center gap-x-6 gap-y-1 text-[12px] text-ash">
-          <span><b className="font-semibold text-ink">We build it.</b> Designed around your process.</span>
-          <span><b className="font-semibold text-ink">We run it.</b> Hosting, monitoring, backups.</span>
-          <span><b className="font-semibold text-ink">We maintain it.</b> Updates and support.</span>
-        </div>
+        <p className="mt-3 text-[12px] text-ash">Sample data. We build it, run it and maintain it.</p>
       </div>
     </div>
   );
