@@ -236,11 +236,11 @@ function Hero() {
           where supported, and stay static where they are not. */}
       <div
         aria-hidden="true"
-        className="absolute inset-0 pointer-events-none bg-no-repeat bg-cover bg-right opacity-60 md:opacity-100"
+        className="absolute inset-0 pointer-events-none bg-no-repeat bg-cover bg-center"
         style={{
           backgroundImage: "url('/hero-bg.svg')",
-          maskImage: 'linear-gradient(to left, #000 25%, transparent 85%)',
-          WebkitMaskImage: 'linear-gradient(to left, #000 25%, transparent 85%)',
+          maskImage: 'linear-gradient(to bottom, #000 62%, transparent 92%)',
+          WebkitMaskImage: 'linear-gradient(to bottom, #000 62%, transparent 92%)',
         }}
       />
       <div
