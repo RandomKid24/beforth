@@ -8,19 +8,19 @@ interface Deal { id: number; co: string; value: number; owner: string; stage: nu
 const STAGES = ['New lead', 'Contacted', 'Proposal', 'Won'];
 
 const SEED: Deal[] = [
-  { id: 1, co: 'Kothari Distributors', value: 640000, owner: 'PN', stage: 0 },
-  { id: 2, co: 'Nimgaon Foods', value: 185000, owner: 'MS', stage: 0 },
-  { id: 3, co: 'Meridian Pharma', value: 1250000, owner: 'RK', stage: 1 },
-  { id: 4, co: 'Godavari Engineering', value: 420000, owner: 'PN', stage: 1 },
-  { id: 5, co: 'Vertex Retail', value: 2200000, owner: 'MS', stage: 2 },
-  { id: 6, co: 'Deccan Packaging', value: 310000, owner: 'RK', stage: 2 },
-  { id: 7, co: 'Apex Textiles', value: 560000, owner: 'PN', stage: 3 },
-  { id: 8, co: 'Patil Hydraulics', value: 150000, owner: 'MS', stage: 3 },
+  { id: 1, co: 'Customer 1', value: 640000, owner: 'E1', stage: 0 },
+  { id: 2, co: 'Customer 5', value: 185000, owner: 'E4', stage: 0 },
+  { id: 3, co: 'Customer 2', value: 1250000, owner: 'E2', stage: 1 },
+  { id: 4, co: 'Customer 6', value: 420000, owner: 'E1', stage: 1 },
+  { id: 5, co: 'Customer 4', value: 2200000, owner: 'E4', stage: 2 },
+  { id: 6, co: 'Customer 9', value: 310000, owner: 'E2', stage: 2 },
+  { id: 7, co: 'Customer 10', value: 560000, owner: 'E1', stage: 3 },
+  { id: 8, co: 'Customer 8', value: 150000, owner: 'E4', stage: 3 },
 ];
 
 const NEW_LEADS = [
-  { co: 'Shree Agro Industries', value: 275000 }, { co: 'Sagare Auto Parts', value: 480000 },
-  { co: 'Malegaon Power Looms', value: 920000 }, { co: 'Sinnar Cold Storage', value: 360000 },
+  { co: 'Customer 7', value: 275000 }, { co: 'Customer 3', value: 480000 },
+  { co: 'Customer 11', value: 920000 }, { co: 'Customer 12', value: 360000 },
 ];
 
 export default function CrmPreview() {

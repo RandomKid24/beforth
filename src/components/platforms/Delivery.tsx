@@ -6,11 +6,11 @@ interface Stop { id: number; name: string; area: string; items: string; eta: str
 
 const START = { x: 12, y: 168 };
 const STOPS: Stop[] = [
-  { id: 1, name: 'Sanjeevani Pharmacy', area: 'College Road', items: '4 cartons', eta: '9:55 AM', x: 58, y: 138 },
-  { id: 2, name: 'CarePlus Clinic', area: 'Gangapur Road', items: '2 cartons · cold chain', eta: '10:25 AM', x: 112, y: 80 },
-  { id: 3, name: 'Panchavati City Hospital', area: 'Panchavati', items: '6 cartons', eta: '10:50 AM', x: 176, y: 108 },
-  { id: 4, name: 'MediHub Store', area: 'Satpur', items: '3 cartons', eta: '11:30 AM', x: 236, y: 50 },
-  { id: 5, name: 'Godavari Diagnostics', area: 'Indira Nagar', items: '1 carton · cold chain', eta: '12:05 PM', x: 304, y: 96 },
+  { id: 1, name: 'Drop point 1', area: 'College Road', items: '4 cartons', eta: '9:55 AM', x: 58, y: 138 },
+  { id: 2, name: 'Drop point 2', area: 'Gangapur Road', items: '2 cartons · cold chain', eta: '10:25 AM', x: 112, y: 80 },
+  { id: 3, name: 'Drop point 3', area: 'Panchavati', items: '6 cartons', eta: '10:50 AM', x: 176, y: 108 },
+  { id: 4, name: 'Drop point 4', area: 'Satpur', items: '3 cartons', eta: '11:30 AM', x: 236, y: 50 },
+  { id: 5, name: 'Drop point 5', area: 'Indira Nagar', items: '1 carton · cold chain', eta: '12:05 PM', x: 304, y: 96 },
 ];
 
 export default function DeliveryPreview() {
@@ -93,7 +93,7 @@ export default function DeliveryPreview() {
         <div className="border border-ink/10 bg-white">
           <div className="px-3 py-2 border-b border-ink/10 flex items-center justify-between">
             <p className="text-[12px] font-semibold">Dispatcher view · live</p>
-            <span className="flex items-center gap-1.5 text-[10.5px] text-signal"><span className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Rahul B.</span>
+            <span className="flex items-center gap-1.5 text-[10.5px] text-signal"><span className="w-1.5 h-1.5 rounded-full bg-signal pulse-dot" /> Driver 1</span>
           </div>
           <svg viewBox="0 0 330 190" className="w-full block" role="img" aria-label={`Route map: ${done} of ${total} stops delivered`}>
             <defs>

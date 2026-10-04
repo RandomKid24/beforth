@@ -4,11 +4,11 @@ import { Tile } from './chrome';
 import { lakh, rupees } from '../demo/format';
 
 const EMPLOYEES = [
-  { name: 'Anjali Deshmukh', role: 'Service Engineer', gross: 46000 },
-  { name: 'Meera Sharma', role: 'Sales Executive', gross: 52000 },
-  { name: 'Vikram Joshi', role: 'Storekeeper', gross: 28000 },
-  { name: 'Sandeep Pawar', role: 'Service Engineer', gross: 58000 },
-  { name: 'Deepa Kale', role: 'Finance Head', gross: 112000 },
+  { name: 'Employee 3', role: 'Service Engineer', gross: 46000 },
+  { name: 'Employee 4', role: 'Sales Executive', gross: 52000 },
+  { name: 'Employee 5', role: 'Storekeeper', gross: 28000 },
+  { name: 'Employee 7', role: 'Service Engineer', gross: 58000 },
+  { name: 'Employee 12', role: 'Finance Head', gross: 112000 },
 ];
 
 /** A simplified Indian payslip: PF on basic (capped), professional tax, and TDS above a threshold. */

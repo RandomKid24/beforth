@@ -7,21 +7,21 @@ type Status = 'booked' | 'inchair' | 'billed';
 interface Appt { id: number; s: number; start: number; len: number; service: string; client: string; price: number; status: Status }
 
 const STYLISTS = [
-  { name: 'Anita', role: 'Senior stylist' },
-  { name: 'Meera', role: 'Beauty therapist' },
-  { name: 'Rohan', role: 'Barber' },
+  { name: 'Stylist 1', role: 'Senior stylist' },
+  { name: 'Stylist 2', role: 'Beauty therapist' },
+  { name: 'Stylist 3', role: 'Barber' },
 ];
 
 const SEED: Appt[] = [
-  { id: 1, s: 0, start: 0, len: 3, service: 'Haircut & styling', client: 'Pooja', price: 900, status: 'billed' },
-  { id: 2, s: 0, start: 4, len: 4, service: 'Hair colour', client: 'Swati', price: 3200, status: 'inchair' },
-  { id: 3, s: 0, start: 9, len: 2, service: 'Blow dry', client: 'Nidhi', price: 600, status: 'booked' },
-  { id: 4, s: 1, start: 1, len: 3, service: 'Facial', client: 'Ritu', price: 1800, status: 'billed' },
-  { id: 5, s: 1, start: 5, len: 2, service: 'Manicure', client: 'Anjali', price: 700, status: 'booked' },
-  { id: 6, s: 1, start: 8, len: 3, service: 'Bridal trial', client: 'Kavya', price: 4500, status: 'booked' },
-  { id: 7, s: 2, start: 0, len: 2, service: 'Beard trim', client: 'Aman', price: 350, status: 'billed' },
-  { id: 8, s: 2, start: 3, len: 3, service: 'Haircut', client: 'Rahul', price: 500, status: 'inchair' },
-  { id: 9, s: 2, start: 7, len: 2, service: 'Hair spa', client: 'Vivek', price: 1500, status: 'booked' },
+  { id: 1, s: 0, start: 0, len: 3, service: 'Haircut & styling', client: 'Client 1', price: 900, status: 'billed' },
+  { id: 2, s: 0, start: 4, len: 4, service: 'Hair colour', client: 'Client 2', price: 3200, status: 'inchair' },
+  { id: 3, s: 0, start: 9, len: 2, service: 'Blow dry', client: 'Client 3', price: 600, status: 'booked' },
+  { id: 4, s: 1, start: 1, len: 3, service: 'Facial', client: 'Client 4', price: 1800, status: 'billed' },
+  { id: 5, s: 1, start: 5, len: 2, service: 'Manicure', client: 'Client 5', price: 700, status: 'booked' },
+  { id: 6, s: 1, start: 8, len: 3, service: 'Bridal trial', client: 'Client 6', price: 4500, status: 'booked' },
+  { id: 7, s: 2, start: 0, len: 2, service: 'Beard trim', client: 'Client 7', price: 350, status: 'billed' },
+  { id: 8, s: 2, start: 3, len: 3, service: 'Haircut', client: 'Client 8', price: 500, status: 'inchair' },
+  { id: 9, s: 2, start: 7, len: 2, service: 'Hair spa', client: 'Client 9', price: 1500, status: 'booked' },
 ];
 
 const ROWS = 12; // half-hours from 10:00 AM to 4:00 PM
@@ -56,7 +56,7 @@ export default function SalonPreview() {
     <div className="flex flex-wrap gap-x-6 gap-y-5 items-start justify-center">
       <div className="flex-1 min-w-[300px] max-w-[470px] bg-white border border-ink/10">
         <div className="px-3 py-2 border-b border-ink/10 flex items-center justify-between">
-          <p className="text-[12px] font-semibold">Today · Nashik Road branch</p>
+          <p className="text-[12px] font-semibold">Today · Branch 1</p>
           <p className="text-[10.5px] text-ash">Tap an appointment to move it along</p>
         </div>
         <div className="grid grid-cols-[2.6rem_repeat(3,1fr)] text-[11px]">

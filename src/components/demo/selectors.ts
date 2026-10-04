@@ -573,7 +573,7 @@ export function stockViz(s: DemoState) {
   return { total, skus: s.skus.length, categories, stores, ageing, movement: s.movement };
 }
 
-const CLOSED_BASE: Record<string, number> = { 'Ravi K.': 33, 'Meera S.': 28, 'Sandeep P.': 25, 'Anjali D.': 21 };
+const CLOSED_BASE: Record<string, number> = { 'Employee 2': 33, 'Employee 4': 28, 'Employee 7': 25, 'Employee 3': 21 };
 
 export function serviceViz(s: DemoState) {
   const open = s.tickets.filter((t) => t.status !== 'Resolved');

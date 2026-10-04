@@ -31,8 +31,8 @@ function Site() {
       </div>
       <div className="px-4 py-5 @md:py-8 @md:grid @md:grid-cols-[1.1fr_1fr] gap-4 items-center bg-gradient-to-br from-bone/70 to-paper">
         <div>
-          <p className="text-[9.5px] uppercase tracking-[0.16em] text-signal">Industrial supply · Nashik</p>
-          <h4 className="text-[18px] @md:text-[24px] font-bold tracking-[-0.03em] leading-[1.05] mt-1.5">Bearings, valves and pumps — delivered to your plant.</h4>
+          <p className="text-[9.5px] uppercase tracking-[0.16em] text-signal">Your business name</p>
+          <h4 className="text-[18px] @md:text-[24px] font-bold tracking-[-0.03em] leading-[1.05] mt-1.5">Your products and services, presented clearly.</h4>
           <div className="flex gap-2 mt-3">
             <span className="inline-block bg-signal text-white text-[10.5px] px-3 py-1.5">Request a quote</span>
             <span className="inline-block border border-ink/25 text-[10.5px] px-3 py-1.5">Browse catalogue</span>

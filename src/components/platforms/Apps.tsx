@@ -5,11 +5,11 @@ import { Phone } from './chrome';
 interface Visit { id: number; name: string; time: string; done: boolean }
 
 const SEED: Visit[] = [
-  { id: 1, name: 'Kothari Distributors', time: '10:30 AM', done: true },
-  { id: 2, name: 'Meridian Pharma', time: '12:00 PM', done: false },
-  { id: 3, name: 'Vertex Retail', time: '3:30 PM', done: false },
+  { id: 1, name: 'Customer 1', time: '10:30 AM', done: true },
+  { id: 2, name: 'Customer 2', time: '12:00 PM', done: false },
+  { id: 3, name: 'Customer 4', time: '3:30 PM', done: false },
 ];
-const PUSHED: Visit = { id: 4, name: 'Deccan Packaging', time: '4:45 PM', done: false };
+const PUSHED: Visit = { id: 4, name: 'Customer 9', time: '4:45 PM', done: false };
 
 interface Shared {
   visits: Visit[]; offline: boolean; queued: number; synced: number; push: boolean; locked: boolean;
@@ -50,7 +50,7 @@ function FieldApp({ platform, st }: { platform: 'android' | 'ios'; st: Shared })
         ) : (
           <div className="flex items-center justify-between h-8">
             <p className="text-[14px] font-medium">Field Sales</p>
-            <span className="w-6 h-6 rounded-full bg-white/20 text-[9px] font-semibold flex items-center justify-center">PN</span>
+            <span className="w-6 h-6 rounded-full bg-white/20 text-[9px] font-semibold flex items-center justify-center">E1</span>
           </div>
         )}
       </div>

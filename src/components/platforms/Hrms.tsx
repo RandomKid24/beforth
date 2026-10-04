@@ -12,12 +12,12 @@ interface Person {
 const DAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const SEED: Person[] = [
-  { id: 'E-014', name: 'Anjali Deshmukh', role: 'Service Engineer', status: 'Present', punch: '9:02 AM', week: ['P', 'P', 'P', 'L', 'P', 'H', 'H'], balance: { Casual: 6, Earned: 9 }, pending: null },
-  { id: 'E-018', name: 'Meera Sharma', role: 'Sales Executive', status: 'Present', punch: '9:11 AM', week: ['P', 'P', 'P', 'P', 'P', 'H', 'H'], balance: { Casual: 8, Earned: 12 }, pending: null },
-  { id: 'E-021', name: 'Vikram Joshi', role: 'Storekeeper', status: 'Late', punch: '10:20 AM', week: ['P', 'L', 'P', 'P', 'L', 'H', 'H'], balance: { Casual: 5, Earned: 12 }, pending: { type: 'Earned', days: 3 } },
-  { id: 'E-027', name: 'Sandeep Pawar', role: 'Service Engineer', status: 'Present', punch: '8:55 AM', week: ['P', 'P', 'P', 'P', 'P', 'H', 'H'], balance: { Casual: 7, Earned: 10 }, pending: null },
-  { id: 'E-031', name: 'Fatima Sheikh', role: 'Accounts', status: 'On leave', punch: '—', week: ['P', 'P', 'P', 'P', 'V', 'H', 'H'], balance: { Casual: 3, Earned: 12 }, pending: null },
-  { id: 'E-036', name: 'Amit Thakur', role: 'Driver', status: 'Absent', punch: '—', week: ['P', 'P', 'A', 'P', 'A', 'H', 'H'], balance: { Casual: 4, Earned: 8 }, pending: { type: 'Casual', days: 2 } },
+  { id: 'E-014', name: 'Employee 3', role: 'Service Engineer', status: 'Present', punch: '9:02 AM', week: ['P', 'P', 'P', 'L', 'P', 'H', 'H'], balance: { Casual: 6, Earned: 9 }, pending: null },
+  { id: 'E-018', name: 'Employee 4', role: 'Sales Executive', status: 'Present', punch: '9:11 AM', week: ['P', 'P', 'P', 'P', 'P', 'H', 'H'], balance: { Casual: 8, Earned: 12 }, pending: null },
+  { id: 'E-021', name: 'Employee 5', role: 'Storekeeper', status: 'Late', punch: '10:20 AM', week: ['P', 'L', 'P', 'P', 'L', 'H', 'H'], balance: { Casual: 5, Earned: 12 }, pending: { type: 'Earned', days: 3 } },
+  { id: 'E-027', name: 'Employee 7', role: 'Service Engineer', status: 'Present', punch: '8:55 AM', week: ['P', 'P', 'P', 'P', 'P', 'H', 'H'], balance: { Casual: 7, Earned: 10 }, pending: null },
+  { id: 'E-031', name: 'Employee 9', role: 'Accounts', status: 'On leave', punch: '—', week: ['P', 'P', 'P', 'P', 'V', 'H', 'H'], balance: { Casual: 3, Earned: 12 }, pending: null },
+  { id: 'E-036', name: 'Employee 11', role: 'Driver', status: 'Absent', punch: '—', week: ['P', 'P', 'A', 'P', 'A', 'H', 'H'], balance: { Casual: 4, Earned: 8 }, pending: { type: 'Casual', days: 2 } },
 ];
 
 const DAY_SKIN: Record<Day, string> = {
@@ -98,7 +98,7 @@ export default function HrmsPreview() {
 
           {p.pending ? (
             <div className="border border-amber-200 bg-amber-50 p-2.5">
-              <p className="text-[12px] text-amber-900">{p.name.split(' ')[0]} requests {p.pending.days} days of {p.pending.type.toLowerCase()} leave.</p>
+              <p className="text-[12px] text-amber-900">{p.name} requests {p.pending.days} days of {p.pending.type.toLowerCase()} leave.</p>
               <div className="flex gap-2 mt-2">
                 <button type="button" className="flex-1 min-h-[30px] bg-signal text-white text-[11.5px] font-medium inline-flex items-center justify-center gap-1 hover:bg-signal-deep transition-colors"
                   onClick={() => edit(p.id, (x) => ({ ...x, status: 'On leave', punch: '—', balance: { ...x.balance, [x.pending!.type]: x.balance[x.pending!.type] - x.pending!.days }, pending: null }))}>

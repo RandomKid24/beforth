@@ -431,7 +431,7 @@ function EmployeeBody({ e, c }: { e: Employee; c: DrawerCtx }) {
       {e.pending && (
         <Section title="Leave request">
           <Notice tone="amber">
-            <p className="font-medium">{e.name.split(' ')[0]} asks for {e.pending.days} day{e.pending.days > 1 ? 's' : ''} of {e.pending.type.toLowerCase()} leave.</p>
+            <p className="font-medium">{e.name} asks for {e.pending.days} day{e.pending.days > 1 ? 's' : ''} of {e.pending.type.toLowerCase()} leave.</p>
             <p className="mt-0.5 text-[12px]">{e.balance[e.pending.type]} days available in that balance.</p>
           </Notice>
           <div className="flex gap-2 mt-3">

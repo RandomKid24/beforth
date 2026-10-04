@@ -566,7 +566,7 @@ function RosterHero(c: VizCtx) {
               <span className={`absolute -right-0.5 -bottom-0.5 w-2.5 h-2.5 rounded-full ring-2 ring-white ${dot[e.status]}`} />
             </span>
             <span className="min-w-0">
-              <span className="block text-[12px] leading-tight truncate">{e.name.split(' ')[0]}</span>
+              <span className="block text-[12px] leading-tight truncate">{e.name}</span>
               <span className={`block text-[10.5px] leading-tight truncate mt-0.5 ${e.pending ? 'text-amber-700' : 'text-ash'}`}>{e.pending ? 'Leave pending' : e.dept}</span>
             </span>
           </button>

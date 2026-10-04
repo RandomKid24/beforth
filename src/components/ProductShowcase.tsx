@@ -358,9 +358,9 @@ export default function ProductShowcase() {
           </div>
         </div>
         <div className="px-4 py-3.5 border-b border-paper/10 flex items-center gap-2.5">
-          <span className="w-8 h-8 shrink-0 rounded-full bg-paper/10 border border-paper/15 flex items-center justify-center text-[11px] font-semibold text-paper/85">PN</span>
+          <span className="w-8 h-8 shrink-0 rounded-full bg-paper/10 border border-paper/15 flex items-center justify-center text-[11px] font-semibold text-paper/85">E1</span>
           <div className="min-w-0">
-            <p className="text-[13px] leading-none truncate">Priya Nair</p>
+            <p className="text-[13px] leading-none truncate">Employee 1</p>
             <p className="text-[10.5px] text-paper/50 mt-1.5 leading-none truncate">Sahyadri Industrial Supply</p>
           </div>
         </div>

@@ -5,7 +5,7 @@ import type { DemoState, Order, OrderStage, Priority, Sku, Ticket, Voucher } fro
 
 export const STAGES: OrderStage[] = ['Quoted', 'Approval', 'Confirmed', 'Packing', 'Dispatched', 'Invoiced'];
 export const APPROVAL_LIMIT = 100000;
-export const ENGINEERS = ['Ravi K.', 'Meera S.', 'Sandeep P.', 'Anjali D.'];
+export const ENGINEERS = ['Employee 2', 'Employee 4', 'Employee 7', 'Employee 3'];
 export const SLA_HOURS: Record<Priority, number> = { Critical: 2, High: 8, Medium: 24, Low: 72 };
 export const PRIORITIES: Priority[] = ['Critical', 'High', 'Medium', 'Low'];
 export const VISIT_SLOTS = ['11:30 AM today', '2:00 PM today', '4:30 PM today', '10:00 AM tomorrow', '3:00 PM tomorrow'];
