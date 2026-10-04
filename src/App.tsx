@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
-import { LazyMotion, MotionConfig, domAnimation } from 'motion/react';
+import { AnimatePresence, LazyMotion, MotionConfig, domAnimation } from 'motion/react';
 import * as m from 'motion/react-m';
 import { ArrowUpRight, ArrowRight, ArrowDown, Mail, Phone, MapPin, Check, Compass, Handshake, MousePointerClick, Puzzle } from 'lucide-react';
 
@@ -1155,28 +1155,24 @@ export default function App() {
   const { pathname, hash } = useLocation();
   const { shouldReduce } = useMotionPreset();
 
-  // New page: start at the top. A link like /#platforms: land on that section instead.
+  const location = useLocation();
+  const prevPath = useRef(pathname);
+
+  // A link like /#platforms lands on that section. A new page starts at the top,
+  // once the old page has faded out and the new one is mounted.
   useEffect(() => {
-    if (hash) {
-      const t = window.setTimeout(() => {
-        try { document.querySelector(hash)?.scrollIntoView({ block: 'start' }); } catch { /* not a valid selector */ }
-      }, 90);
-      return () => window.clearTimeout(t);
-    }
-    window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+    const changed = prevPath.current !== pathname;
+    prevPath.current = pathname;
+    if (!hash) return;
+    const t = window.setTimeout(() => {
+      try { document.querySelector(hash)?.scrollIntoView({ block: 'start' }); } catch { /* not a valid selector */ }
+    }, changed ? 320 : 90);
+    return () => window.clearTimeout(t);
   }, [pathname, hash]);
 
-  /**
-   * View Transitions give the browser a chance to animate the route swap on
-   * its own compositor. Must be guarded: `document.startViewTransition` is
-   * undefined in Safari < 18 and Firefox < 130, and calling it unguarded
-   * throws a TypeError that breaks navigation entirely.
-   */
-  const supportsViewTransition =
-    typeof document !== 'undefined' && typeof document.startViewTransition === 'function';
-
-  const pageTransitionName =
-    supportsViewTransition && !shouldReduce ? 'beforth-page' : undefined;
+  const toTop = () => {
+    if (!window.location.hash) window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+  };
 
   return (
     <LazyMotion features={domAnimation} strict>
@@ -1185,20 +1181,25 @@ export default function App() {
         <StructuredData />
         <Navbar />
 
-        <div
-          key={pathname}
-          style={pageTransitionName ? ({ viewTransitionName: pageTransitionName } as React.CSSProperties) : undefined}
-        >
-          <Routes>
-            <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><Products /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
-            <Route path="/services" element={<ServicesPage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/product/:slug" element={<ProductPage />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </div>
+        <AnimatePresence mode="wait" initial={false} onExitComplete={toTop}>
+          <m.div
+            key={pathname}
+            initial={shouldReduce ? false : { opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={shouldReduce ? undefined : { opacity: 0, y: -8, transition: { duration: 0.16, ease: [0.4, 0, 1, 1] } }}
+            transition={shouldReduce ? { duration: 0 } : { duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <Routes location={location}>
+              <Route path="/" element={<><Hero /><Positioning /><Fit /><ServicesSection /><ProductProof /><Method /><Why /><Products /><SelectedWork /><Technology /><Sectors /><Faq /><CTA /></>} />
+              <Route path="/services" element={<ServicesPage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/team" element={<TeamPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/product/:slug" element={<ProductPage />} />
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </m.div>
+        </AnimatePresence>
 
         <Footer />
       </MotionConfig>

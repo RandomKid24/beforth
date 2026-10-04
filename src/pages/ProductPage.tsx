@@ -3,6 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, ArrowDown, Check } from 'lucide-react';
 
 import Reveal from '@/components/Reveal';
+import Intro from '@/components/Intro';
 import SectionHead from '@/components/SectionHead';
 import { Magnetic } from '@/components/Magnetic';
 import { getPlatform } from '@/components/platforms/catalog';
@@ -80,21 +81,21 @@ export default function ProductPage() {
 
           <div className="grid lg:grid-cols-[minmax(0,1.3fr)_minmax(0,0.7fr)] gap-10 lg:gap-16 items-start">
             <div className="min-w-0">
-              <Reveal>
+              <Intro>
                 <span className="inline-flex items-center gap-2.5 mb-6">
                   <span className="w-9 h-9 bg-signal text-white flex items-center justify-center"><Icon className="w-[18px] h-[18px]" strokeWidth={1.7} /></span>
                   <span className="label">{p.sub}</span>
                 </span>
-              </Reveal>
-              <Reveal delay={0.05}>
+              </Intro>
+              <Intro delay={0.05}>
                 <h1 className="display-xl text-[clamp(2.3rem,5.8vw,4.5rem)] max-w-[18ch]">
                   {p.headline[0]} <span className="accent">{p.headline[1]}</span>
                 </h1>
-              </Reveal>
-              <Reveal delay={0.1}>
+              </Intro>
+              <Intro delay={0.1}>
                 <p className="body text-[16px] md:text-[18px] max-w-[34rem] mt-6 md:mt-7 !text-ink/70">{p.lead}</p>
-              </Reveal>
-              <Reveal delay={0.15}>
+              </Intro>
+              <Intro delay={0.15}>
                 <div className="flex flex-wrap items-center gap-x-7 gap-y-4 mt-8 md:mt-10">
                   <Magnetic>
                     <Link to="/contact" className="btn-signal !px-7 !py-4">
@@ -107,20 +108,20 @@ export default function ProductPage() {
                     Try the live preview <ArrowDown className="w-3.5 h-3.5" />
                   </button>
                 </div>
-              </Reveal>
+              </Intro>
               {p.proof && (
-                <Reveal delay={0.2}>
+                <Intro delay={0.2}>
                   <p className="mt-8 border-l-2 border-signal pl-4 text-[14px] leading-relaxed text-ink/75 max-w-[34rem]">
                     {p.proof.text}{' '}
                     <a href={p.proof.href} target="_blank" rel="noopener noreferrer" className="text-signal underline underline-offset-4 decoration-signal/40 hover:decoration-signal">
                       {p.proof.cta}
                     </a>
                   </p>
-                </Reveal>
+                </Intro>
               )}
             </div>
 
-            <Reveal delay={0.12}>
+            <Intro delay={0.12}>
               <aside className="surface p-6 md:p-7" aria-label={`${p.name} at a glance`}>
                 <span className="label">Built for</span>
                 <p className="display-md text-[18px] mt-2 mb-6">{p.built}</p>
@@ -139,7 +140,7 @@ export default function ProductPage() {
                   ))}
                 </div>
               </aside>
-            </Reveal>
+            </Intro>
           </div>
         </div>
       </section>

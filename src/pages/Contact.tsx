@@ -3,6 +3,7 @@ import { AnimatePresence } from 'motion/react';
 import * as m from 'motion/react-m';
 import { Mail, Phone, MapPin, Clock, Send, ChevronDown, Check, AlertCircle } from 'lucide-react';
 import Reveal from '../components/Reveal';
+import Intro from '../components/Intro';
 
 const SUBJECTS = [
   'General Inquiry',
@@ -140,13 +141,13 @@ export default function ContactPage() {
       <section className="pt-32 md:pt-40 pb-14 md:pb-20 grain relative overflow-hidden">
         <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
         <div className="wrap relative z-10">
-          <Reveal>
+          <Intro>
             <div className="rule mb-6" />
             <span className="label block mb-7">Contact</span>
             <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[14ch]">
               Let's talk about <span className="accent">your business.</span>
             </h1>
-          </Reveal>
+          </Intro>
         </div>
       </section>
 

@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import Reveal from '../components/Reveal';
+import Intro from '../components/Intro';
 import { Magnetic } from '../components/Magnetic';
 
 const TEAM = [
@@ -37,12 +38,12 @@ function PageHead({ label, title, lead }: { label: string; title: React.ReactNod
     <section className="pt-32 md:pt-40 pb-12 md:pb-16 grain relative overflow-hidden">
       <div className="absolute inset-0 blueprint-grid blueprint-fade pointer-events-none" />
       <div className="wrap relative z-10">
-        <Reveal>
+        <Intro>
           <div className="rule mb-6" />
           <span className="label block mb-6">{label}</span>
           <h1 className="display-xl text-[clamp(2.2rem,6.4vw,4.8rem)] max-w-[15ch]">{title}</h1>
           {lead && <p className="lead max-w-2xl mt-7">{lead}</p>}
-        </Reveal>
+        </Intro>
       </div>
     </section>
   );
