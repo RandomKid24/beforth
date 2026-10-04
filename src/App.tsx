@@ -648,8 +648,8 @@ function Products() {
       <div className="wrap">
         <SectionHead
           label="Platforms"
-          title={<>Platforms we build, run and <span className="accent">maintain.</span></>}
-          note="Pick one and try it right here. Screens use sample data; the systems behind them are real."
+          title={<>Platforms we build and <span className="accent">maintain.</span></>}
+          note="Pick one to try it. Sample data."
         />
         <Reveal>
           <PlatformShowcase />
@@ -782,15 +782,19 @@ function Sectors() {
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {SECTORS.map((sector, i) => (
             <Reveal key={sector.n} delay={(i % 3) * 0.06}>
-              <div className="group h-full bg-white border border-ink/12 p-6 transition-[border-color,transform] duration-500 hover:border-signal/50 hover:-translate-y-0.5">
-                <span className="block w-6 h-px bg-signal mb-4 transition-[width] duration-500 group-hover:w-12" />
-                <h3 className="display-md text-base mb-2">{sector.n}</h3>
-                <p className="body-tight mb-4">{sector.desc}</p>
-                <ul className="flex flex-wrap gap-1.5">
-                  {sector.uses.slice(0, 3).map((u) => (
-                    <li key={u} className="label !text-[10px] border border-ink/12 px-2.5 py-1">{u}</li>
-                  ))}
-                </ul>
+              <div className="group h-full bg-white border border-ink/12 overflow-hidden transition-[border-color,transform] duration-500 hover:border-signal/50 hover:-translate-y-0.5">
+                <div className="aspect-[16/9] overflow-hidden bg-bone">
+                  <img
+                    src={sector.img}
+                    alt=""
+                    loading="lazy"
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="display-md text-base mb-2">{sector.n}</h3>
+                  <p className="body-tight">{sector.desc}</p>
+                </div>
               </div>
             </Reveal>
           ))}
